@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&amp;subset=latin-ext" rel="stylesheet">
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    
+    
+    
+    
+
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Investment Calculator" />
+    <title>Investment Calculator</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Bootstrap and FontAwesome CSS -->
+    <link rel="stylesheet" href="dependency/bootstrap.min.css" media="all" />
+    <link rel="stylesheet" href="dependency/fontawesome.min.css" media="all" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css" media="all" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding-top: 50px;
+        }
+
+        h2, h3 {
+            color: #343a40;
+            font-weight: 700;
+        }
+
+        .form-control {
+            padding: 10px;
+            border-radius: 0.25rem;
+        }
+
+        .btn-primary {
+            padding: 10px 30px;
+            font-size: 18px;
+            font-weight: 500;
+            border-radius: 30px;
+        }
+
+        #report-section, #yearBreakdow {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            margin-top: 30px;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px 0;
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="light">
+    
+    <div class="container">
+        <div class="text-right mb-3">
+            
+        </div>
+
+        <div class="col-md-12 inputs">
+            <h2 class="text-center mb-3">Investment Projections</h2>
+            <form>
+                <div class="row">
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <label for="startingBalance"><i class="fas fa-money-bill"></i> Starting Balance</label>
+                        <input type="number" class="form-control" id="startingBalance" value="1000" min="1" max="999999999">
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <label for="expectedReturn"><i class="fas fa-percentage"></i> Percentage Return (%)</label>
+                        <input type="number" class="form-control" id="expectedReturn" value="6" min="1" max="100">
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <label for="monthlyDeposit"><i class="far fa-calendar-alt"></i> Monthly Deposit</label>
+                        <input type="number" class="form-control" id="monthlyDeposit" value="100" min="1" max="999999999">
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <label for="duration"><i class="far fa-clock"></i> Duration (years)</label>
+                        <input type="number" class="form-control" id="duration" value="5" min="1" max="999">
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <button type="submit" class="btn btn-secondary my-4 mx-auto" id="submit">
+                        Calculate Balance
+                    </button>
+                    
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-12 inputs mt-4" id="report-section">
+            <h2 class="text-center mb-3"><i class="far fa-chart-bar"></i> Growth Chart</h2>
+            <h3 class="text-center mb-3" id="totalValue"></h3>
+            <div id="chartContainer">
+                <canvas id="growthChart"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-12 inputs mt-4" id="yearBreakdow">
+            <h2 class="text-center mb-3"><i class="fas fa-chart-line"></i> Yearly Breakdown</h2>
+            <div class="row" id="breakdow"></div>
+        </div>
+    </div>
+
+    <footer class="col-md-12">
+        <p>&copy; 2024 Investment Calculator. All rights reserved.</p>
+    </footer>
+
+    <!-- Dependencies -->
+    <script src="dependency/chartjs.min.js"></script>
+    <script src="js/calculator.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+
+</html>
