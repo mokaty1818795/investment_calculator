@@ -25,7 +25,8 @@ function calculate(e) {
 
     showGrowthDiv()
     removePreviousNumbers()
-    buildValues(labels, balances, duration, startingBalance, monthlyReturn, monthlyDeposit)
+    //buildValues(labels, balances, duration, startingBalance, monthlyReturn, monthlyDeposit)
+    buildValues(labels, balances, duration, startingBalance, expectedReturn, monthlyDeposit);
     createChart(labels, balances)
 }
 
@@ -47,45 +48,52 @@ function removePreviousNumbers() {
 }
 
 // Loop through items to update starting balance and build 
-function buildValues(labels, balances, duration, startingBalance, monthlyReturn, monthlyDeposit) {
-    let initialBalance = startingBalance; // Store initial balance separately
+function buildValues(labels, balances, duration, startingBalance, annualReturn, monthlyDeposit) {
+    let balance = startingBalance; // Start with initial balance
+    let monthlyReturn = annualReturn / 12; // Monthly return based on annual return
+
     for (let i = 0; i <= duration * 12; i++) {
         const newDiv = document.createElement('p');
         newDiv.classList = 'text-center col-sm-4 col-md-3';
 
         if (i === 0) {
             // For the initial balance (before interest calculations)
-            balances.push(initialBalance.toFixed(2));
+            balances.push(balance.toFixed(2));
             labels.push(`Year 0`);
 
             balanceEnd = Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'LSL',
                 minimumFractionDigits: 2,
-            }).format(initialBalance);
+            }).format(balance);
 
             newDiv.innerHTML = `Year 0 <span> ${balanceEnd} </span>`;
             breakdow.appendChild(newDiv);
-        } else if (i % 12 === 0) {
-            // For the subsequent years (applying interest)
-            startingBalance = startingBalance * (1 + monthlyReturn) + (monthlyDeposit * 12);
-            const year = i / 12;
+        } else {
+            // For each month, apply interest and add monthly deposit
+            balance = balance * (1 + monthlyReturn) + monthlyDeposit;
 
-            balances.push(startingBalance.toFixed(2));
-            labels.push(`Year ${year}`);
+            // Only update yearly (i % 12 === 0)
+            if (i % 12 === 0) {
+                const year = i / 12;
 
-            balanceEnd = Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'LSL',
-                minimumFractionDigits: 2,
-            }).format(startingBalance);
+                balances.push(balance.toFixed(2));
+                labels.push(`Year ${year}`);
 
-            newDiv.innerHTML = `Year ${year} <span> ${balanceEnd} </span>`;
-            breakdow.appendChild(newDiv);
+                balanceEnd = Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'LSL',
+                    minimumFractionDigits: 2,
+                }).format(balance);
+
+                newDiv.innerHTML = `Year ${year} <span> ${balanceEnd} </span>`;
+                breakdow.appendChild(newDiv);
+            }
         }
     }
     document.querySelector('#totalValue').innerHTML = `Total Value after ${duration} years: <span>${balanceEnd}</span>`;
 }
+
 
 
 // Create chart
