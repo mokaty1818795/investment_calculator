@@ -8,27 +8,33 @@ submit.addEventListener('click', (e) => {
 })
 
 function calculate(e) {
-    e.preventDefault()
+    e.preventDefault();
 
-    let labels = []
-    let balances = []
+    let labels = [];
+    let balances = [];
 
-    let startingBalance = parseFloat(document.querySelector('#startingBalance').value)
-    const expectedReturn = parseFloat(document.querySelector('#expectedReturn').value) / 100
-    const monthlyDeposit = parseFloat(document.querySelector('#monthlyDeposit').value)
-    const duration = parseInt(document.querySelector('#duration').value)
-    const monthlyReturn = expectedReturn / 12
+    let startingBalance = parseFloat(document.querySelector('#startingBalance').value);
+    let expectedReturn = document.querySelector('#expectedReturn').value;
 
-    if (!startingBalance || !expectedReturn || !monthlyDeposit || !duration) {
-        return
+    // Replace comma with dot for float parsing, and divide by 100 to get decimal return
+    expectedReturn = parseFloat(expectedReturn.replace(',', '.')) / 100;
+    
+    const monthlyDeposit = parseFloat(document.querySelector('#monthlyDeposit').value);
+    const duration = parseInt(document.querySelector('#duration').value);
+
+    if (!startingBalance || !expectedReturn || !monthlyDeposit || !duration || isNaN(expectedReturn) || expectedReturn <= 0) {
+        alert('Please enter valid inputs.');
+        return;
     }
 
-    showGrowthDiv()
-    removePreviousNumbers()
-    //buildValues(labels, balances, duration, startingBalance, monthlyReturn, monthlyDeposit)
+    const monthlyReturn = expectedReturn / 12;
+
+    showGrowthDiv();
+    removePreviousNumbers();
     buildValues(labels, balances, duration, startingBalance, expectedReturn, monthlyDeposit);
-    createChart(labels, balances)
+    createChart(labels, balances);
 }
+
 
 // Show content
 function showGrowthDiv() {
