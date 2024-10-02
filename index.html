@@ -1,142 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-   
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&amp;subset=latin-ext" rel="stylesheet">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Investment Calculator" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Investment Calculator</title>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <!-- Bootstrap and FontAwesome CSS -->
-    <link rel="stylesheet" href="dependency/bootstrap.min.css" media="all" />
-    <link rel="stylesheet" href="dependency/fontawesome.min.css" media="all" />
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css" media="all" />
-    <style>
-        body {
-            padding:0;
-            font-family: 'Roboto', sans-serif;
-            background-color: #f8f9fa;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-            padding-top: 50px;
-        }
-
-        h2, h3 {
-            color: #343a40;
-            font-weight: 700;
-        }
-
-        .form-control {
-            padding: 10px;
-            border-radius: 0.25rem;
-        }
-
-        .btn-primary {
-            padding: 10px 30px;
-            font-size: 18px;
-            font-weight: 500;
-            border-radius: 30px;
-        }
-
-        #report-section, #yearBreakdow {
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 0.5rem;
-            margin-top: 30px;
-        }
-
-        footer {
-            margin-top: 50px;
-            padding: 20px 0;
-            background-color: #343a40;
-            color: white;
-            text-align: center;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-     <div class="container-fluid">
-       <a class="navbar-brand text-white fs-1" href="#">
-        <img src="./images/logo.png"/ height="40%" width="40%">
-       </a>
-       <form class=" d-none d-lg-flex" role="search">
-        <button class="btn btn-outline-danger" type="button btn-lg  p-4">Invest Now</button>
-      </form>
-       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
-       </button>
-     </div>
-   </nav>
-    <div class="container">
-        <div class="text-right mb-3">
-         
-        </div>
-
-        <div class="col-md-12 inputs p-4">
-            <h2 class="text-center text-danger text-large mb-3">Investment Projections</h2>
-            <form>
-                <div class="row">
-                    <div class="col-sm-6 col-md-3 mb-3">
-                        <label for="startingBalance"><i class="fas fa-money-bill"></i> Starting Balance</label>
-                        <input type="number" class="form-control form-control-lg" id="startingBalance" value="1000" min="1" max="999999999">
-                    </div>
-                    <div class="col-sm-6 col-md-3 mb-3">
-                        <label for="expectedReturn"><i class="fas fa-percentage"></i> Percentage Return (%)</label>
-                        <input type="number" class="form-control form-control-lg" id="expectedReturn" value="6" min="1" max="100">
-                    </div>
-                    <div class="col-sm-6 col-md-3 mb-3">
-                        <label for="monthlyDeposit"><i class="far fa-calendar-alt"></i> Monthly Deposit</label>
-                        <input type="number" class="form-control form-control-lg" id="monthlyDeposit" value="100" min="1" max="999999999">
-                    </div>
-                    <div class="col-sm-6 col-md-3 mb-3">
-                        <label for="duration"><i class="far fa-clock"></i> Duration (years)</label>
-                        <input type="number" class="form-control form-control-lg" id="duration" value="5" min="1" max="999">
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <button type="submit" class="btn btn-danger my-4 mx-auto" id="submit">
-                        Calculate Balance
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <div class="col-md-12 inputs mt-4" id="report-section">
-            <h2 class="text-center text-danger mb-3"><i class="far fa-chart-bar"></i> Growth Chart</h2>
-            <h3 class="text-center mb-3" id="totalValue"></h3>
-            <div id="chartContainer">
-                <canvas id="growthChart"></canvas>
+    <div class="container mt-5">
+        <h1 class="mb-4">Investment Calculator</h1>
+        <form id="investmentForm">
+            <div class="mb-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="startDate" required>
             </div>
-        </div>
+            <div class="mb-3">
+                <label for="monthlyPremium" class="form-label">Monthly Premium</label>
+                <input type="number" class="form-control" id="monthlyPremium" required>
+            </div>
+            <div class="mb-3">
+                <label for="duration" class="form-label">Duration (years)</label>
+                <input type="number" class="form-control" id="duration" required>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="includeAdhoc">
+                <label class="form-check-label" for="includeAdhoc">Include Adhoc Investments</label>
+            </div>
+            <div id="adhocInvestments" style="display: none;">
+                <div class="mb-3">
+                    <label for="adhocCount" class="form-label">Number of Adhoc Investments</label>
+                    <input type="number" class="form-control" id="adhocCount" min="1">
+                </div>
+                <div id="adhocFields"></div>
+            </div>
+            <div class="mb-3">
+                <label for="calculationType" class="form-label">Calculation Type</label>
+                <select class="form-select" id="calculationType">
+                    <option value="futureValue">Calculate Future Value</option>
+                    <option value="monthlyPremium">Calculate Monthly Premium for Goal</option>
+                </select>
+            </div>
+            <div class="mb-3" id="goalValueField" style="display: none;">
+                <label for="goalValue" class="form-label">Goal Value</label>
+                <input type="number" class="form-control" id="goalValue">
+            </div>
+            <button type="submit" class="btn btn-primary">Calculate</button>
+        </form>
 
-        <div class="col-md-12 inputs mt-4" id="yearBreakdow">
-            <h2 class="text-center text-danger mb-3"><i class="fas fa-chart-line"></i> Yearly Breakdown</h2>
-            <div class="row" id="breakdow"></div>
+        <div id="results" class="mt-5" style="display: none;">
+            <h2>Results</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Low Inflation (6%)</h3>
+                    <p>Future Value: <span id="lowInflationValue"></span></p>
+                    <p>Monthly Premium: <span id="lowInflationPremium"></span></p>
+                </div>
+                <div class="col-md-6">
+                    <h3>High Inflation (10%)</h3>
+                    <p>Future Value: <span id="highInflationValue"></span></p>
+                    <p>Monthly Premium: <span id="highInflationPremium"></span></p>
+                </div>
+            </div>
+            <canvas id="investmentChart"></canvas>
         </div>
     </div>
 
-    <footer class="col-md-12 btn-danger">
-        <p class="text-white ">&copy; 2024 Investment Calculator. All rights reserved.</p>
-    </footer>
-    <!-- Dependencies -->
-    <script src="dependency/chartjs.min.js"></script>
-    <script src="js/calculator.js"></script>
-    <script src="js/theme.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('investmentForm');
+        const includeAdhoc = document.getElementById('includeAdhoc');
+        const adhocInvestments = document.getElementById('adhocInvestments');
+        const adhocCount = document.getElementById('adhocCount');
+        const adhocFields = document.getElementById('adhocFields');
+        const calculationType = document.getElementById('calculationType');
+        const goalValueField = document.getElementById('goalValueField');
+        const results = document.getElementById('results');
+
+        if (includeAdhoc) {
+            includeAdhoc.addEventListener('change', () => {
+                adhocInvestments.style.display = includeAdhoc.checked ? 'block' : 'none';
+            });
+        }
+
+        if (adhocCount) {
+            adhocCount.addEventListener('change', () => {
+                adhocFields.innerHTML = '';
+                for (let i = 0; i < adhocCount.value; i++) {
+                    adhocFields.innerHTML += `
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="adhocDate${i}" class="form-label">Adhoc Date ${i + 1}</label>
+                                <input type="date" class="form-control adhoc-date" id="adhocDate${i}">
+                            </div>
+                            <div class="col">
+                                <label for="adhocAmount${i}" class="form-label">Adhoc Amount ${i + 1}</label>
+                                <input type="number" class="form-control adhoc-amount" id="adhocAmount${i}">
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        if (calculationType) {
+            calculationType.addEventListener('change', () => {
+                goalValueField.style.display = calculationType.value === 'monthlyPremium' ? 'block' : 'none';
+            });
+        }
+
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const startDate = new Date(document.getElementById('startDate').value);
+                const monthlyPremium = parseFloat(document.getElementById('monthlyPremium').value);
+                const duration = parseInt(document.getElementById('duration').value);
+                const adhocInvestments = Array.from(document.querySelectorAll('.adhoc-date')).map((date, index) => ({
+                    date: new Date(date.value),
+                    amount: parseFloat(document.querySelector(`#adhocAmount${index}`).value)
+                })).filter(investment => !isNaN(investment.amount));
+
+                const lowInflationRate = 0.06;
+                const highInflationRate = 0.10;
+                const commissionRecoveryRate = 0.02;
+                const commissionRecoveryRateSinglePremiums = 0.05;
+
+                let lowInflationValue, highInflationValue, lowInflationPremium, highInflationPremium;
+
+                if (calculationType.value === 'futureValue') {
+                    lowInflationValue = calculateFutureValue(startDate, monthlyPremium, duration, lowInflationRate, adhocInvestments);
+                    highInflationValue = calculateFutureValue(startDate, monthlyPremium, duration, highInflationRate, adhocInvestments);
+                } else {
+                    const goalValue = parseFloat(document.getElementById('goalValue').value);
+                    lowInflationPremium = calculateRequiredPremium(startDate, goalValue, duration, lowInflationRate, adhocInvestments);
+                    highInflationPremium = calculateRequiredPremium(startDate, goalValue, duration, highInflationRate, adhocInvestments);
+                }
+
+                displayResults(lowInflationValue, highInflationValue, lowInflationPremium, highInflationPremium);
+                createChart(startDate, duration, monthlyPremium, adhocInvestments);
+            });
+        }
+
+        function calculateFutureValue(startDate, monthlyPremium, duration, inflationRate, adhocInvestments) {
+            let futureValue = 0;
+            const monthlyRate = inflationRate / 12;
+            const commissionRecoveryRate=  0.02;
+            const commissionRecoveryRateSinglePremiums = 0.05;
+
+            for (let month = 0; month < duration * 12; month++) {
+                futureValue = (futureValue + monthlyPremium) * (1 + monthlyRate);
+
+                const relevantAdhoc = adhocInvestments.filter(investment => 
+                    investment.date <= new Date(startDate.getTime() + month * 30 * 24 * 60 * 60 * 1000)
+                );
+                relevantAdhoc.forEach(investment => {
+                    futureValue += investment.amount * (1 - commissionRecoveryRateSinglePremiums);
+                });
+            }
+
+            return futureValue * (1 - commissionRecoveryRate);
+        }
+
+        function calculateRequiredPremium(startDate, goalValue, duration, inflationRate, adhocInvestments) {
+            let low = 0;
+            let high = goalValue;
+
+            while (high - low > 0.01) {
+                const mid = (low + high) / 2;
+                const calculatedValue = calculateFutureValue(startDate, mid, duration, inflationRate, adhocInvestments);
+
+                if (calculatedValue < goalValue) {
+                    low = mid;
+                } else {
+                    high = mid;
+                }
+            }
+
+            return (low + high) / 2;
+        }
+
+        function displayResults(lowInflationValue, highInflationValue, lowInflationPremium, highInflationPremium) {
+            document.getElementById('lowInflationValue').textContent = lowInflationValue ? `$${lowInflationValue.toFixed(2)}` : 'N/A';
+            document.getElementById('highInflationValue').textContent = highInflationValue ? `$${highInflationValue.toFixed(2)}` : 'N/A';
+            document.getElementById('lowInflationPremium').textContent = lowInflationPremium ? `$${lowInflationPremium.toFixed(2)}` : 'N/A';
+            document.getElementById('highInflationPremium').textContent = highInflationPremium ? `$${highInflationPremium.toFixed(2)}` : 'N/A';
+            results.style.display = 'block';
+        }
+
+        let myChart = null;
+
+        // Then update the createChart function like this:
+        function createChart(startDate, duration, monthlyPremium, adhocInvestments) {
+            const ctx = document.getElementById('investmentChart').getContext('2d');
+            const lowInflationRate=  0.06;
+            const highInflationRate= 0.10;
+            
+            // If a chart exists, destroy it
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            // Create new chart
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: duration}, (_, i) => i + 1),
+                    datasets: [{
+                        label: 'Low Inflation (6%)',
+                        data: Array.from({length: duration}, (_, i) => 
+                            calculateFutureValue(startDate, monthlyPremium, i + 1, lowInflationRate, adhocInvestments)
+                        ),
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        tension: 0.1
+                    }, {
+                        label: 'High Inflation (10%)',
+                        data: Array.from({length: duration}, (_, i) => 
+                            calculateFutureValue(startDate, monthlyPremium, i + 1, highInflationRate, adhocInvestments)
+                        ),
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Investment Value ($)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Years'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // function createChart(startDate, duration, monthlyPremium, adhocInvestments) {
+        //     const ctx = document.getElementById('investmentChart').getContext('2d');
+        //     const labels = Array.from({length: duration}, (_, i) => i + 1);
+
+        //     let myChart = null;
+
+        //     if (myChart) {
+        //         myChart.destroy();
+        //     }
+
+        //     new Chart(ctx, {
+        //         type: 'line',
+        //         data: {
+        //             labels: labels,
+        //             datasets: [{
+        //                 label: 'Low Inflation (6%)',
+        //                 data: labels.map(year => calculateFutureValue(startDate, monthlyPremium, year, 0.06, adhocInvestments)),
+        //                 borderColor: 'rgba(75, 192, 192, 1)',
+        //                 tension: 0.1
+        //             }, {
+        //                 label: 'High Inflation (10%)',
+        //                 data: labels.map(year => calculateFutureValue(startDate, monthlyPremium, year, 0.10, adhocInvestments)),
+        //                 borderColor: 'rgba(255, 99, 132, 1)',
+        //                 tension: 0.1
+        //             }]
+        //         },
+        //         options: {
+        //             responsive: true,
+        //             scales: {
+        //                 y: {
+        //                     beginAtZero: true,
+        //                     title: {
+        //                         display: true,
+        //                         text: 'Investment Value ($)'
+        //                     }
+        //                 },
+        //                 x: {
+        //                     title: {
+        //                         display: true,
+        //                         text: 'Years'
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     });
+        // }
+    });
+    </script>
 </body>
 </html>

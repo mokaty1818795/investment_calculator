@@ -2,6 +2,31 @@
 
 const submit = document.getElementById('submit')
 
+
+// inputs by the user
+/*
+    regularMonthlyPremiums
+    termInYears
+    commencementDate
+ */
+
+    //Rates by The System
+
+/*
+    investmentReturns{lowinflation(6%),highInflation(10%)}
+    commissionRecoveryRate(2%)
+    commissionRecoveryRateSinglePremiums(5%)
+ */
+
+/*
+  Projected Investment Value{lowInflationValue,highInflationValue}
+*/
+
+/*
+    result = (regularMonthlyPremiums+allocatedSinglePremium)*(1+investmentReturns)^(1/12);
+
+*/
+
 submit.addEventListener('click', (e) => {
     calculate(e)
     submit.innerHTML = 'Re-Calculate Value'
