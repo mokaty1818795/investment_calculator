@@ -1,185 +1,217 @@
-// Create event listener on submit button
+let chart;
 
-const submit = document.getElementById('submit')
+function toggleInputs() {
+    const calculationType = document.getElementById('calculationType').value;
+    document.getElementById('goalAmountInput').classList.toggle('hidden', calculationType === 'futureValue');
+    document.getElementById('adhocSection').classList.toggle('hidden', calculationType === 'monthlyPremium');
+    document.getElementById('monthlyContributionInput').classList.toggle('hidden', calculationType === 'monthlyPremium');
+    document.getElementById('chartContainer').classList.toggle('hidden', calculationType === 'monthlyPremium');
+}
 
+function generateAdhocInputs() {
+    const numAdhoc = parseInt(document.getElementById('numAdhoc').value);
+    const adhocInputsDiv = document.getElementById('adhocInputs');
+    adhocInputsDiv.innerHTML = '';
+    for (let i = 0; i < numAdhoc; i++) {
+        adhocInputsDiv.innerHTML += `
+            <div>
+                <label for="adhocAmount${i}" class="block text-lg font-semibold">Ad Hoc Amount ${i + 1} ($):</label>
+                <input type="number" id="adhocAmount${i}" min="0" step="100" value="1000" class="w-full mt-1 p-2 border rounded">
+                <label for="adhocDate${i}" class="block text-lg font-semibold">Date:</label>
+                <input type="date" id="adhocDate${i}" class="w-full mt-1 p-2 border rounded">
+            </div>
+        `;
+    }
+}
 
-// inputs by the user
-/*
-    regularMonthlyPremiums
-    termInYears
-    commencementDate
- */
+function calculate() {
+    const calculationType = document.getElementById('calculationType').value;
+    const startDate = new Date(document.getElementById('startDate').value);
+    const investmentPeriod = parseInt(document.getElementById('investmentPeriod').value);
 
-    //Rates by The System
+    const lowInflationRate = 0.06;
+    const highInflationRate = 0.10;
 
-/*
-    investmentReturns{lowinflation(6%),highInflation(10%)}
-    commissionRecoveryRate(2%)
-    commissionRecoveryRateSinglePremiums(5%)
- */
+    if (calculationType === 'futureValue') {
+        const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value);
+        const adhocContributions = getAdhocContributions();
+        const lowInflationData = calculateGrowth(monthlyContribution, investmentPeriod, lowInflationRate, startDate, adhocContributions);
+        const highInflationData = calculateGrowth(monthlyContribution, investmentPeriod, highInflationRate, startDate, adhocContributions);
+        displayFutureValueResults(lowInflationData, highInflationData, startDate);
+        updateChart(lowInflationData, highInflationData, investmentPeriod, startDate);
+    } else {
+        const goalAmount = parseFloat(document.getElementById('goalAmount').value);
+        const lowMonthlyPremium = calculateMonthlyPremium(goalAmount, investmentPeriod, lowInflationRate, startDate);
+        const highMonthlyPremium = calculateMonthlyPremium(goalAmount, investmentPeriod, highInflationRate, startDate);
+        displayMonthlyPremiumResults(lowMonthlyPremium, highMonthlyPremium);
+    }
+}
 
-/*
-  Projected Investment Value{lowInflationValue,highInflationValue}
-*/
+function getAdhocContributions() {
+    const adhocContributions = [];
+    const numAdhoc = parseInt(document.getElementById('numAdhoc').value);
+    for (let i = 0; i < numAdhoc; i++) {
+        const amount = parseFloat(document.getElementById(`adhocAmount${i}`).value);
+        const date = new Date(document.getElementById(`adhocDate${i}`).value);
+        adhocContributions.push({ amount, date });
+    }
+    return adhocContributions;
+}
 
-/*
-    result = (regularMonthlyPremiums+allocatedSinglePremium)*(1+investmentReturns)^(1/12);
+function calculateGrowth(monthlyContribution, investmentPeriod, annualRate, startDate, adhocContributions) {
+    const monthlyRate = annualRate / 12;
+    let balance = 0;
+    const balanceData = [];
+    let currentDate = new Date(startDate);
 
-*/
+    for (let year = 0; year < investmentPeriod; year++) {
+        for (let month = 0; month < 12; month++) {
+            balance *= (1 + monthlyRate);
+            balance += monthlyContribution;
 
-submit.addEventListener('click', (e) => {
-    calculate(e)
-    submit.innerHTML = 'Re-Calculate Value'
-})
+            // Add ad hoc contributions for this month
+            const monthlyAdhoc = adhocContributions.filter(contrib => 
+                contrib.date <= currentDate && contrib.date > new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000)
+            );
+            monthlyAdhoc.forEach(contrib => {
+                balance += contrib.amount;
+            });
 
-function calculate(e) {
-    e.preventDefault();
+            currentDate.setMonth(currentDate.getMonth() + 1);
+        }
 
-    let labels = [];
-    let balances = [];
-
-    let startingBalance = parseFloat(document.querySelector('#startingBalance').value);
-    let expectedReturn = document.querySelector('#expectedReturn').value;
-
-    // Replace comma with dot for float parsing, and divide by 100 to get decimal return
-    expectedReturn = parseFloat(expectedReturn.replace(',', '.')) / 100;
-    
-    const monthlyDeposit = parseFloat(document.querySelector('#monthlyDeposit').value);
-    const duration = parseInt(document.querySelector('#duration').value);
-
-    if (!startingBalance || !expectedReturn || !monthlyDeposit || !duration || isNaN(expectedReturn) || expectedReturn <= 0) {
-        alert('Please enter valid inputs.');
-        return;
+        // Push yearly balance data
+        balanceData.push({ year: currentDate.getFullYear(), balance });
     }
 
-    const monthlyReturn = expectedReturn / 12;
-
-    showGrowthDiv();
-    removePreviousNumbers();
-    buildValues(labels, balances, duration, startingBalance, expectedReturn, monthlyDeposit);
-    createChart(labels, balances);
+    return balanceData;
 }
 
+function calculateMonthlyPremium(goalAmount, investmentPeriod, annualRate, startDate) {
+    let low = 0;
+    let high = goalAmount;
+    let monthlyContribution = (low + high) / 2;
+    const tolerance = 0.01;
 
-// Show content
-function showGrowthDiv() {
-    document.querySelector('#report-section').style.opacity = 1
-    document.querySelector('#report-section').style.height = 'inherit'
-    document.querySelector('#yearBreakdow').style.opacity = 1
-    document.querySelector('#yearBreakdow').style.height = 'inherit'
-}
+    while (high - low > tolerance) {
+        const finalBalance = calculateGrowth(monthlyContribution, investmentPeriod, annualRate, startDate, []).pop().balance;
 
-// remove previous values
-function removePreviousNumbers() {
-    document.querySelectorAll('#breakdow p').forEach(
-        (elem) => {
-            elem.remove()
-        }
-    )
-}
-
-// Loop through items to update starting balance and build 
-function buildValues(labels, balances, duration, startingBalance, annualReturn, monthlyDeposit) {
-    let balance = startingBalance; // Start with initial balance
-    let monthlyReturn = annualReturn / 12; // Monthly return based on annual return
-
-    for (let i = 0; i <= duration * 12; i++) {
-        const newDiv = document.createElement('p');
-        newDiv.classList = 'text-center col-sm-4 col-md-3';
-
-        if (i === 0) {
-            // For the initial balance (before interest calculations)
-            balances.push(balance.toFixed(2));
-            labels.push(`Year 0`);
-
-            balanceEnd = Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'LSL',
-                minimumFractionDigits: 2,
-            }).format(balance);
-
-            newDiv.innerHTML = `Year 0 <span> ${balanceEnd} </span>`;
-            breakdow.appendChild(newDiv);
+        if (Math.abs(finalBalance - goalAmount) < tolerance) {
+            break;
+        } else if (finalBalance < goalAmount) {
+            low = monthlyContribution;
         } else {
-            // For each month, apply interest and add monthly deposit
-            balance = balance * (1 + monthlyReturn) + monthlyDeposit;
-
-            // Only update yearly (i % 12 === 0)
-            if (i % 12 === 0) {
-                const year = i / 12;
-
-                balances.push(balance.toFixed(2));
-                labels.push(`Year ${year}`);
-
-                balanceEnd = Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'LSL',
-                    minimumFractionDigits: 2,
-                }).format(balance);
-
-                newDiv.innerHTML = `Year ${year} <span> ${balanceEnd} </span>`;
-                breakdow.appendChild(newDiv);
-            }
+            high = monthlyContribution;
         }
+
+        monthlyContribution = (low + high) / 2;
     }
-    document.querySelector('#totalValue').innerHTML = `Total Value after ${duration} years: <span>${balanceEnd}</span>`;
+
+    return monthlyContribution;
 }
 
+function displayFutureValueResults(lowInflationData, highInflationData, startDate) {
+    const resultsDiv = document.getElementById('results');
+    let tableHTML = `
+        <h2 class="text-xl font-bold  text-red-600">Future Value Results</h2>
+        <table class="table-auto w-full mt-4">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2  text-red-600 text-left">Year</th>
+                    <th class="px-4 py-2  text-red-600 text-left">Low Inflation (7%)</th>
+                    <th class="px-4 py-2  text-red-600 text-left">High Inflation (10%)</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
 
+    for (let i = 0; i < lowInflationData.length; i++) {
+        const lowBalance = lowInflationData[i].balance.toFixed(2);
+        const highBalance = highInflationData[i].balance.toFixed(2);
+        tableHTML += `
+            <tr>
+                <td class="px-4 py-2">${lowInflationData[i].year}</td>
+                <td class="px-4 py-2">LSL${lowBalance}</td>
+                <td class="px-4 py-2">LSL${highBalance}</td>
+            </tr>
+        `;
+    }
 
-// Create chart
-function createChart(labels, balances) {
-    // Destroy previous canvas
-    document.getElementById('growthChart').remove()
+    tableHTML += `</tbody></table>`;
+    resultsDiv.innerHTML = tableHTML;
+}
 
-    // Create new canvas
-    let canvas = document.createElement('canvas')
-    canvas.setAttribute('id', 'growthChart')
-    document.querySelector('#chartContainer').appendChild(canvas)
+function displayMonthlyPremiumResults(lowMonthlyPremium, highMonthlyPremium) {
+    const resultsDiv = document.getElementById('results');
 
-    // Fill canvas with chart
-    var ctx = document.getElementById('growthChart').getContext('2d')
-    var growthChart = new Chart(ctx, {
+    resultsDiv.innerHTML = `
+        <h2 class="text-xl font-bold text-red-600">Monthly Premium Results</h2>
+        <table class="table-auto w-full mt-4">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2 text-red-600 text-left">Scenario</th>
+                    <th class="px-4 py-2  text-red-600 text-left">Required Monthly Premium (LSL)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="px-4 py-2">Low Inflation (6%)</td>
+                    <td class="px-4 py-2">LSL${lowMonthlyPremium.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td class="px-4 py-2">High Inflation (10%)</td>
+                    <td class="px-4 py-2">LSL${highMonthlyPremium.toFixed(2)}</td>
+                </tr>
+            </tbody>
+        </table>
+    `;
+}
+
+function updateChart(lowInflationData, highInflationData, investmentPeriod, startDate) {
+    const ctx = document.getElementById('investmentChart').getContext('2d');
+
+    if (chart) {
+        chart.destroy();
+    }
+
+    chart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: labels,
-            datasets: [{
-                label: 'Growth',
-                data: balances,
-                borderColor: 'rgba(0, 50, 200, .3)',
-                backgroundColor: 'rgba(0, 50, 200, .3)',
-                borderWidth: 2,
-                pointRadius: 4,
-                hoverRadius: 4,
-                hoverBorderWidth: 2,
-                hitRadius: 2,
-                pointStyle: 'circle',
-                pointBackgroundColor: 'rgba(0, 50, 200, .3)'
-            },],
+            labels: lowInflationData.map(data => data.year), // Actual years on x-axis
+            datasets: [
+                {
+                    label: 'Low Inflation (6%)',
+                    data: lowInflationData.map(data => data.balance),
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                },
+                {
+                    label: 'High Inflation (10%)',
+                    data: highInflationData.map(data => data.balance),
+                    borderColor: 'rgb(255, 99, 132)',
+                    tension: 0.1
+                }
+            ]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
-            aspectRatio:4,
             scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: false,
-                        fontColor: 'rgb(0, 0, 0)',
-                        beginAtZero: true
-                    },
-                },],
-                xAxes: [{
-                    ticks: {
-                        beginAtZero: false,
-                        fontColor: 'rgb(0, 50, 0)',
-
-                    },
-                },],
-            },
-            legend: {
-                display: false,
-            },
-        },
-    })
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Balance ($)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Years'
+                    }
+                }
+            }
+        }
+    });
 }
+
+toggleInputs();
