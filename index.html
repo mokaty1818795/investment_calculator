@@ -10,39 +10,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <style>
-        @media (max-width: 640px) {
+      @media (max-width: 640px) {
             .custom-range::-webkit-slider-thumb {
                 -webkit-appearance: none;
                 appearance: none;
                 width: 25px;
                 height: 25px;
                 border-radius: 50%; 
-                background: #fff;
+                background: red; /* Change to red */
                 cursor: pointer;
+                }
+                .custom-range::-moz-range-thumb {
+                    width: 25px;
+                    height: 25px;
+                    border-radius: 50%;
+                    background: red; /* Change to red */
+                    cursor: pointer;
+                }
             }
-            .custom-range::-moz-range-thumb {
-                width: 25px;
-                height: 25px;
-                border-radius: 50%;
-                background: #ffff;
-                cursor: pointer;
-            }
-        }
+
     </style>
 </head>
 
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-800 font-['Poppins'] min-h-screen">
+<body class=" text-gray-800 font-['Poppins'] min-h-screen">
 
-    <!-- Header Section with Logo and Background -->
-    <header class="bg-white to-indigo-600 text-white py-6 mb-8">
-        <div class="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between">
-            <img src="/images/logo.png" alt="Company Logo" height="40%" width=""40% class="mb-4 sm:mb-0">
+    <header class="bg-gray-50  text-white py-2 mb-24">
+        <div class="container max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between">
+            <img src="/images/logo.png" alt="Company Logo" height="10%" width="10%" class="mb-4 sm:mb-0">
             <h1 class="text-2xl sm:text-3xl font-bold text-red-600 text-center sm:text-left">Investment Calculator</h1>
         </div>
     </header>
 
-    <!-- Main Content Container -->
-    <div class="container mx-auto px-4">
+    <div class="container max-w-6xl mx-auto px-4">
         <div class="bg-white shadow-2xl rounded-3xl p-6 sm:p-8 mb-8">
             <h2 class="text-xl sm:text-2xl font-bold text-red-600 mb-6">Plan Your Future Investments</h2>
             <div class="space-y-6">
@@ -62,7 +61,7 @@
                 <div id="monthlyContributionInput">
                     <label for="monthlyContribution" class="block text-lg font-semibold mb-2 ">Monthly Contribution:</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">$</span>
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">M</span>
                         <input type="number" id="monthlyContribution" min="0" step="50" value="100" class="w-full p-3 pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300">
                     </div>
                 </div>
@@ -96,7 +95,6 @@
             </div>
 
             <div id="adhocInputs" class="space-y-6 mt-6"></div>
-
             <button onclick="calculate()" class="w-full bg-red-600 text-white rounded-lg py-4 px-6 font-semibold mt-8 hover:bg-whie hover:border hover:border-red-600 transition-all duration-300 transform hover:scale-105">Calculate</button>
         </div>
 
@@ -166,19 +164,19 @@
             for (let i = 0; i < numAdhoc; i++) {
                 const newInput = document.createElement('div');
                 newInput.innerHTML = `
-                    <div class="bg-blue-50 p-6 rounded-xl">
-                        <h3 class="text-lg font-semibold text-blue-600 mb-4">Ad Hoc Contribution #${i + 1}</h3>
+                    <div class="bg-red-50 p-6 rounded-xl">
+                        <h3 class="text-lg font-semibold text-red-600 mb-4">Ad Hoc Contribution #${i + 1}</h3>
                         <div class="space-y-4 sm:space-y-0 sm:flex sm:space-x-4">
                             <div class="w-full sm:w-1/2">
                                 <label for="adhocAmount${i}" class="block text-sm font-medium text-gray-700 mb-1">Amount:</label>
                                 <div class="relative">
-                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">$</span>
-                                    <input type="number" id="adhocAmount${i}" min="0" step="100" value="1000" class="w-full p-3 pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">M</span>
+                                    <input type="number" id="adhocAmount${i}" min="0" step="100" value="1000" class="w-full p-3 pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition-all duration-300">
                                 </div>
                             </div>
                             <div class="w-full sm:w-1/2">
                                 <label for="adhocDate${i}" class="block text-sm font-medium text-gray-700 mb-1">Date:</label>
-                                <input type="date" id="adhocDate${i}" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300">
+                                <input type="date" id="adhocDate${i}" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition-all duration-300">
                             </div>
                         </div>
                     </div>
@@ -191,7 +189,7 @@
         function calculate() {
             const startDate = new Date(document.getElementById('startDate').value);
             const investmentPeriod = parseInt(document.getElementById('investmentPeriod').value);
-            const annualRateLow = 0.07;  // 7% annual growth rate
+            const annualRateLow = 0.06;  // 6% annual growth rate
             const annualRateHigh = 0.10; // 10% annual growth rate
 
             if (calculationType === 'futureValue') {
@@ -236,7 +234,7 @@
                 balance += monthlyContribution;
                 balance *= (1 + monthlyRate);
 
-                // Add any applicable ad hoc contributions
+
                 for (const adhoc of adhocContributions) {
                     if (adhoc.date <= currentDate && adhoc.date > new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)) {
                         balance += adhoc.amount;
@@ -268,14 +266,14 @@
         function displayFutureValueResults(lowInflationData, highInflationData, startDate) {
             const resultsDiv = document.getElementById('results');
             let tableHTML = `
-                <h3 class="text-xl font-semibold text-blue-600 mb-4">Future Value Results</h3>
+                <h3 class="text-xl font-semibold text-red-600 mb-4">Future Value Results</h3>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Low Inflation (7%)</th>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">High Inflation (10%)</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-red-500 uppercase tracking-wider">Year</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-red-500 uppercase tracking-wider">Low Inflation (6%)</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-red-500 uppercase tracking-wider">High Inflation (10%)</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -287,8 +285,8 @@
                 tableHTML += `
                     <tr>
                         <td class="px-4 py-4 whitespace-nowrap text-sm">${lowInflationData[i].year}</td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm">$${lowBalance}</td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm">$${highBalance}</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm">M${lowBalance}</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm">M${highBalance}</td>
                     </tr>
                 `;
             }
@@ -305,9 +303,9 @@
         function displayMonthlyPremiumResults(lowPremium, highPremium) {
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = `
-                <h3 class="text-xl font-semibold text-blue-600 mb-4">Monthly Premium Results</h3>
-                <p class="mb-2">Low Inflation Scenario (7%): $${lowPremium.toFixed(2)} per month</p>
-                <p>High Inflation Scenario (10%): $${highPremium.toFixed(2)} per month</p>
+                <h3 class="text-xl font-semibold text-red-600 mb-4">Monthly Premium Results</h3>
+                <p class="mb-2">Low Inflation Scenario (7%): M${lowPremium.toFixed(2)} per month</p>
+                <p>High Inflation Scenario (10%): M${highPremium.toFixed(2)} per month</p>
             `;
         }
 
