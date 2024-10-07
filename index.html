@@ -193,7 +193,7 @@
             const annualRateHigh = 0.10; // 10% annual growth rate
 
             if (calculationType === 'futureValue') {
-                const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value);
+                const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) - (parseFloat(document.getElementById('monthlyContribution').value) * 0.02);
                 const adhocContributions = getAdhocContributions();
                 const lowInflationData = calculateGrowth(monthlyContribution, investmentPeriod, annualRateLow, startDate, adhocContributions);
                 const highInflationData = calculateGrowth(monthlyContribution, investmentPeriod, annualRateHigh, startDate, adhocContributions);
@@ -213,7 +213,7 @@
             const adhocContributions = [];
 
             for (let i = 0; i < adhocInputs.length; i++) {
-                const amount = parseFloat(adhocInputs[i].value);
+                const amount = parseFloat(adhocInputs[i].value) - (parseFloat(adhocInputs[i].value) * 0.05);
                 const date = new Date(adhocDates[i].value);
                 if (!isNaN(amount) && !isNaN(date.getTime())) {
                     adhocContributions.push({ amount, date });
