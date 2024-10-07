@@ -1,4 +1,4 @@
-<!DOCTYPE html>
++<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -307,7 +307,7 @@
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = `
                 <h3 class="text-xl font-semibold text-red-600 mb-4">Monthly Premium Results</h3>
-                <p class="mb-2">Low Inflation Scenario (7%): M${lowPremium.toFixed(2)} per month</p>
+                <p class="mb-2">Low Inflation Scenario (6%): M${lowPremium.toFixed(2)} per month</p>
                 <p>High Inflation Scenario (10%): M${highPremium.toFixed(2)} per month</p>
             `;
         }
@@ -325,7 +325,7 @@
                     labels: lowInflationData.map(d => d.year),
                     datasets: [
                         {
-                            label: 'Low Inflation (7%)',
+                            label: 'Low Inflation (6%)',
                             data: lowInflationData.map(d => d.balance),
                             borderColor: 'rgba(75, 192, 192, 1)',
                             tension: 0.1
