@@ -80,7 +80,7 @@
                 <div id="goalAmountInput" class="hidden">
                     <label for="goalAmount" class="block text-lg font-semibold mb-2 ">Goal Amount:</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">$</span>
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">M</span>
                         <input type="number" id="goalAmount" min="0" step="1000" value="50000" class="w-full p-3 pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300">
                     </div>
                 </div>
@@ -304,6 +304,7 @@
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = `
                 <h3 class="text-xl font-semibold text-red-600 mb-4">Monthly Premium Results</h3>
+                <h3 class="text-xl font-semibold text-blue-600 mb-4">Monthly Premium Results</h3>
                 <p class="mb-2">Low Inflation Scenario (7%): M${lowPremium.toFixed(2)} per month</p>
                 <p>High Inflation Scenario (10%): M${highPremium.toFixed(2)} per month</p>
             `;
@@ -342,7 +343,7 @@
                             beginAtZero: true,
                             ticks: {
                                 callback: function(value, index, values) {
-                                    return '$' + value.toLocaleString();
+                                    return 'M' + value.toLocaleString();
                                 }
                             }
                         }
