@@ -226,41 +226,41 @@
 
 
         function calculateGrowth(monthlyContribution, investmentPeriod, annualRate, startDate, adhocContributions) {
-    const monthlyRate = annualRate / 12;
-    const totalMonths = investmentPeriod * 12;
-    let balance = 0;
-    const data = [];
-
-    for (let month = 0; month < totalMonths; month++) {
-        const currentDate = new Date(startDate.getFullYear(), startDate.getMonth() + month, 1);
-         // Add monthly contribution
-        balance += monthlyContribution;
-        // Apply interest to the existing balance
-        balance *= (1 + monthlyRate);
+            const monthlyRate = annualRate / 12;
+            const totalMonths = investmentPeriod * 12;
+            let balance = 0;
+            const data = [];
         
-       
-
-        // Add any adhoc contributions
-        for (const adhoc of adhocContributions) {
-            if (adhoc.date <= currentDate && adhoc.date > new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)) {
-                balance += adhoc.amount;
+            for (let month = 0; month < totalMonths; month++) {
+                const currentDate = new Date(startDate.getFullYear(), startDate.getMonth() + month, 1);
+                 // Add monthly contribution
+                balance += monthlyContribution;
+                // Apply interest to the existing balance
+                balance *= (1 + monthlyRate);
+                
+               
+        
+                // Add any adhoc contributions
+                for (const adhoc of adhocContributions) {
+                    if (adhoc.date <= currentDate && adhoc.date > new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)) {
+                        balance += adhoc.amount;
+                    }
+                }
+        
+                // Trim balance to 2 decimal places
+                // balance = Number(balance.toFixed(2));
+        
+                if (month % 12 === 11) {
+                    data.push({
+                        year: currentDate.getFullYear(),
+                        balance: balance
+                    });
+                }
+                console.log(balance)
             }
+        
+            return data;
         }
-
-        // Trim balance to 2 decimal places
-        balance = Number(balance.toFixed(2));
-
-        if (month % 12 === 11) {
-            data.push({
-                year: currentDate.getFullYear(),
-                balance: balance
-            });
-        }
-        console.log(balance)
-    }
-
-    return data;
-}
         //  function calculateGrowth(monthlyContribution, investmentPeriod, annualRate, startDate, adhocContributions) {
         //     const monthlyRate = annualRate / 12;
         //     const totalMonths = investmentPeriod * 12;
