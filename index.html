@@ -230,11 +230,12 @@
             const totalMonths = investmentPeriod * 12;
             let balance = 0;
             const data = [];
-        
+
             for (let month = 0; month < totalMonths; month++) {
                 const currentDate = new Date(startDate.getFullYear(), startDate.getMonth() + month, 1);
                  // Add monthly contribution
                 balance += monthlyContribution;
+                console.log('first:', balance)
                 // Apply interest to the existing balance
                 balance *= (1 + monthlyRate);
                 
