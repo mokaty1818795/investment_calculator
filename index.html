@@ -227,23 +227,25 @@
 
     const hasAdhocContributions = Array.isArray(adhocContributions) && adhocContributions.length > 0;
 
-    // Calculate future value using the formula: FV = P * ((1 + r)^n - 1) / r * (1 + r)
     for (let month = 0; month < totalMonths; month++) {
         const currentDate = new Date(startDate.getFullYear(), startDate.getMonth() + month, 1);
 
-        // Calculate future value of monthly contributions
-        balance += monthlyContribution * (Math.pow(1 + monthlyRate, totalMonths - month));
+        // Apply interest to the existing balance first
+        balance *= (1 + monthlyRate);
 
-        // Add any adhoc contributions and compound them as well
+        // Add monthly contribution after interest
+        balance += monthlyContribution * (1 + monthlyRate); // Compound monthly contribution for the period it's invested
+
+        // Add any adhoc contributions
         if (hasAdhocContributions) {
             for (const adhoc of adhocContributions) {
                 if (adhoc.date <= currentDate && adhoc.date > new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)) {
-                    balance += adhoc.amount * (Math.pow(1 + monthlyRate, totalMonths - month));
+                    balance += adhoc.amount * (1 + monthlyRate); // Compound adhoc contributions immediately
                 }
             }
         }
 
-        // Store the balance at the end of each year
+        // Only store the balance at the end of each year
         if (month % 12 === 11) {
             data.push({
                 year: currentDate.getFullYear(),
@@ -254,6 +256,7 @@
 
     return data;
 }
+
 
 
 
