@@ -195,7 +195,7 @@
             if (calculationType === 'futureValue') {
                 const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) - (parseFloat(document.getElementById('monthlyContribution').value) * 0.02);
                 console.log(monthlyContribution)
-                const adhocContributions = getAdhocContributions();
+                const adhocContributions = getAdhocContributions() - (getAdhocContributions() * 0.05);
                 const lowInflationData = calculateGrowth(monthlyContribution, investmentPeriod, annualRateLow, startDate, adhocContributions);
                 const highInflationData = calculateGrowth(monthlyContribution, investmentPeriod, annualRateHigh, startDate, adhocContributions);
                 displayFutureValueResults(lowInflationData, highInflationData, startDate);
