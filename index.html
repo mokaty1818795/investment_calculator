@@ -239,10 +239,6 @@
                 
                 // Add monthly contribution
                 balance += monthlyContribution;
-                
-                // Apply interest to the existing balance
-                balance *= (1 + monthlyRate);
-                
                 // Add any adhoc contributions
                 if (hasAdhocContributions) {
                     for (const adhoc of adhocContributions) {
@@ -251,7 +247,10 @@
                         }
                     }
                 }
-        
+
+                // Apply interest to the existing balance
+                balance *= (1 + monthlyRate);
+
                 if (month % 12 === 11) {
                     data.push({
                         year: currentDate.getFullYear(),
