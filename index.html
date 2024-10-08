@@ -234,13 +234,13 @@
         balance *= (1 + monthlyRate);
 
         // Add monthly contribution after interest
-        balance += monthlyContribution * (1 + monthlyRate); // Compound monthly contribution for the period it's invested
+        balance += monthlyContribution;
 
         // Add any adhoc contributions
         if (hasAdhocContributions) {
             for (const adhoc of adhocContributions) {
                 if (adhoc.date <= currentDate && adhoc.date > new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)) {
-                    balance += adhoc.amount * (1 + monthlyRate); // Compound adhoc contributions immediately
+                    balance += adhoc.amount;
                 }
             }
         }
@@ -256,6 +256,7 @@
 
     return data;
 }
+
 
 
 
