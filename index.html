@@ -230,26 +230,27 @@
             const totalMonths = investmentPeriod * 12;
             let balance = 0;
             const data = [];
-
+            
+            // Check if adhocContributions is not empty and is an array
+            const hasAdhocContributions = Array.isArray(adhocContributions) && adhocContributions.length > 0;
+        
             for (let month = 0; month < totalMonths; month++) {
                 const currentDate = new Date(startDate.getFullYear(), startDate.getMonth() + month, 1);
-                 // Add monthly contribution
+                
+                // Add monthly contribution
                 balance += monthlyContribution;
-                console.log('first:', balance)
+                
                 // Apply interest to the existing balance
                 balance *= (1 + monthlyRate);
                 
-               
-        
                 // Add any adhoc contributions
-                for (const adhoc of adhocContributions) {
-                    if (adhoc.date <= currentDate && adhoc.date > new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)) {
-                        balance += adhoc.amount;
+                if (hasAdhocContributions) {
+                    for (const adhoc of adhocContributions) {
+                        if (adhoc.date <= currentDate && adhoc.date > new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)) {
+                            balance += adhoc.amount;
+                        }
                     }
                 }
-        
-                // Trim balance to 2 decimal places
-                // balance = Number(balance.toFixed(2));
         
                 if (month % 12 === 11) {
                     data.push({
@@ -257,7 +258,6 @@
                         balance: balance
                     });
                 }
-                console.log(balance)
             }
         
             return data;
