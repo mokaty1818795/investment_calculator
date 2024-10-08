@@ -220,42 +220,38 @@
 
 
         function calculateGrowth(monthlyContribution, investmentPeriod, annualRate, startDate, adhocContributions) {
-    const monthlyRate = annualRate / 12;
-    const totalMonths = investmentPeriod * 12;
-    let balance = 0;
-    const data = [];
-
-    const hasAdhocContributions = Array.isArray(adhocContributions) && adhocContributions.length > 0;
-
-    for (let month = 0; month < totalMonths; month++) {
-        const currentDate = new Date(startDate.getFullYear(), startDate.getMonth() + month, 1);
-
-        // Apply interest to the existing balance first
-        balance *= (1 + monthlyRate);
-
-        // Add monthly contribution after interest
-        balance += monthlyContribution;
-
-        // Add any adhoc contributions
-        if (hasAdhocContributions) {
-            for (const adhoc of adhocContributions) {
-                if (adhoc.date <= currentDate && adhoc.date > new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)) {
-                    balance += adhoc.amount;
+            const monthlyRate = annualRate / 12;
+            const totalMonths = investmentPeriod * 12;
+            let balance = 0;
+            const data = [];
+        
+            const hasAdhocContributions = Array.isArray(adhocContributions) && adhocContributions.length > 0;
+        
+            for (let month = 0; month < totalMonths; month++) {
+                const currentDate = new Date(startDate.getFullYear(), startDate.getMonth() + month, 1);
+        
+                balance *= (1 + monthlyRate);
+        
+                balance += monthlyContribution;
+        
+                if (hasAdhocContributions) {
+                    for (const adhoc of adhocContributions) {
+                        if (adhoc.date <= currentDate && adhoc.date > new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)) {
+                            balance += adhoc.amount;
+                        }
+                    }
+                }
+        
+                if (month % 12 === 11) {
+                    data.push({
+                        year: currentDate.getFullYear(),
+                        balance: balance
+                    });
                 }
             }
+        
+            return data;
         }
-
-        // Only store the balance at the end of each year
-        if (month % 12 === 11) {
-            data.push({
-                year: currentDate.getFullYear(),
-                balance: balance
-            });
-        }
-    }
-
-    return data;
-}
 
 
 
