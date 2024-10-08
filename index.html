@@ -128,9 +128,6 @@
             toggleInputs();
         }
 
-
-
-
         var rng = document.querySelector("#investmentPeriodSlider");
         var numInput = document.querySelector("#investmentPeriod");
 
@@ -146,9 +143,6 @@
         numInput.addEventListener("input", function() {
             rng.value = numInput.value;
         });
-
-
- 
 
         function toggleInputs() {
             gsap.to('#goalAmountInput', { duration: 0.3, opacity: calculationType === 'futureValue' ? 0 : 1, display: calculationType === 'futureValue' ? 'none' : 'block' });
@@ -230,15 +224,18 @@
             const totalMonths = investmentPeriod * 12;
             let balance = 0;
             const data = [];
-            
-            // Check if adhocContributions is not empty and is an array
+        
             const hasAdhocContributions = Array.isArray(adhocContributions) && adhocContributions.length > 0;
         
             for (let month = 0; month < totalMonths; month++) {
                 const currentDate = new Date(startDate.getFullYear(), startDate.getMonth() + month, 1);
-                
-                // Add monthly contribution
+        
+                // Apply interest to the existing balance first
+                balance *= (1 + monthlyRate);
+        
+                // Add monthly contribution after interest
                 balance += monthlyContribution;
+        
                 // Add any adhoc contributions
                 if (hasAdhocContributions) {
                     for (const adhoc of adhocContributions) {
@@ -247,10 +244,8 @@
                         }
                     }
                 }
-
-                // Apply interest to the existing balance
-                balance *= (1 + monthlyRate);
-
+        
+                // Only store the balance at the end of each year
                 if (month % 12 === 11) {
                     data.push({
                         year: currentDate.getFullYear(),
@@ -261,38 +256,8 @@
         
             return data;
         }
-        //  function calculateGrowth(monthlyContribution, investmentPeriod, annualRate, startDate, adhocContributions) {
-        //     const monthlyRate = annualRate / 12;
-        //     const totalMonths = investmentPeriod * 12;
-        //     let balance = 0;
-        //     const data = [];
- 
-        //     for (let month = 0; month < totalMonths; month++) {
-        //         const currentDate = new Date(startDate.getFullYear(), startDate.getMonth() + month, 1);
-        //         balance += monthlyContribution;
-        //         balance *= (1 + monthlyRate);
- 
- 
-        //         for (const adhoc of adhocContributions) {
-        //             if (adhoc.date <= currentDate && adhoc.date > new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)) {
-        //                 balance += adhoc.amount;
-        //             }
-        //         }
- 
-        //         if (month % 12 === 11) {
-        //             data.push({
-        //                 year: currentDate.getFullYear(),
-        //                 balance: balance
-        //             });
-        //         }
-        //         console.log(balance)
-        //     }
- 
-        //     return data;
-        // }
- 
-        
 
+        
         function calculateMonthlyPremium(goalAmount, investmentPeriod, annualRate, startDate) {
             const monthlyRate = annualRate / 12;
             const totalMonths = investmentPeriod * 12;
@@ -391,13 +356,5 @@
                 }
             });
         }
-
-        // Event listeners
-        // document.getElementById('calculateBtn').addEventListener('click', calculate);
-        // document.getElementById('generateAdhocBtn').addEventListener('click', generateAdhocInputs);
-        document.getElementById('futureValueBtn').addEventListener('click', () => setCalculationType('futureValue'));
-        document.getElementById('monthlyPremiumBtn').addEventListener('click', () => setCalculationType('monthlyPremium'));
-
-        // Initialize the calculator
         setCalculationType('futureValue');
     </script>
