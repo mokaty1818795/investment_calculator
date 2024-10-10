@@ -1,9 +1,9 @@
-/* ---------------------------------------------------------
+/* /* ---------------------------------------------------------
   HTML5 Main Template
 ---------------------------------------------------------*/
 
 /* colors */
-:root {
+/* :root {
     --main: #da1414;
     --main-dark: #720b0b;
     --heading-green1: #111110;
@@ -16,9 +16,9 @@
     --gray2: #2c3138;
     --gray3: #26292f;
     --gray4: #212329;
-}
+} */
 
-.light {
+/* .light {
     --bg-nav: linear-gradient(to right, var(--heading-green1), var(--heading-green2));
     --bg: var(--gray0);
     --bg-inputs: var(--white);
@@ -144,7 +144,7 @@ input {
 
 p.copyright {
     color: var(--txt);
-}
+} */
 
 
 
@@ -180,7 +180,7 @@ p.copyright {
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 } */
-
+/* 
 @-webkit-keyframes spin {
     0% {
       -webkit-transform: rotate(0deg);
@@ -205,7 +205,7 @@ p.copyright {
   
   
   
-  
+   */
   
   
   /* .visit-portfolio, .visit-portfolio:hover, .visit-portfolio:focus {
@@ -228,7 +228,7 @@ p.copyright {
   
   
   
-  .mr-btn-15 {
+  /* .mr-btn-15 {
     margin-bottom: 15px;
   }
   
@@ -318,7 +318,9 @@ p.copyright {
     -webkit-transform: rotateY(0);
     -moz-transform: rotateY(0);
     transform: rotateY(0)
+  } */
+  
+   
+  #investmentChart{
+    height: 300px!;
   }
-  
-  
-  

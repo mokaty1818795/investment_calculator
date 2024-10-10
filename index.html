@@ -13,6 +13,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="manifest" href="images/site.webmanifest">
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <style>
       @media (max-width: 640px) {
@@ -106,8 +107,9 @@
 
         <div class="space-y-8 mb-12">
             <div id="chartContainer" class="bg-white p-6 rounded-2xl shadow-lg">
-                <h3 class="text-xl font-semibold  mb-4">Investment Growth Projection</h3>
-                <canvas id="investmentChart" class="w-full" style="height: 300px;"></canvas>
+                <h3 class="text-xl sm:text-2xl font-bold text-red-600 mb-6">Investment Growth Projection</h3>
+                
+                <canvas id="investmentChart" class="w-full h-[300px]" style="height: 300px;"></canvas>
             </div>
             <div id="results" class="bg-white p-6 rounded-2xl shadow-lg overflow-hidden"></div>
         </div>
@@ -327,6 +329,7 @@
             const ctx = document.getElementById('investmentChart').getContext('2d');
             
             if (chart) {
+                console.log("In here");
                 chart.destroy();
             }
             
@@ -351,6 +354,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: true,
                     scales: {
                         y: {
                             beginAtZero: true,
@@ -363,6 +367,11 @@
                     }
                 }
             });
+            
+            const chartCanvas = document.getElementById('investmentChart');
+            chartCanvas.style.height = '300px';  
+            
+            
         }
         setCalculationType('futureValue');
     </script>
