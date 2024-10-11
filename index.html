@@ -223,7 +223,7 @@
 
 
         function calculateGrowth(monthlyContribution, investmentPeriod, annualRate, startDate, adhocContributions) {
-            const monthlyRate = (1+annualRate) ^ (1/12)-1;
+            const monthlyRate = (1 + annualRate) ^ (1/12)-1;
             const totalMonths = investmentPeriod * 12;
             let balance = 0;
             const data = [];
@@ -234,7 +234,7 @@
         
             for (let month = 1; month <= totalMonths; month++) {
                 const currentDate = new Date(startDate.getFullYear(), startDate.getMonth() + month, 1);
-
+                console.log(monthlyRate)
                 balance = balance * (1 + monthlyRate);
 
                 balance += monthlyContribution;
@@ -269,7 +269,7 @@
 
         
         function calculateMonthlyPremium(goalAmount, investmentPeriod, annualRate, startDate) {
-            const monthlyRate = annualRate / 12;
+            const monthlyRate = (1 + annualRate) ^ (1/12)-1;
             const totalMonths = investmentPeriod * 12;
             
             // Using the formula: P = G / ((1 + r)^n - 1) / r
