@@ -223,7 +223,7 @@
 
 
         function calculateGrowth(monthlyContribution, investmentPeriod, annualRate, startDate, adhocContributions) {
-            const monthlyRate = annualRate / 12;
+            const monthlyRate = (1+annualRate) ^ (1/12)-1;
             const totalMonths = investmentPeriod * 12;
             let balance = 0;
             const data = [];
