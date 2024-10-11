@@ -237,9 +237,10 @@
                 const currentDate = new Date(startDate.getFullYear(), startDate.getMonth() + month, 1);
                 console.log("monthlyRate");
                 console.log(monthlyRate);
+                balance += monthlyContribution; 
                 balance = balance * (1 + monthlyRate);
 
-                balance += monthlyContribution;
+                
 
                 if (hasAdhocContributions) {
                     for (const adhoc of adhocContributions) {
