@@ -192,6 +192,8 @@
 
             if (calculationType === 'futureValue') {
                 const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) - (parseFloat(document.getElementById('monthlyContribution').value) * 0.02) ;
+                console.log("monthly",monthlyContribution);
+                
                 const adhocContributions = getAdhocContributions();
                 const lowInflationData = calculateGrowth(monthlyContribution, investmentPeriod, annualRateLow, startDate, adhocContributions);
                 const highInflationData = calculateGrowth(monthlyContribution, investmentPeriod, annualRateHigh, startDate, adhocContributions);
@@ -223,7 +225,7 @@
 
 
         function calculateGrowth(monthlyContribution, investmentPeriod, annualRate, startDate, adhocContributions) {
-            console.log("ANuualy",annualRate);
+    
             const monthlyRate = ((1+annualRate) **(1/12)-1)
             const totalMonths = investmentPeriod * 12;
             let balance = 0;
@@ -260,7 +262,7 @@
                     });
                 }
 
-                // console.log("balance:", balance)
+                console.log("balance:", balance)
             }
         
             return data;
