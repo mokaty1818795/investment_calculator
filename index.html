@@ -292,6 +292,18 @@
         //     return monthlyPremium;
         // }
 
+        function calculateMonthlyPremium(goalAmount, investmentPeriod, annualRate, commissionRecoveryRate) {
+            const monthlyRate = (Math.pow(1 + annualRate, 1 / 12) - 1);
+        
+            const totalMonths = investmentPeriod * 12;
+        
+            const numerator = Math.pow(1 + annualRate, investmentPeriod) - 1;
+            const denominator = (numerator / monthlyRate) / (1 + monthlyRate);
+        
+            const monthlyPremium = goalAmount / (denominator * (1 - commissionRecoveryRate));
+        
+            return monthlyPremium;
+        }
 
 
 
@@ -306,15 +318,15 @@
 
 
         
-        function calculateMonthlyPremium(goalAmount, investmentPeriod, annualRate, startDate) {
-           const monthlyRate = ((1+annualRate) **(1/12)-1)
-            const totalMonths = investmentPeriod * 12;
+        // function calculateMonthlyPremium(goalAmount, investmentPeriod, annualRate, startDate) {
+        //    const monthlyRate = ((1+annualRate) **(1/12)-1)
+        //     const totalMonths = investmentPeriod * 12;
             
 
-            const monthlyPremium = goalAmount / ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate);
+        //     const monthlyPremium = goalAmount / ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate);
             
-            return monthlyPremium;
-        }
+        //     return monthlyPremium;
+        // }
 
         function displayFutureValueResults(lowInflationData, highInflationData, startDate) {
             const resultsDiv = document.getElementById('results');
