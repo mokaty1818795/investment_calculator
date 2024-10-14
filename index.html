@@ -269,17 +269,29 @@
         }
 
 
-        function calculateMonthlyPremium(goalAmount, investmentPeriodYears, annualRate, commissionRecoveryRate) {
+        // function calculateMonthlyPremium(goalAmount, investmentPeriodYears, annualRate, commissionRecoveryRate) {
 
-                const monthlyRate = Math.pow(1 + annualRate, 1 / 12) - 1;
-                const totalMonths = investmentPeriodYears * 12;
+        //         const monthlyRate = Math.pow(1 + annualRate, 1 / 12) - 1;
+        //         const totalMonths = investmentPeriodYears * 12;
             
-                const numerator = Math.pow(1 + annualRate, investmentPeriodYears) - 1;
-                const denominator = (numerator / monthlyRate) / (1 + monthlyRate);
-                const monthlyPremium = goalAmount / (denominator * (1 - commissionRecoveryRate));
+        //         const numerator = Math.pow(1 + annualRate, investmentPeriodYears) - 1;
+        //         const denominator = (numerator / monthlyRate) / (1 + monthlyRate);
+        //         const monthlyPremium = goalAmount / (denominator * (1 - commissionRecoveryRate));
             
-                return monthlyPremium;
-            }
+        //         return monthlyPremium;
+        //     }
+
+
+        function calculateMonthlyPremium(goalAmount, investmentPeriod, annualRate, commissionRecoveryRate) {
+            const monthlyRate = (Math.pow(1 + annualRate, 1 / 12) - 1);
+            const totalMonths = investmentPeriod * 12;
+            const numerator = Math.pow(1 + annualRate, investmentPeriod) - 1;
+            const denominator = (numerator / monthlyRate) / (1 + monthlyRate);
+            const monthlyPremium = goalAmount / (denominator * (1 - commissionRecoveryRate));
+        
+            return monthlyPremium;
+        }
+
 
 
 
