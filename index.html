@@ -270,7 +270,8 @@
 
 
         function calculateMonthlyPremium(goalAmount, investmentPeriod, annualRate) {
-                const monthlyRate =   const monthlyRate = ((1+annualRate) **(1/12)-1);
+            
+                 const monthlyRate = ((1+annualRate) **(1/12)-1);
                 const totalMonths = investmentPeriod * 12;
                 const monthlyPremium = goalAmount / ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate);
              
