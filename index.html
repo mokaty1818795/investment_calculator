@@ -358,7 +358,13 @@
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = `
                 <h3 class="text-xl font-semibold text-red-600 mb-4">Monthly Premium Results</h3>
-                <p class="mb-2"> To achieve your investment goal, your monthly premium can range between a minimum of  M${lowPremium.toFixed(2)} and a maximum of M${highPremium.toFixed(2)}. per month</p>
+               <p class="mb-2">
+                  To achieve your investment goal, your monthly premium can range between a minimum of 
+                  <span class="font-bold text-red-600">M${lowPremium.toFixed(2)}</span> 
+                  and a maximum of 
+                  <span class="font-bold text-red-600">M${highPremium.toFixed(2)}</span> 
+                  per month.
+                </p>
             `;
         }
 
