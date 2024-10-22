@@ -1,45 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alliance Investment Calculator</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium Financial Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine-ie11.min.js" defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <link rel="manifest" href="images/site.webmanifest">
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
+    <link rel="manifest" href="images/site.webmanifest" />
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine-ie11.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="styles.css" rel="stylesheet" />
+    <meta charset="UTF-8" />
     <style>
-      @media (max-width: 640px) {
-            .custom-range::-webkit-slider-thumb {
-                -webkit-appearance: none;
-                appearance: none;
-                width: 25px;
-                height: 25px;
-                border-radius: 50%; 
-                background: red; /* Change to red */
-                cursor: pointer;
-                }
-                .custom-range::-moz-range-thumb {
-                    width: 25px;
-                    height: 25px;
-                    border-radius: 50%;
-                    background: red; /* Change to red */
-                    cursor: pointer;
-                }
-            }
-
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: "Poppins", sans-serif;
             background-color: #f0f4f8;
         }
+
         .glassmorphism {
             background: rgba(255, 255, 255, 0.25);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -48,6 +32,7 @@
             border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.18);
         }
+
         .custom-shape-divider-top-1635753058 {
             position: absolute;
             top: 0;
@@ -57,471 +42,657 @@
             line-height: 0;
             transform: rotate(180deg);
         }
+
         .custom-shape-divider-top-1635753058 svg {
             position: relative;
             display: block;
             width: calc(100% + 1.3px);
             height: 78px;
         }
-        .custom-shape-divider-top-1635753058 .shape-fill {
-            fill: #FFFFFF;
-        }
 
+        .custom-shape-divider-top-1635753058 .shape-fill {
+            fill: #ffffff;
+        }
     </style>
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-blue-50 via-red-50 to-purple-50">
-    
-    <header class="bg-gray-50  text-white py-2 z-10 mb-24">
-        <div class="container max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between">
-            <img src="/images/logo.png" alt="Company Logo" height="10%" width="10%" class="mb-4 sm:mb-0">
-            <h1 class="text-2xl sm:text-3xl font-bold text-red-600 text-center sm:text-left">Investment Calculator</h1>
+    <header class="relative z-10">
+        <div class="container max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between">
+            <img src="/images/logo.png" alt="Company Logo" class="h-16 w-auto mb-4 sm:mb-0" />
+            <h1 id="financial-calculator" class="text-4xl sm:text-3xl font-bold text-red-600 text-center sm:text-left">
+                Premium Calculator
+            </h1>
         </div>
     </header>
-
     <main class="container max-w-5xl mx-auto px-4 py-12" x-data="{ activeTab: 'investment' }">
-         <!-- Animated Tabs -->
         <div class="mb-12 glassmorphism p-2 flex justify-center relative overflow-hidden">
-            <button @click="activeTab = 'investment'" :class="{ 'text-white': activeTab === 'investment', 'text-gray-700': activeTab !== 'investment' }" class="w-1/2 py-3 px-6 rounded-lg font-semibold transition duration-300 focus:outline-none z-10 relative">
+            <button @click="activeTab = 'investment'"
+                :class="{ 'text-white': activeTab === 'investment', 'text-gray-700': activeTab !== 'investment' }"
+                class="w-1/2 py-3 px-6 rounded-lg font-semibold transition duration-300 focus:outline-none z-10 relative">
                 Investment
             </button>
-            <button @click="activeTab = 'educator'" :class="{ 'text-white': activeTab === 'educator', 'text-gray-700': activeTab !== 'educator' }" class="w-1/2 py-3 px-6 rounded-lg font-semibold transition duration-300 focus:outline-none z-10 relative">
+            <button @click="activeTab = 'educator'"
+                :class="{ 'text-white': activeTab === 'educator', 'text-gray-700': activeTab !== 'educator' }"
+                class="w-1/2 py-3 px-6 rounded-lg font-semibold transition duration-300 focus:outline-none z-10 relative">
                 Educator
             </button>
-            <div id="tab-backdrop" class="absolute  top-2 w-1/2 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-lg transition-all duration-300 ease-in-out" :class="{ 'translate-x-full': activeTab === 'educator' }"></div>
+            <div id="tab-backdrop"
+                class="absolute top-2 left-0 w-1/2 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-lg transition-all duration-300 ease-in-out"
+                :class="{ 'translate-x-full': activeTab === 'educator' }"></div>
         </div>
-
-    <div class="glassmorphism p-8 mb-12" id="calculator-container">
-            
-    <div x-show="activeTab === 'investment'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
-        <div class="rounded-3xl p-6 sm:p-8 mb-8">
-            <h2 class="text-xl sm:text-2xl font-bold text-red-600 mb-6">Plan Your Future Investments</h2>
-            <div class="space-y-6">
-                <div>
-                    <label for="calculationType" class="block text-lg font-semibold mb-2">Calculation Type:</label>
-                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-                        <button id="futureValueBtn" class="flex-1 py-3 px-6 bg-red-100 rounded-lg font-semibold text-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-300" onclick="setCalculationType('futureValue')">Future Value</button>
-                        <button id="monthlyPremiumBtn" class="flex-1 py-3 px-6 bg-gray-100 rounded-lg font-semibold text-gray-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-300" onclick="setCalculationType('monthlyPremium')">Monthly Premium</button>
+        <div class="glassmorphism p-8 mb-12" id="calculator-container">
+            <div x-show="activeTab === 'investment'" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95">
+                <h2 id="plan-your-future-investments" class="text-3xl sm:text-4xl font-bold text-red-600 mb-8">
+                    Plan Your Future Investments
+                </h2>
+                <div class="space-y-6">
+                    <div>
+                        <label for="calculationType" class="block text-lg font-semibold mb-2">Calculation Type:</label>
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+                            <button id="futureValueBtn"
+                                class="flex-1 py-3 px-6 bg-red-100 rounded-lg font-semibold text-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-300"
+                                onclick="setCalculationType('futureValue')">
+                                Future Value
+                            </button>
+                            <button id="monthlyPremiumBtn"
+                                class="flex-1 py-3 px-6 bg-gray-100 rounded-lg font-semibold text-gray-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-300"
+                                onclick="setCalculationType('monthlyPremium')">
+                                Monthly Premium
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-                <div>
-                    <label for="startDate" class="block text-lg font-semibold mb-2 ">Start Date:</label>
-                    <input type="date" id="startDate" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300">
-                </div>
-
-                <div id="monthlyContributionInput">
-                    <label for="monthlyContribution" class="block text-lg font-semibold mb-2 ">Monthly Contribution:</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">M</span>
-                        <input type="number" id="monthlyContribution" min="0" step="50" value="100" class="w-full p-3 pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300">
+                    <div>
+                        <label for="startDate" class="block text-lg text-black font-semibold mb-2">Start Date:</label>
+                        <input type="date" id="startDate"
+                            class="w-full p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300" />
                     </div>
-                </div>
 
-                <div>
-                    <label for="investmentPeriod" class="block text-lg font-semibold mb-2 ">Investment Period:</label>
-                    <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-                        <input type="range" id="investmentPeriodSlider" min="1" max="40" step="1" value="10" class="w-full custom-range">
-                        <div class="flex items-center space-x-2">
-                            <input type="number" id="investmentPeriod" min="1" max="50" step="1" value="10" class="lg:w-20 md:w-full w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300">
-                            <span class="text-gray-600">years</span>
+                    <div id="monthlyContributionInput">
+                        <label for="monthlyContribution" class="block text-lg text-black font-semibold mb-2">Monthly
+                            Contribution:</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-black">M</span>
+                            <input type="number" id="monthlyContribution" min="0" step="50" value="100"
+                                class="w-full p-3 text-black pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="investmentPeriod" class="block text-lg text-black font-semibold mb-2">Investment
+                            Period:</label>
+                        <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
+                            <input type="range" id="investmentPeriodSlider" min="1" max="40" step="1" value="10"
+                                class="w-full text-black custom-range" />
+                            <div class="flex items-center space-x-2">
+                                <input type="number" id="investmentPeriod" min="1" max="50" step="1" value="10"
+                                    class="lg:w-20 md:w-full w-full p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300" />
+                                <span class="text-black">years</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="goalAmountInput" class="hidden">
+                        <label for="goalAmount" class="block text-lg text-black font-semibold mb-2">Goal Amount:</label>
+                        <div class="relative">
+                            <span
+                                class="absolute inset-y-0 left-0 pl-3 text-black flex items-center text-gray-600">M</span>
+                            <input type="number" id="goalAmount" min="0" step="1000" value="50000"
+                                class="w-full p-3 text-black pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300" />
+                        </div>
+                    </div>
+
+                    <div id="adhocSection">
+                        <label for="numAdhoc" class="block text-lg text-black font-semibold mb-2">
+                            Number Of AdHoc Contributions:</label>
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+                            <input type="number" id="numAdhoc" min="0" max="10" step="1" value="0"
+                                class="w-full sm:w-2/3 p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300" />
+                            <button onclick="generateAdhocInputs()"
+                                class="w-full sm:w-1/3 bg-red-600 text-white rounded-lg py-3 px-6 font-semibold transition-all duration-300">
+                                Add
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div id="goalAmountInput" class="hidden">
-                    <label for="goalAmount" class="block text-lg font-semibold mb-2 ">Goal Amount:</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">M</span>
-                        <input type="number" id="goalAmount" min="0" step="1000" value="50000" class="w-full p-3 pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300">
-                    </div>
+                <div id="adhocInputs" class="space-y-6 mt-6"></div>
+                <div class="mt-6">
+                    <button onclick="calculate()"
+                        class="w-full bg-red-600 text-white rounded-lg py-4 px-6 font-semibold mt-8 hover:bg-white hover:border hover:border-red-600 transition-all duration-300 transform hover:scale-105">
+                        Calculate
+                    </button>
                 </div>
+                <div class="space-y-8 mt-12 mb-12">
+                    <div id="chartContainer" class="bg-white p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-xl sm:text-2xl font-bold text-red-600 mb-6">
+                            Investment Growth Projection
+                        </h3>
 
-                <div id="adhocSection">
-                    <label for="numAdhoc" class="block text-lg font-semibold mb-2"> Number Of AdHoc Contributions:</label>
-                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-                        <input type="number" id="numAdhoc" min="0" max="10" step="1" value="0" class="w-full sm:w-2/3 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300">
-                        <button onclick="generateAdhocInputs()" class="w-full sm:w-1/3 bg-red-600 text-white rounded-lg py-3 px-6 font-semibold  transition-all duration-300">Add</button>
+                        <canvas id="investmentChart" class="w-full h-[300px]" style="height: 300px"></canvas>
                     </div>
+                    <div id="results" class="bg-red-100 text-black p-6 rounded-2xl shadow-lg overflow-hidden"></div>
                 </div>
             </div>
 
-            <div id="adhocInputs" class="space-y-6 mt-6"></div>
-            <button onclick="calculate()" class="w-full bg-red-600 text-white rounded-lg py-4 px-6 font-semibold mt-8 hover:bg-whie hover:border hover:border-red-600 transition-all duration-300 transform hover:scale-105">Calculate</button>
-        </div>
-
-
-        <div class="space-y-8 mb-12">
-            <div id="chartContainer" class="bg-white p-6 rounded-2xl shadow-lg">
-                <h3 class="text-xl sm:text-2xl font-bold text-red-600 mb-6">Investment Growth Projection</h3>
-                <canvas id="investmentChart" class="w-full h-[300px]" style="height: 300px;"></canvas>
-            </div>
-            <div id="results" class=" bg-red-100 p-6 rounded-2xl shadow-lg overflow-hidden"></div>
-        </div> 
-    </div>   
-  
-</div> 
-    <div x-show="activeTab === 'educator'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
-       <!-- Education Planning Section -->
-                <div id="educationSection" class=" space-y-6">
+            <div x-show="activeTab === 'educator'" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95">
+                <!-- Education Planning Section -->
+                <div id="educationSection" class="space-y-6">
                     <!-- Annual Education Cost -->
                     <div>
-                        <label class="block text-gray-700 mb-2">Annual Education Cost:</label>
+                        <label class="block text-black text-lg font-bold mb-2">Annual Education Cost:</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">M</span>
-                            <input type="number" id="annualCost" class="w-full pl-8 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" placeholder="Enter annual cost">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-black text-lg">M</span>
+                            <input type="number" id="annualCost"
+                                class="w-full pl-8 text-black px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                placeholder="Enter annual cost" />
                         </div>
                     </div>
 
                     <!-- Duration of Study -->
                     <div>
-                        <label class="block text-gray-700 mb-2">Duration of Study:</label>
+                        <label class="block text-black text-lg font-bold mb-2">Duration of Study(in years):</label>
+
                         <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-                            <input type="number" id="studyDuration" class="w-full sm:w-32 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                            <span class="text-gray-600">years</span>
+                            <input type="number" id="studyDuration"
+                                class="w-full px-3 text-lg text-bold py-2 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" />
                         </div>
                     </div>
 
                     <!-- Years Before Start -->
                     <div>
-                        <label class="block text-gray-700 mb-2">Years Before Studies Begin:</label>
+                        <label class="block text-black text-lg font-bold mb-2">Years Before Studies
+                            Begin(years):</label>
                         <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-                            <input type="number" id="yearsBeforeStart" class="w-full sm:w-32 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                            <span class="text-gray-600">years</span>
+                            <input type="number" id="yearsBeforeStart"
+                                class="w-full px-3 py-2 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" />
                         </div>
                     </div>
 
                     <!-- Contribute During Studies -->
                     <div>
-                        <label class="block text-gray-700 mb-2">Contribute During Studies?</label>
+                        <label class="block text-black text-lg font-bold mb-2">Contribute During Studies?</label>
                         <div class="flex items-center space-x-4">
                             <label class="inline-flex items-center">
-                                <input type="radio" name="contributeDuring" value="yes" class="form-radio text-red-600">
-                                <span class="ml-2">Yes</span>
+                                <input type="radio" name="contributeDuring" value="yes" class="form-radio text-black" />
+                                <span class="ml-2 text-black text-lg">Yes</span>
                             </label>
                             <label class="inline-flex items-center">
-                                <input type="radio" name="contributeDuring" value="no" class="form-radio text-red-600" checked>
-                                <span class="ml-2">No</span>
+                                <input type="radio" name="contributeDuring" value="no" class="form-radio text-black"
+                                    checked />
+                                <span class="ml-2 text-black text-lg">No</span>
                             </label>
                         </div>
                     </div>
 
-                    <!-- Expected Return -->
                     <div>
-                        <label class="block text-gray-700 mb-2">Expected Annual Return:</label>
+                        <label class="block text-black text-lg font-bold mb-6">Expected Annual Return(%):</label>
                         <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-                            <input type="number" id="expectedReturn" class="w-full sm:w-32 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" value="6">
-                            <span class="text-gray-600">%</span>
+                            <input type="number" id="expectedReturn"
+                                class="w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                value="6" />
                         </div>
                     </div>
                 </div>
- 
-                <button id="calculateBtn" class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                    Calculate
-                </button>
-   </div>        
-</main>
 
+                <div class="mt-10">
+                    <button id="calculateBtn"
+                        class="w-full bg-red-600 font-bold text-white py-3 rounded-lg hover:bg-red-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                        Calculate
+                    </button>
+                </div>
 
-    <script>
-        let chart;
-        
-        let calculationType = 'futureValue';
+                <div class="space-y-8 mt-10 mb-12">
+                    <div id="educationResults" class="bg-red-100 p-6 rounded-2xl shadow-lg overflow-hidden hidden">
+                        <h3 class="text-xl font-bold text-red-600 mb-4">
+                            Education Planning Results
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="bg-white p-4 rounded-lg">
+                                <p class="text-gray-700">Required Monthly Contribution</p>
+                                <p id="monthlyContributionResult" class="text-2xl font-bold text-red-600"></p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg">
+                                <p class="text-gray-700">Total Education Cost</p>
+                                <p id="totalCostResult" class="text-2xl font-bold text-red-600"></p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg">
+                                <p class="text-gray-700">Total Amount to be Saved</p>
+                                <p id="totalSavingsResult" class="text-2xl font-bold text-red-600"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<script>
+    let chart;
 
-        function setCalculationType(type) {
-            calculationType = type;
-            document.getElementById('futureValueBtn').classList.toggle('bg-red-100', type === 'futureValue');
-            document.getElementById('futureValueBtn').classList.toggle('text-red-600', type === 'futureValue');
-            document.getElementById('futureValueBtn').classList.toggle('bg-gray-100', type !== 'futureValue');
-            document.getElementById('futureValueBtn').classList.toggle('text-gray-600', type !== 'futureValue');
-            document.getElementById('monthlyPremiumBtn').classList.toggle('bg-red-100', type === 'monthlyPremium');
-            document.getElementById('monthlyPremiumBtn').classList.toggle('text-red-600', type === 'monthlyPremium');
-            document.getElementById('monthlyPremiumBtn').classList.toggle('bg-gray-100', type !== 'monthlyPremium');
-            document.getElementById('monthlyPremiumBtn').classList.toggle('text-gray-600', type !== 'monthlyPremium');
-            toggleInputs();
+    let calculationType = "futureValue";
+
+    function setCalculationType(type) {
+        calculationType = type;
+        document
+            .getElementById("futureValueBtn")
+            .classList.toggle("bg-red-100", type === "futureValue");
+        document
+            .getElementById("futureValueBtn")
+            .classList.toggle("text-red-600", type === "futureValue");
+        document
+            .getElementById("futureValueBtn")
+            .classList.toggle("bg-gray-100", type !== "futureValue");
+        document
+            .getElementById("futureValueBtn")
+            .classList.toggle("text-gray-600", type !== "futureValue");
+        document
+            .getElementById("monthlyPremiumBtn")
+            .classList.toggle("bg-red-100", type === "monthlyPremium");
+        document
+            .getElementById("monthlyPremiumBtn")
+            .classList.toggle("text-gray-600", type === "monthlyPremium");
+        document
+            .getElementById("monthlyPremiumBtn")
+            .classList.toggle("bg-gray-100", type !== "monthlyPremium");
+        document
+            .getElementById("monthlyPremiumBtn")
+            .classList.toggle("text-gray-600", type !== "monthlyPremium");
+        toggleInputs();
+    }
+
+    var rng = document.querySelector("#investmentPeriodSlider");
+    var numInput = document.querySelector("#investmentPeriod");
+
+    var listener = function () {
+        window.requestAnimationFrame(function () {
+            numInput.value = rng.value;
+        });
+    };
+
+    rng.addEventListener("input", listener);
+
+    numInput.addEventListener("input", function () {
+        rng.value = numInput.value;
+    });
+
+    function toggleInputs() {
+        gsap.to("#goalAmountInput", {
+            duration: 0.3,
+            opacity: calculationType === "futureValue" ? 0 : 1,
+            display: calculationType === "futureValue" ? "none" : "block",
+        });
+        gsap.to("#adhocSection", {
+            duration: 0.3,
+            opacity: calculationType === "monthlyPremium" ? 0 : 1,
+            display: calculationType === "monthlyPremium" ? "none" : "block",
+        });
+        gsap.to("#monthlyContributionInput", {
+            duration: 0.3,
+            opacity: calculationType === "monthlyPremium" ? 0 : 1,
+            display: calculationType === "monthlyPremium" ? "none" : "block",
+        });
+        gsap.to("#chartContainer", {
+            duration: 0.3,
+            opacity: calculationType === "monthlyPremium" ? 0 : 1,
+            display: calculationType === "monthlyPremium" ? "none" : "block",
+        });
+    }
+
+    function generateAdhocInputs() {
+        const numAdhoc = parseInt(document.getElementById("numAdhoc").value);
+        const adhocInputsDiv = document.getElementById("adhocInputs");
+        adhocInputsDiv.innerHTML = "";
+        for (let i = 0; i < numAdhoc; i++) {
+            const newInput = document.createElement("div");
+            newInput.innerHTML = `
+    		<div class="bg-red-50 p-6 rounded-xl">
+    			<h3 class="text-lg font-semibold text-red-600 mb-4">Ad Hoc Contribution #${i + 1
+                }</h3>
+    			<div class="space-y-4 sm:space-y-0 sm:flex sm:space-x-4">
+    				<div class="w-full sm:w-1/2">
+    					<label for="adhocAmount${i}" class="block text-sm font-medium text-gray-700 mb-1">Amount:</label>
+    					<div class="relative">
+    						<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">M</span>
+    						<input type="number" id="adhocAmount${i}" min="0" step="100" value="1000" class="w-full p-3 pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition-all duration-300">
+    					</div>
+    				</div>
+    				<div class="w-full sm:w-1/2">
+    					<label for="adhocDate${i}" class="block text-sm font-medium text-gray-700 mb-1">Date:</label>
+    					<input type="date" id="adhocDate${i}" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition-all duration-300">
+    				</div>
+    			</div>
+    		</div>
+    	`;
+            adhocInputsDiv.appendChild(newInput);
+            gsap.from(newInput, {
+                duration: 0.5,
+                opacity: 0,
+                y: 20,
+                ease: "power2.out",
+            });
+        }
+    }
+
+    function calculate() {
+        const startDate = new Date(document.getElementById("startDate").value);
+        const investmentPeriod = parseInt(
+            document.getElementById("investmentPeriod").value
+        );
+        const annualRateLow = 0.06; // 6% annual growth rate
+        const annualRateHigh = 0.1; // 10% annual growth rate
+
+        if (calculationType === "futureValue") {
+            const monthlyContribution =
+                parseFloat(document.getElementById("monthlyContribution").value) -
+                parseFloat(document.getElementById("monthlyContribution").value) *
+                0.02;
+            console.log("monthly", monthlyContribution);
+
+            const adhocContributions = getAdhocContributions();
+            const lowInflationData = calculateGrowth(
+                monthlyContribution,
+                investmentPeriod,
+                annualRateLow,
+                startDate,
+                adhocContributions
+            );
+            const highInflationData = calculateGrowth(
+                monthlyContribution,
+                investmentPeriod,
+                annualRateHigh,
+                startDate,
+                adhocContributions
+            );
+            displayFutureValueResults(
+                lowInflationData,
+                highInflationData,
+                startDate
+            );
+            updateChart(lowInflationData, highInflationData);
+        } else {
+            const goalAmount = parseFloat(
+                document.getElementById("goalAmount").value
+            );
+            const lowPremium = calculateMonthlyPremium(
+                goalAmount,
+                investmentPeriod,
+                annualRateLow,
+                startDate
+            );
+            const highPremium = calculateMonthlyPremium(
+                goalAmount,
+                investmentPeriod,
+                annualRateHigh,
+                startDate
+            );
+            displayMonthlyPremiumResults(lowPremium, highPremium);
+        }
+    }
+
+    function getAdhocContributions() {
+        const adhocInputs = document.querySelectorAll('[id^="adhocAmount"]');
+        const adhocDates = document.querySelectorAll('[id^="adhocDate"]');
+        const adhocContributions = [];
+
+        for (let i = 0; i < adhocInputs.length; i++) {
+            const amount =
+                parseFloat(adhocInputs[i].value) -
+                parseFloat(adhocInputs[i].value) * 0.05;
+            const date = new Date(adhocDates[i].value);
+            if (!isNaN(amount) && !isNaN(date.getTime())) {
+                adhocContributions.push({ amount, date });
+            }
         }
 
-        var rng = document.querySelector("#investmentPeriodSlider");
-        var numInput = document.querySelector("#investmentPeriod");
+        return adhocContributions;
+    }
 
-        var listener = function() {
-            window.requestAnimationFrame(function() {
-                numInput.value = rng.value;
-            });
-        };
+    function calculateGrowth(
+        monthlyContribution,
+        investmentPeriod,
+        annualRate,
+        startDate,
+        adhocContributions
+    ) {
+        const monthlyRate = (1 + annualRate) ** (1 / 12) - 1;
+        const totalMonths = investmentPeriod * 12;
+        let balance = 0;
+        const data = [];
 
-        rng.addEventListener("input", listener);
+        const hasAdhocContributions =
+            Array.isArray(adhocContributions) && adhocContributions.length > 0;
 
-        numInput.addEventListener("input", function() {
-            rng.value = numInput.value;
+        let investmentAmount = 0;
+
+        for (let month = 1; month <= totalMonths; month++) {
+            const currentDate = new Date(
+                startDate.getFullYear(),
+                startDate.getMonth() + month,
+                1
+            );
+            console.log("monthlyRate");
+            console.log(monthlyRate);
+            balance = (balance + monthlyContribution) * (1 + monthlyRate);
+            console.log("balance", balance);
+
+            if (hasAdhocContributions) {
+                for (const adhoc of adhocContributions) {
+                    if (
+                        adhoc.date <= currentDate &&
+                        adhoc.date >
+                        new Date(
+                            currentDate.getFullYear(),
+                            currentDate.getMonth() - 1,
+                            1
+                        )
+                    ) {
+                        balance += adhoc.amount;
+                    }
+                }
+            }
+
+            if (month % 12 === 0) {
+                data.push({
+                    year: currentDate.getFullYear(),
+                    balance: balance,
+                });
+            }
+
+            console.log("balance:", balance);
+        }
+
+        return data;
+    }
+
+    function calculateMonthlyPremium(goalAmount, investmentPeriod, annualRate) {
+        const monthlyRate = (1 + annualRate) ** (1 / 12) - 1;
+        const totalMonths = investmentPeriod * 12;
+        const monthlyPremium =
+            goalAmount /
+            (((1 + annualRate) ** investmentPeriod - 1) /
+                (monthlyRate / (1 + monthlyRate))) /
+            (1 - 0.02);
+        return monthlyPremium;
+    }
+
+    function displayFutureValueResults(
+        lowInflationData,
+        highInflationData,
+        startDate
+    ) {
+        const resultsDiv = document.getElementById("results");
+        let tableHTML = `
+    	<h3 class="text-xl font-semibold text-red-600 mb-4">Future Value Results</h3>
+    	<div class="overflow-x-auto">
+    		<table class="min-w-full divide-y divide-gray-200">
+    			<thead class="bg-gray-50">
+    				<tr>
+    					<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-red-500 uppercase tracking-wider">Year</th>
+    					<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-red-500 uppercase tracking-wider">Low Inflation (6%)</th>
+    					<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-red-500 uppercase tracking-wider">High Inflation (10%)</th>
+    				</tr>
+    			</thead>
+    			<tbody class="bg-white divide-y divide-gray-200">
+    `;
+
+        for (let i = 0; i < lowInflationData.length; i++) {
+            const lowBalance = lowInflationData[i].balance.toFixed(2);
+            const highBalance = highInflationData[i].balance.toFixed(2);
+            tableHTML += `
+    		<tr>
+    			<td class="px-4 py-4 whitespace-nowrap text-sm">${lowInflationData[i].year}</td>
+    			<td class="px-4 py-4 whitespace-nowrap text-sm">M${lowBalance}</td>
+    			<td class="px-4 py-4 whitespace-nowrap text-sm">M${highBalance}</td>
+    		</tr>
+    	`;
+        }
+
+        tableHTML += `
+    			</tbody>
+    		</table>
+    	</div>
+    `;
+
+        resultsDiv.innerHTML = tableHTML;
+    }
+
+    function displayMonthlyPremiumResults(lowPremium, highPremium) {
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = `
+    	<h3 class="text-xl font-semibold text-red-600 mb-4">Monthly Premium Results</h3>
+       <p class="mb-2">
+    	  To achieve your investment goal, your monthly premium can range between a minimum of
+    	  <span class="font-bold text-red-600">M${highPremium.toFixed(2)}</span>
+    	  and a maximum of
+    	  <span class="font-bold text-red-600">M${lowPremium.toFixed(2)}</span>
+    	  per month.
+    	</p>
+    `;
+    }
+
+    function updateChart(lowInflationData, highInflationData) {
+        const ctx = document.getElementById("investmentChart").getContext("2d");
+
+        if (chart) {
+            console.log("In here");
+            chart.destroy();
+        }
+
+        chart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: lowInflationData.map((d) => d.year),
+                datasets: [
+                    {
+                        label: "Low Inflation (6%)",
+                        data: lowInflationData.map((d) => d.balance),
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        tension: 0.1,
+                    },
+                    {
+                        label: "High Inflation (10%)",
+                        data: highInflationData.map((d) => d.balance),
+                        borderColor: "rgba(255, 99, 132, 1)",
+                        tension: 0.1,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function (value, index, values) {
+                                return "M" + value.toLocaleString();
+                            },
+                        },
+                    },
+                },
+            },
         });
 
-        function toggleInputs() {
-            gsap.to('#goalAmountInput', { duration: 0.3, opacity: calculationType === 'futureValue' ? 0 : 1, display: calculationType === 'futureValue' ? 'none' : 'block' });
-            gsap.to('#adhocSection', { duration: 0.3, opacity: calculationType === 'monthlyPremium' ? 0 : 1, display: calculationType === 'monthlyPremium' ? 'none' : 'block' });
-            gsap.to('#monthlyContributionInput', { duration: 0.3, opacity: calculationType === 'monthlyPremium' ? 0 : 1, display: calculationType === 'monthlyPremium' ? 'none' : 'block' });
-            gsap.to('#chartContainer', { duration: 0.3, opacity: calculationType === 'monthlyPremium' ? 0 : 1, display: calculationType === 'monthlyPremium' ? 'none' : 'block' });
+        const chartCanvas = document.getElementById("investmentChart");
+        chartCanvas.style.height = "300px";
+    }
+    setCalculationType("futureValue");
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const calculationType = document.getElementById("calculationType");
+        const educationSection = document.getElementById("educationSection");
+        const monthlyContributionInput = document.getElementById(
+            "monthlyContributionInput"
+        );
+        const educationResults = document.getElementById("educationResults");
+        const calculateBtn = document.getElementById("calculateBtn");
+
+        calculateBtn.addEventListener("click", function () {
+            calculateEducationPlan();
+        });
+
+        function calculateEducationPlan() {
+            const annualCost = parseFloat(
+                document.getElementById("annualCost").value
+            );
+            const studyDuration = parseInt(
+                document.getElementById("studyDuration").value
+            );
+            const yearsBeforeStart = parseInt(
+                document.getElementById("yearsBeforeStart").value
+            );
+            const contributeDuring = document.querySelector(
+                'input[name="contributeDuring"]:checked'
+            ).value;
+            const expectedReturn =
+                parseFloat(document.getElementById("expectedReturn").value) / 100;
+
+            // Calculate total education cost
+            const totalCost = annualCost * studyDuration;
+
+            // Calculate saving period
+            const savingPeriod =
+                contributeDuring === "yes"
+                    ? yearsBeforeStart + studyDuration
+                    : yearsBeforeStart;
+
+            // Calculate future value needed
+            const futureValue =
+                totalCost * (1 + expectedReturn) ** yearsBeforeStart;
+
+            // Calculate required monthly contribution
+            const monthlyRate = expectedReturn / 12;
+            const numberOfPayments = savingPeriod * 12;
+
+            const monthlyContribution =
+                (futureValue * monthlyRate) /
+                ((1 + monthlyRate) ** numberOfPayments - 1);
+
+            // Display results
+            educationResults.classList.remove("hidden");
+            document.getElementById(
+                "monthlyContributionResult"
+            ).textContent = `M ${monthlyContribution.toFixed(2)}`;
+            document.getElementById(
+                "totalCostResult"
+            ).textContent = `M ${totalCost.toFixed(2)}`;
+            document.getElementById(
+                "totalSavingsResult"
+            ).textContent = `M ${futureValue.toFixed(2)}`;
         }
+    });
+</script>
 
-        function generateAdhocInputs() {
-            const numAdhoc = parseInt(document.getElementById('numAdhoc').value);
-            const adhocInputsDiv = document.getElementById('adhocInputs');
-            adhocInputsDiv.innerHTML = '';
-            for (let i = 0; i < numAdhoc; i++) {
-                const newInput = document.createElement('div');
-                newInput.innerHTML = `
-                    <div class="bg-red-50 p-6 rounded-xl">
-                        <h3 class="text-lg font-semibold text-red-600 mb-4">Ad Hoc Contribution #${i + 1}</h3>
-                        <div class="space-y-4 sm:space-y-0 sm:flex sm:space-x-4">
-                            <div class="w-full sm:w-1/2">
-                                <label for="adhocAmount${i}" class="block text-sm font-medium text-gray-700 mb-1">Amount:</label>
-                                <div class="relative">
-                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">M</span>
-                                    <input type="number" id="adhocAmount${i}" min="0" step="100" value="1000" class="w-full p-3 pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition-all duration-300">
-                                </div>
-                            </div>
-                            <div class="w-full sm:w-1/2">
-                                <label for="adhocDate${i}" class="block text-sm font-medium text-gray-700 mb-1">Date:</label>
-                                <input type="date" id="adhocDate${i}" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition-all duration-300">
-                            </div>
-                        </div>
-                    </div>
-                `;
-                adhocInputsDiv.appendChild(newInput);
-                gsap.from(newInput, { duration: 0.5, opacity: 0, y: 20, ease: "power2.out" });
-            }
-        }
-
-        function calculate() {
-            const startDate = new Date(document.getElementById('startDate').value);
-            const investmentPeriod = parseInt(document.getElementById('investmentPeriod').value);
-            const annualRateLow = 0.06;  // 6% annual growth rate
-            const annualRateHigh = 0.10; // 10% annual growth rate
-
-            if (calculationType === 'futureValue') {
-                const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) - (parseFloat(document.getElementById('monthlyContribution').value) * 0.02) ;
-                console.log("monthly",monthlyContribution);
-                
-                const adhocContributions = getAdhocContributions();
-                const lowInflationData = calculateGrowth(monthlyContribution, investmentPeriod, annualRateLow, startDate, adhocContributions);
-                const highInflationData = calculateGrowth(monthlyContribution, investmentPeriod, annualRateHigh, startDate, adhocContributions);
-                displayFutureValueResults(lowInflationData, highInflationData, startDate);
-                updateChart(lowInflationData, highInflationData);
-            } else {
-                const goalAmount = parseFloat(document.getElementById('goalAmount').value);
-                const lowPremium = calculateMonthlyPremium(goalAmount, investmentPeriod, annualRateLow, startDate);
-                const highPremium = calculateMonthlyPremium(goalAmount, investmentPeriod, annualRateHigh, startDate);
-                displayMonthlyPremiumResults(lowPremium, highPremium);
-            }
-        }
-
-        function getAdhocContributions() {
-            const adhocInputs = document.querySelectorAll('[id^="adhocAmount"]');
-            const adhocDates = document.querySelectorAll('[id^="adhocDate"]');
-            const adhocContributions = [];
-
-            for (let i = 0; i < adhocInputs.length; i++) {
-                const amount = parseFloat(adhocInputs[i].value) - (parseFloat(adhocInputs[i].value) * 0.05);
-                const date = new Date(adhocDates[i].value);
-                if (!isNaN(amount) && !isNaN(date.getTime())) {
-                    adhocContributions.push({ amount, date });
-                }
-            }
-
-            return adhocContributions;
-        }
-
-
-        function calculateGrowth(monthlyContribution, investmentPeriod, annualRate, startDate, adhocContributions) {
-    
-            const monthlyRate = ((1+annualRate) **(1/12)-1)
-            const totalMonths = investmentPeriod * 12;
-            let balance = 0;
-            const data = [];
-        
-            const hasAdhocContributions = Array.isArray(adhocContributions) && adhocContributions.length > 0;
-
-            let investmentAmount = 0;
-        
-            for (let month = 1; month <= totalMonths; month++) {
-                const currentDate = new Date(startDate.getFullYear(), startDate.getMonth() + month, 1);
-                console.log("monthlyRate");
-                console.log(monthlyRate);
-                 balance = (balance + monthlyContribution) * (1+monthlyRate);
-                 console.log("balance",balance);
-
-                
-
-                if (hasAdhocContributions) {
-                    for (const adhoc of adhocContributions) {
-                        if (adhoc.date <= currentDate && adhoc.date > new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)) {
-                            balance += adhoc.amount;
-                        }
-                    }
-                }
-
-                
-                // balance *= ((1 + annualRate)^(1/12));
-        
-                if (month % 12 === 0) {
-                    data.push({
-                        year: currentDate.getFullYear(),
-                        balance: balance
-                    });
-                }
-
-                console.log("balance:", balance)
-            }
-        
-            return data;
-        }
-
-
-        // function calculateMonthlyPremium(goalAmount, investmentPeriodYears, annualRate, commissionRecoveryRate) {
-
-        //         const monthlyRate = Math.pow(1 + annualRate, 1 / 12) - 1;
-        //         const totalMonths = investmentPeriodYears * 12;
-            
-        //         const numerator = Math.pow(1 + annualRate, investmentPeriodYears) - 1;
-        //         const denominator = (numerator / monthlyRate) / (1 + monthlyRate);
-        //         const monthlyPremium = goalAmount / (denominator * (1 - commissionRecoveryRate));
-            
-        //         return monthlyPremium;
-        //     }
-
-
-        // function calculateMonthlyPremium(goalAmount, investmentPeriod, annualRate, commissionRecoveryRate) {
-        //     const monthlyRate = (Math.pow(1 + annualRate, 1 / 12) - 1);
-        //     const totalMonths = investmentPeriod * 12;
-        //     const numerator = Math.pow(1 + annualRate, investmentPeriod) - 1;
-        //     const denominator = (numerator / monthlyRate) / (1 + monthlyRate);
-        //     const monthlyPremium = goalAmount / (denominator * (1 - commissionRecoveryRate));
-        
-        //     return monthlyPremium;
-        // }
-
-
-
-
-
-        function calculateMonthlyPremium(goalAmount, investmentPeriod, annualRate) {
-                 const monthlyRate = ((1+annualRate) **(1/12)-1);
-                const totalMonths = investmentPeriod * 12;
-                // const monthlyPremium = goalAmount / ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate);
-               const  monthlyPremium =  goalAmount / (((1 + annualRate) ** investmentPeriod - 1) / (monthlyRate / (1 + monthlyRate))) / (1 - 0.02);
-                return monthlyPremium;
-        }
-
-
-        
-        // function calculateMonthlyPremium(goalAmount, investmentPeriod, annualRate, startDate) {
-        //    const monthlyRate = ((1+annualRate) **(1/12)-1)
-        //     const totalMonths = investmentPeriod * 12;
-            
-
-        //     const monthlyPremium = goalAmount / ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate);
-            
-        //     return monthlyPremium;
-        // }
-
-        function displayFutureValueResults(lowInflationData, highInflationData, startDate) {
-            const resultsDiv = document.getElementById('results');
-            let tableHTML = `
-                <h3 class="text-xl font-semibold text-red-600 mb-4">Future Value Results</h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-red-500 uppercase tracking-wider">Year</th>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-red-500 uppercase tracking-wider">Low Inflation (6%)</th>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-red-500 uppercase tracking-wider">High Inflation (10%)</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-            `;
-
-            for (let i = 0; i < lowInflationData.length; i++) {
-                const lowBalance = lowInflationData[i].balance.toFixed(2);
-                const highBalance = highInflationData[i].balance.toFixed(2);
-                tableHTML += `
-                    <tr>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm">${lowInflationData[i].year}</td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm">M${lowBalance}</td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm">M${highBalance}</td>
-                    </tr>
-                `;
-            }
-
-            tableHTML += `
-                        </tbody>
-                    </table>
-                </div>
-            `;
-
-            resultsDiv.innerHTML = tableHTML;
-        }
-
-        function displayMonthlyPremiumResults(lowPremium, highPremium) {
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = `
-                <h3 class="text-xl font-semibold text-red-600 mb-4">Monthly Premium Results</h3>
-               <p class="mb-2">
-                  To achieve your investment goal, your monthly premium can range between a minimum of 
-                  <span class="font-bold text-red-600">M${highPremium.toFixed(2)}</span> 
-                  and a maximum of 
-                  <span class="font-bold text-red-600">M${lowPremium.toFixed(2)}</span> 
-                  per month.
-                </p>
-            `;
-        }
-
-        function updateChart(lowInflationData, highInflationData) {
-            const ctx = document.getElementById('investmentChart').getContext('2d');
-            
-            if (chart) {
-                console.log("In here");
-                chart.destroy();
-            }
-                        
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: lowInflationData.map(d => d.year),
-                    datasets: [
-                        {
-                            label: 'Low Inflation (6%)',
-                            data: lowInflationData.map(d => d.balance),
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            tension: 0.1
-                        },
-                        {
-                            label: 'High Inflation (10%)',
-                            data: highInflationData.map(d => d.balance),
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            tension: 0.1
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value, index, values) {
-                                    return 'M' + value.toLocaleString();
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            
-            const chartCanvas = document.getElementById('investmentChart');
-            chartCanvas.style.height = '300px';  
-            
-            
-        }
-        setCalculationType('futureValue');
-    </script>
+</html>
