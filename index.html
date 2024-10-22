@@ -36,6 +36,37 @@
                 }
             }
 
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .custom-shape-divider-top-1635753058 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            transform: rotate(180deg);
+        }
+        .custom-shape-divider-top-1635753058 svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 78px;
+        }
+        .custom-shape-divider-top-1635753058 .shape-fill {
+            fill: #FFFFFF;
+        }
+
     </style>
 </head>
 
@@ -59,10 +90,11 @@
             </button>
             <div id="tab-backdrop" class="absolute top-2 left-2 w-1/2 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-lg transition-all duration-300 ease-in-out" :class="{ 'translate-x-full': activeTab === 'educator' }"></div>
         </div>
-    </main>
 
-    <div class="container max-w-6xl mx-auto px-4">
-        <div class="bg-white shadow-2xl rounded-3xl p-6 sm:p-8 mb-8">
+        <div class="glassmorphism p-8 mb-12" id="calculator-container">
+            
+            <div x-show="activeTab === 'investment'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
+                <div class="bg-white shadow-2xl rounded-3xl p-6 sm:p-8 mb-8">
             <h2 class="text-xl sm:text-2xl font-bold text-red-600 mb-6">Plan Your Future Investments</h2>
             <div class="space-y-6">
                 <div>
@@ -126,7 +158,17 @@
                 <canvas id="investmentChart" class="w-full h-[300px]" style="height: 300px;"></canvas>
             </div>
             <div id="results" class=" bg-red-100 p-6 rounded-2xl shadow-lg overflow-hidden"></div>
+        </div> 
+            </div>   
         </div>
+        
+        
+    </main>
+
+    
+
+    <div class="container max-w-6xl mx-auto px-4">
+       
     </div>
 
     <script>
