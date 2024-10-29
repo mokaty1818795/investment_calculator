@@ -12,10 +12,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
     <link rel="manifest" href="images/site.webmanifest" />
     <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine-ie11.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"rel="stylesheet" />
     <link href="styles.css" rel="stylesheet" />
     <meta charset="UTF-8" />
     <style>
@@ -53,6 +53,8 @@
         .custom-shape-divider-top-1635753058 .shape-fill {
             fill: #ffffff;
         }
+
+ 
     </style>
 </head>
 
@@ -314,6 +316,8 @@
     </main>
 </body>
 <script>
+
+
     let chart;
 
     let calculationType = "futureValue";
@@ -586,8 +590,14 @@
     ) {
         const resultsDiv = document.getElementById("results");
         let tableHTML = `
-    	<h3 class="text-xl font-semibold text-red-600 mb-4">Future Value Results</h3>
-    	<div class="overflow-x-auto">
+        <div class="w-full flex justify-between">
+            <h3 class="text-xl font-semibold text-red-600 mb-4">Future Value Results</h3>    
+            <button type="button" id="downloadButton" onclick="download()" class="bg-gray-100 text-gray-600 px-6 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+                Save Results
+            </button>
+        </div>
+        <div class="pt-4">   
+    	<div class="overflow-x-auto" id="tableContent">
     		<table class="min-w-full divide-y divide-gray-200">
     			<thead class="bg-gray-50">
     				<tr>
@@ -619,6 +629,33 @@
 
         resultsDiv.innerHTML = tableHTML;
     }
+
+    function download(){
+        const element = document.getElementById("tableContent");
+        const hiddenImage = document.getElementById("hiddenImage");
+        try {
+            const options = {
+                margin: 1,
+                filename: 'Future_Value_Results.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+
+            };
+            html2pdf().set(options).from(element).save();
+
+        } catch (error) {
+        console.log("body")
+            
+        }
+
+
+    }
+
+        
+
+            
+    
 
     function displayMonthlyPremiumResults(lowPremium, highPremium) {
         const resultsDiv = document.getElementById("results");
@@ -694,7 +731,6 @@
         calculateBtn.addEventListener("click", function () {
             calculateEducationPlan();
         });
-
 
         function calculateEducationPlan() {
             const annualCost = parseFloat(document.getElementById("annualCost").value);
@@ -796,68 +832,6 @@
             highSavings.push(highAccumulated);
         }
 
-        const ctx = document.getElementById('savingsChart').getContext('2d');
-        savingsChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: years,
-                datasets: [
-                    {
-                        label: 'Conservative (6%)',
-                        data: lowSavings,
-                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
-                        borderColor: 'rgb(59, 130, 246)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Aggressive (10%)',
-                        data: highSavings,
-                        backgroundColor: 'rgba(239, 68, 68, 0.5)',
-                        borderColor: 'rgb(239, 68, 68)',
-                        borderWidth: 1
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        position: 'top'
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                label += new Intl.NumberFormat('en-ZA', {
-                                    style: 'currency',
-                                    currency: 'ZAR'
-                                }).format(context.raw);
-                                return label;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return 'R ' + value.toLocaleString();
-                            }
-                        }
-                    }
-                }
-            }
-        });
     }
 
     // Modify the existing calculateEducationPlan function
