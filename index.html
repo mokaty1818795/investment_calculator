@@ -291,8 +291,8 @@
                                     <!-- Low Inflation Scenario -->
                                     <div class="bg-blue-50 p-6 rounded-xl">
                                         <div class="flex items-center justify-between mb-4">
-                                            <h4 class="text-blue-800 font-semibold"> Minimum Savings Growth</h4>
-                                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Conservative</span>
+                                            <h4 class="text-blue-800 font-semibold"> Savings Growth </h4>
+                                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Results</span>
                                         </div>
                                         <div class="space-y-4">
                                             <div>
@@ -300,36 +300,13 @@
                                                 <p class="text-gray-600 text-lg">
                                                     To comfortably save for <span class="font-bold text-red-600" id="childDetails"></span>'s education, you can invest between
                                                     <span class="font-bold text-red-600" id="lowMonthlyContributionResult" ></span>  
-                                                    and <span class="font-bold text-red-600" id="highMonthlyContributionResult"></span>  or make a one-time contribution between 
+                                                    and <span class="font-bold text-red-600" id="highMonthlyContributionResult"></span> with the total contributions ranging between  
                                                      <span class="font-bold text-red-600"  id="lowTotalSavingsResult"></span> and <span class="font-bold text-red-600" id="highTotalSavingsResult"></span> .
                                                 </p>
      
                                             </div>
-                                            <div>
-                                                <p class="text-gray-600">Total Savings Required</p>
-                                                <p class="text-2xl font-bold text-gray-900"></p>
-                                            </div>
                                         </div>
                                     </div>
-                            
-                                    <!-- High Inflation Scenario -->
-                                    <div class="bg-red-50 p-6 rounded-xl">
-                                        <div class="flex items-center justify-between mb-4">
-                                            <h4 class="text-red-800 font-semibold">Maximum Savings Growth</h4>
-                                            <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">Aggressive</span>
-                                        </div>
-                                        <div class="space-y-4">
-                                            <div>
-                                                <p class="text-gray-600">Monthly Contribution Needed</p>
-                                                <p  class="text-2xl font-bold text-gray-900"></p>
-                                            </div>
-                                            <div>
-                                                <p class="text-gray-600">Total Savings Required</p>
-                                                <p  class="text-2xl font-bold text-gray-900"></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                            
                                     <!-- Reset Button -->
                                     <div class="pt-4">
                                         <button onclick="location.reload()" class="bg-gray-100 text-gray-600 px-6 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium">
@@ -785,12 +762,12 @@
         });
 
         function calculateEducationPlan() {
+            const childName = document.getElementById("childName").value;
             const annualCost = parseFloat(document.getElementById("annualCost").value);
             const studyDuration = parseInt(document.getElementById("studyDuration").value);
             const yearsBeforeStart = parseInt(document.getElementById("yearsBeforeStart").value);
             const contributeDuring = document.querySelector('input[name="contributeDuring"]:checked').value;
-            const childNames= document.getElementById("childName").value;
-            console.log(childNames);
+            console.log(childName);
             
             const lowReturnRate = 0.06;  // 6% for conservative scenario
             const highReturnRate = 0.10; // 10% for aggressive scenario
@@ -839,7 +816,8 @@
             updateValue("highTotalSavingsResult", highFutureValue);
 
             // Update secondary display
-       
+           
+            document.getElementById("childDetails").textContent = childName;
           
             document.getElementById("lowMonthlyContribution2").textContent = formatCurrency(lowMonthlyContribution);
             document.getElementById("lowTotalSavings2").textContent = formatCurrency(lowFutureValue);
@@ -890,60 +868,6 @@
 
     }
 
-    // Modify the existing calculateEducationPlan function
-function calculateEducationPlan() {
-    const annualCost = parseFloat(document.getElementById("annualCost").value);
-    const studyDuration = parseInt(document.getElementById("studyDuration").value);
-    const yearsBeforeStart = parseInt(document.getElementById("yearsBeforeStart").value);
-    const contributeDuring = document.querySelector('input[name="contributeDuring"]:checked').value;
-    
-    const lowReturnRate = 0.06;
-    const highReturnRate = 0.10;
-
-    // Calculate total education cost
-    const totalCost = annualCost * studyDuration;
-
-    const savingPeriod = contributeDuring === "yes" 
-        ? yearsBeforeStart + studyDuration 
-        : yearsBeforeStart;
-
-    // Calculate for low return rate (6%)
-    const lowFutureValue = totalCost * (1 + lowReturnRate) ** yearsBeforeStart;
-    const lowMonthlyRate = lowReturnRate / 12;
-    const numberOfPayments = savingPeriod * 12;
-    const lowMonthlyContribution = (lowFutureValue * lowMonthlyRate) / 
-        ((1 + lowMonthlyRate) ** numberOfPayments - 1);
-
-    // Calculate for high return rate (10%)
-    const highFutureValue = totalCost * (1 + highReturnRate) ** yearsBeforeStart;
-    const highMonthlyRate = highReturnRate / 12;
-    const highMonthlyContribution = (highFutureValue * highMonthlyRate) / 
-        ((1 + highMonthlyRate) ** numberOfPayments - 1);
-
-    // Format currency values
-    const formatCurrency = (value) => {
-        return `R ${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ")}`;
-    };
-
-    // Display results
-    educationResults.classList.remove("hidden");
-    
-    // Update all display locations
-    document.getElementById("totalCostResult").textContent = formatCurrency(totalCost);
-    document.getElementById("lowMonthlyContributionResult").textContent = formatCurrency(lowMonthlyContribution);
-    document.getElementById("lowTotalSavingsResult").textContent = formatCurrency(lowFutureValue);
-    document.getElementById("highMonthlyContributionResult").textContent = formatCurrency(highMonthlyContribution);
-    document.getElementById("highTotalSavingsResult").textContent = formatCurrency(highFutureValue);
-    
-    // Update secondary display
-    document.getElementById("lowMonthlyContribution2").textContent = formatCurrency(lowMonthlyContribution);
-    document.getElementById("lowTotalSavings2").textContent = formatCurrency(lowFutureValue);
-    document.getElementById("highMonthlyContribution2").textContent = formatCurrency(highMonthlyContribution);
-    document.getElementById("highTotalSavings2").textContent = formatCurrency(highFutureValue);
-
-    // Update the chart
-    updateSavingsChart(yearsBeforeStart, lowMonthlyContribution, highMonthlyContribution);
-}
 
 function resetCalculator() {
     // Reset all input fields
