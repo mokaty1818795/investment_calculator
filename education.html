@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education Savings Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Title Section -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Education Savings Calculator</h1>
+            <p class="mt-2 text-gray-600">Plan ahead for your children's education expenses</p>
+        </div>
+
+
+        
+
+   
+
+        <!-- Children Section -->
+        <div class="mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <!-- <h2 class="text-xl font-semibold text-gray-900">Children Information</h2> -->
+                <!-- <button onclick="addChild()" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    Add Child
+                </button> -->
+                <!-- Modal toggle -->
+                <button data-modal-target="default-modal" data-modal-toggle="default-modal" class="block text-white bg-red-600 hover:bg-red-100 focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
+                    Add Child
+                </button>
+                <button id="calculateBtn"
+                    class="hidden px-3 bg-red-600 font-bold text-white py-3 rounded-lg hover:bg-red-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                    Calculate
+                </button>
+            </div>
+            <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden w-full overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center  md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative p-4 w-full max-w-2xl max-h-full">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow">
+                        <!-- Modal header -->
+                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded">
+                            <h3 class="text-xl font-semibold text-red-600">
+                                Add Your Child
+                            </h3>
+                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="default-modal">
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <!-- Modal body -->
+                        <div id="educationSection" class="space-y-6 w-full p-4">
+                            <div>
+                                <label class="block text-black text-lg mb-2">Your Child's Name & Surname:</label>
+        
+                                <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
+                                    <input type="text" id="childName" placeholder="Enter Your Child's Name"
+                                        class="w-full px-3 text-lg text-bold py-2 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" />
+                                </div>
+                            </div>
+                            
+                            <!-- Annual Education Cost -->
+                            <div>
+                                <label class="block text-black text-lg  mb-2">Annual Education Cost:</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-black text-lg">M</span>
+                                    <input type="number" id="annualCost"
+                                        class="w-full pl-8 text-black px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                        placeholder="Enter annual cost" />
+                                </div>
+                            </div>
+        
+                            <!-- Duration of Study -->
+                        
+                            <div>
+                                <label class="block text-black text-lg  mb-2">Duration of Study(in years):</label>
+        
+                                <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
+                                    <input type="number" id="studyDuration"
+                                        class="w-full px-3 text-lg text-bold py-2 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" />
+                                </div>
+                            </div>
+        
+                            <!-- Years Before Start -->
+                            <div>
+                                <label class="block text-black text-lg mb-2">Years Before Studies
+                                    Begin(years):</label>
+                                <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
+                                    <input type="number" id="yearsBeforeStart"
+                                        class="w-full px-3 py-2 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" />
+                                </div>
+                            </div>
+        
+                            <!-- Contribute During Studies -->
+                            <div>
+                                <label class="block text-black text-lg mb-2">Contribute During Studies?</label>
+                                <div class="flex items-center space-x-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="contributeDuring" value="yes" class="form-radio text-black" />
+                                        <span class="ml-2 text-black text-lg">Yes</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="contributeDuring" value="no" class="form-radio text-black"
+                                            checked />
+                                        <span class="ml-2 text-black text-lg">No</span>
+                                    </label>
+                                </div>
+                            </div>
+                            </div>
+
+                            <!-- Modal footer -->
+                            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
+                                <button  onclick="addChild()" data-modal-hide="default-modal" type="button"  class="text-white bg-red-600 hover:bg-red-100 hover:text-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Add Child</button>
+                                <button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-ree-600 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-red-600 focus:z-10 focus:ring-4 focus:ring-red-100">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="childrenContainer" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                
+            </div>
+        </div>
+
+        
+        
+
+
+        <!-- Results Section (initially hidden) -->
+        <div id="results" class="mt-8 hidden">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Results</h2>
+                <!-- Results will be populated here -->
+            </div>
+        </div>
+    </main>
+
+
+    <script src="./js/header.js"></script>
+    <script>loadHeader();</script>
+     <script src="./js/education.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</body>
+</html>
