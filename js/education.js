@@ -1,10 +1,7 @@
 function resetCalculator() {
-    // Reset all input fields
     document.getElementById("annualCost").value = "";
     document.getElementById("studyDuration").value = "";
     document.getElementById("yearsBeforeStart").value = "";
-    
-    // Hide results
     document.getElementById("educationResults").classList.add("hidden");
 }
 
@@ -14,16 +11,15 @@ const childrenData = [];
 const cliCkedCount=0;
 
 function updateSavingsChart(yearsBeforeStart, lowMonthlyContribution, highMonthlyContribution) {
-// Destroy existing chart if it exists
+
 if (savingsChart) {
     savingsChart.destroy();
 }
 
-const years = Array.from({length: yearsBeforeStart}, (_, i) => `Year ${i + 1}`);
+
 const lowReturnRate = 0.06;
 const highReturnRate = 0.10;
 
-// Calculate cumulative savings for each year
 const lowSavings = [];
 const highSavings = [];
 let lowAccumulated = 0;
@@ -31,11 +27,9 @@ let highAccumulated = 0;
 
 
 for (let i = 0; i < yearsBeforeStart; i++) {
-    // Add monthly contributions for the year
     lowAccumulated += lowMonthlyContribution * 12;
     highAccumulated += highMonthlyContribution * 12;
 
-    // Add returns
     lowAccumulated *= (1 + lowReturnRate);
     highAccumulated *= (1 + highReturnRate);
 
@@ -65,10 +59,10 @@ const updateCalculateButton=()=>{
 }
 
 function addChild() {
+
+
     const childrenContainer = document.getElementById('childrenContainer');
     const childCount = childrenContainer.children.length + 1;
-    
-
     const childNames= document.getElementById("childName").value;
     const annualCost= document.getElementById("annualCost").value;
     const studyDuration= document.getElementById("studyDuration").value;
@@ -76,18 +70,16 @@ function addChild() {
 
 
     childrenArray.push({
-        id:childCount,
+        id: childCount,
         childNames: childNames,
         annualCost: annualCost,
         studyDuration: studyDuration,
         yearsBeforeStart:yearsBeforeStart
     });
 
-    console.log(childrenArray.length)
+
 
     updateCalculateButton();
-     console.log(childrenArray)
-
     const childDiv = document.createElement('div');
     childDiv.className = 'bg-white p-6 rounded-lg shadow-md border border-gray-200 relative';
     childDiv.dataset.id = childCount;
@@ -106,17 +98,21 @@ function addChild() {
           <p class="text-gray-500 text-sm">${childNames}'s Education Savings Plan</p>
         </div>
 
-        <!-- Information Section -->
         <div class="grid grid-cols-1 gap-4 text-gray-700">
-          
-          <!-- Educational Costs -->
           <div class="flex items-center p-4 bg-blue-50 rounded-lg">
             <svg class="w-6 h-6 mr-3 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 2a10 10 0 100 20 10 10 0 000-20zM12 13h2v5h-4v-5h2zm0-8h-2v2h2V5z"></path>
             </svg>
             <div>
-              <p class="text-sm font-medium text-blue-700">Educational Anual Costs</p>
-              <p class="text-lg font-semibold">${annualCost}</p>
+              <p class="text-sm font-medium text-blue-700">Educational Annual Costs</p>
+              <p class="text-lg font-semibold">${
+                new Intl.NumberFormat('en-LS', {
+                  style: 'currency',
+                  currency: 'LSL',
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                  }).format(annualCost)
+              }</p>
             </div>
           </div>
           
@@ -157,23 +153,10 @@ function removeChildCard(button) {
     const index = childrenArray.findIndex(child => child.id ===  cardId);
     if (index > -1) {
         childrenArray.splice(index, 1);
-    }
-
-    const index1 = childrenData.findIndex(child => child.id ===  cardId);
-    if (index > -1) {
-      childrenData.splice(index1, 1);
-    }
-
-    console.log(childrenArray);
+    };
     updateCalculateButton();
 }
 
-
-
-
-function calculate() {
-    alert('Calculation feature will be implemented here');
-}
 
 function calculateMonthlyPremium(goalAmount, yearsBeforeStudies, durationOfStudy, annualRate) {
 
@@ -191,46 +174,48 @@ function calculateMonthlyPremium(goalAmount, yearsBeforeStudies, durationOfStudy
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    const calculationType = document.getElementById("calculationType");
-    const educationSection = document.getElementById("educationSection");
-    const monthlyContributionInput = document.getElementById(
-        "monthlyContributionInput"
-    );
-    const educationResults = document.getElementById("educationResults");
+
+  
     const calculateBtn = document.getElementById("calculateBtn");
-
-
-
     calculateBtn.addEventListener("click", function () {
         calculateResults();
     });
+  
+  let previousChildrenArray = JSON.stringify([]);
+
+  const currentChildrenArrayJSON = JSON.stringify(childrenArray);
+  if (currentChildrenArrayJSON === previousChildrenArray) {
+    console.warn("childrenArray has not been updated. Skipping data push.");
+    return;
+  }
+
+
+   // Filter childrenData to keep only items that match children in childrenArray by unique identifier
+   childrenData = childrenData.filter(childData =>
+    childrenArray.some(child => child.childNames === childData.name)
+  );
 
   function calculateResults() {
-    // Check if childrenArray exists and has data
     if (!childrenArray || childrenArray.length === 0) {
         console.warn("No children data available to process");
-        return; // Exit the function if no data
+        return;
     }
 
-    // Reset childrenData array
-    
     let totalMonthlyContribution = 0;
     let totalEducationCost = 0;
+    childrenData.length = 0; 
 
     childrenArray.forEach(child => {
-        // Validate required child properties
         if (!child.annualCost || !child.studyDuration || !child.yearsBeforeStart) {
             console.warn("Missing required data for child:", child);
-            return; // Skip this iteration if data is incomplete
+            return;
         }
 
         const futureValue = child.annualCost * child.studyDuration;
         const annualHighrate = 0.10;
         const annualLowrate = 0.06;
-
         const monthlyHighPrem = calculateMonthlyPremium(futureValue, child.yearsBeforeStart, child.studyDuration, annualHighrate);
         const monthlyLowPrem = calculateMonthlyPremium(futureValue, child.yearsBeforeStart, child.studyDuration, annualLowrate);
-
         const monthlyContributionLow = (futureValue * annualLowrate / 12) / ((1 + annualLowrate / 12) ** (child.yearsBeforeStart * 12) - 1);
         const monthlyContributionHigh = (futureValue * annualHighrate / 12) / ((1 + annualHighrate / 12) ** (child.yearsBeforeStart * 12) - 1);
         
@@ -239,6 +224,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let factorSum = 0;
         let highfactorSum = 0;
+
+
 
         for (let i = 0; i <= child.studyDuration - 1; i++) {
             const factorValue = (1 + annualLowrate) ** i;
@@ -251,9 +238,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const finalHighFactorSum = child.studyDuration / highfactorSum;
         const lowContribution = finalFactorSum * monthlyLowPrem;
         const highContribution = finalHighFactorSum * monthlyHighPrem;
+    
 
         childrenData.push({
-            id: child.id,
+            id:child.id,
             name: child.childNames || 'Unnamed Child',
             lowContribution: lowContribution.toFixed(2),
             highContribution: highContribution.toFixed(2),
@@ -261,9 +249,11 @@ document.addEventListener("DOMContentLoaded", function () {
             monthlyHighPrem: monthlyHighPrem.toFixed(2),
             futureValue: futureValue.toFixed(2)
         });
+
+
+
     });
 
-    // Only call displayResults if we have data to display
     if (childrenData.length >= 0) {
         displayResults(childrenData);
     }
@@ -276,7 +266,6 @@ function displayResults(childrenData) {
         return;
     }
 
-    // Clear existing content
     childList.innerHTML = '';
 
     childrenData.forEach((data, index) => {
