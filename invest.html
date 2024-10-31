@@ -26,9 +26,7 @@
 
         .glassmorphism {
             background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
+            box-shadow: 0 8px 10px 0 rgba(31, 38, 135, 0.37);
             border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.18);
         }
@@ -67,47 +65,17 @@
     </style>
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-blue-50 via-red-50 to-purple-50">
-    <!-- <header class="relative z-10">
-        <div class="container max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between">
-            <img src="/images/logo.png" alt="Company Logo" class="h-16 w-auto mb-4 sm:mb-0" />
-            <h1 id="financial-calculator" class="text-4xl sm:text-3xl font-bold text-red-600 text-center sm:text-left">
-                Premium Calculator
-            </h1>
-        </div>
-    </header> -->
+<body class="min-h-screen bg-gray-100">
     <div id="header"></div>
-    <main class="container max-w-5xl mx-auto px-4 py-12" x-data="{ activeTab: 'investment' }">
-        <div class="mb-12 glassmorphism p-2 flex justify-center relative overflow-hidden">
-            <button @click="activeTab = 'investment'"
-                :class="{ 'text-white': activeTab === 'investment', 'text-gray-700': activeTab !== 'investment' }"
-                class="w-1/2 py-3 px-6 rounded-lg font-semibold transition duration-300 focus:outline-none z-10 relative">
-                Investment
-            </button>
-            <button @click="activeTab = 'educator'"
-                :class="{ 'text-white': activeTab === 'educator', 'text-gray-700': activeTab !== 'educator' }"
-                class="w-1/2 py-3 px-6 rounded-lg font-semibold transition duration-300 focus:outline-none z-10 relative">
-                Educator
-            </button>
-            <div id="tab-backdrop"
-                class="absolute top-2 left-0 w-1/2 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-lg transition-all duration-300 ease-in-out"
-                :class="{ 'translate-x-full': activeTab === 'educator' }"></div>
-        </div>
+    <main class="container max-w-6xl mx-auto px-4 py-12">
         <div class="glassmorphism p-8 mb-12" id="calculator-container">
-            <div x-show="activeTab === 'investment'" x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0 transform scale-95"
-                x-transition:enter-end="opacity-100 transform scale-100"
-                x-transition:leave="transition ease-in duration-200"
-                x-transition:leave-start="opacity-100 transform scale-100"
-                x-transition:leave-end="opacity-0 transform scale-95">
                 <h2 id="plan-your-future-investments" class="text-3xl sm:text-4xl font-bold text-red-600 mb-8">
                     Plan Your Future Investments
                 </h2>
                 <div class="space-y-6">
                     <div>
                         <label for="calculationType" class="block text-lg font-semibold mb-2">Calculation Type:</label>
-                        <div class="flex-start lex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-                
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
                             <button id="futureValueBtn"
                                 class="flex-1 py-3 px-6 bg-red-100 rounded-lg font-semibold text-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-300"
                                 onclick="setCalculationType('futureValue')">
@@ -192,132 +160,6 @@
                     </div>
                     <div id="results1" class="bg-red-100 text-black p-6 rounded-2xl shadow-lg overflow-hidden"></div>
                     <div id="results" class="bg-red-100 text-black p-6 rounded-2xl shadow-lg overflow-hidden"></div>
-                </div>
-            </div> 
-
-            <div x-show="activeTab === 'educator'" x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0 transform scale-95"
-                x-transition:enter-end="opacity-100 transform scale-100"
-                x-transition:leave="transition ease-in duration-200"
-                x-transition:leave-start="opacity-100 transform scale-100"
-                x-transition:leave-end="opacity-0 transform scale-95">
-
-
-                <!-- Education Planning Section -->
-                <div id="educationSection" class="space-y-6">
-                    <div>
-                        <label class="block text-black text-lg font-bold mb-2">Your Child's Name & Surname:</label>
-
-                        <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-                            <input type="text" id="childName" placeholder="Enter Your Child's Name"
-                                class="w-full px-3 text-lg text-bold py-2 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" />
-                        </div>
-                    </div>
-                    
-                    <!-- Annual Education Cost -->
-                    <div>
-                        <label class="block text-black text-lg font-bold mb-2">Annual Education Cost:</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-black text-lg">M</span>
-                            <input type="number" id="annualCost"
-                                class="w-full pl-8 text-black px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                                placeholder="Enter annual cost" />
-                        </div>
-                    </div>
-
-                    <!-- Duration of Study -->
-                
-                    <div>
-                        <label class="block text-black text-lg font-bold mb-2">Duration of Study(in years):</label>
-
-                        <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-                            <input type="number" id="studyDuration"
-                                class="w-full px-3 text-lg text-bold py-2 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" />
-                        </div>
-                    </div>
-
-                    <!-- Years Before Start -->
-                    <div>
-                        <label class="block text-black text-lg font-bold mb-2">Years Before Studies
-                            Begin(years):</label>
-                        <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-                            <input type="number" id="yearsBeforeStart"
-                                class="w-full px-3 py-2 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" />
-                        </div>
-                    </div>
-
-                    <!-- Contribute During Studies -->
-                    <div>
-                        <label class="block text-black text-lg font-bold mb-2">Contribute During Studies?</label>
-                        <div class="flex items-center space-x-4">
-                            <label class="inline-flex items-center">
-                                <input type="radio" name="contributeDuring" value="yes" class="form-radio text-black" />
-                                <span class="ml-2 text-black text-lg">Yes</span>
-                            </label>
-                            <label class="inline-flex items-center">
-                                <input type="radio" name="contributeDuring" value="no" class="form-radio text-black"
-                                    checked />
-                                <span class="ml-2 text-black text-lg">No</span>
-                            </label>
-                        </div>
-                    </div>
-                        <div class="mt-10">
-                            <button id="calculateBtn"
-                                class="w-full bg-red-600 font-bold text-white py-3 rounded-lg hover:bg-red-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                                Calculate
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="space-y-8 mt-10 mb-12">
-                        <div id="educationResults" class="bg-white p-8 rounded-2xl overflow-hidden hidden">
-                            <!-- Header Section -->
-
-                            <h3 class="text-xl font-bold text-gray-800 mb-6">
-                                RESULTS SUMMARY
-                            </h3>
-                    
-                            <!-- Main Content Grid -->
-                            <div class="grid grid-cols-1 gap-8">
-                                <!-- Left Column - Results -->
-                                <div class="space-y-6">
-                                    <!-- Total Cost Section -->
-                                     <p id="child" ></p>
-                                    <div class="bg-gray-50 p-6 rounded-xl">
-                                        <h4 class="text-gray-600 font-medium mb-2">Estimated Future Education Cost</h4>
-
-                                        <p id="totalCostResult" class="text-3xl font-bold text-gray-900"></p>
-                                    </div>
-                            
-                                    <!-- Low Inflation Scenario -->
-                                    <div class="bg-blue-50 p-6 rounded-xl">
-                                        <div class="flex items-center justify-between mb-4">
-                                            <h4 class="text-blue-800 font-semibold"> Savings Growth </h4>
-                                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Results</span>
-                                        </div>
-                                        <div class="space-y-4">
-                                            <div>
-
-                                                <p class="text-gray-600 text-lg">
-                                                    To comfortably save for <span class="font-bold text-red-600" id="childDetails"></span>'s education, you can invest between
-                                                    <span class="font-bold text-red-600" id="lowMonthlyContributionResult" ></span>  
-                                                    and <span class="font-bold text-red-600" id="highMonthlyContributionResult"></span> with the total contributions ranging between  
-                                                     <span class="font-bold text-red-600"  id="lowTotalSavingsResult"></span> and <span class="font-bold text-red-600" id="highTotalSavingsResult"></span> .
-                                                </p>
-     
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Reset Button -->
-                                    <div class="pt-4">
-                                        <button onclick="location.reload()" class="bg-gray-100 text-gray-600 px-6 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium">
-                                            RESET
-                                        </button>
-                                    </div>
-                                </div>
-                           </div>                        
-                    </div>
-                </div>
                 </div>
         </div>
     </main>

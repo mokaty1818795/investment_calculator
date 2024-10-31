@@ -10,6 +10,7 @@ function resetCalculator() {
 
 let savingsChart = null;
 const childrenArray= [];
+const childrenData = [];
 const cliCkedCount=0;
 
 function updateSavingsChart(yearsBeforeStart, lowMonthlyContribution, highMonthlyContribution) {
@@ -101,7 +102,7 @@ function addChild() {
         
         <!-- Card Header -->
         <div class="mb-4 text-center">
-          <h3 class="text-xl font-semibold text-gray-900">Child ${childCount}</h3>
+          <h3 class="text-xl font-semibold text-gray-900"> ${childCount}</h3>
           <p class="text-gray-500 text-sm">${childNames}'s Education Savings Plan</p>
         </div>
 
@@ -158,42 +159,36 @@ function removeChildCard(button) {
         childrenArray.splice(index, 1);
     }
 
+    const index1 = childrenData.findIndex(child => child.id ===  cardId);
+    if (index > -1) {
+      childrenData.splice(index1, 1);
+    }
+
     console.log(childrenArray);
     updateCalculateButton();
 }
+
+
 
 
 function calculate() {
     alert('Calculation feature will be implemented here');
 }
 
-function calculateMonthlyPremium(goalAmount, yearsBeforeStudies, durationOfStudy, annualRate, commissionRecoveryRate) {
+function calculateMonthlyPremium(goalAmount, yearsBeforeStudies, durationOfStudy, annualRate) {
 
   const monthlyRate = Math.pow(1 + annualRate, 1 / 12) - 1;
-  const d = monthlyRate / (1 + monthlyRate);
-  const totalInvestmentPeriodYears = yearsBeforeStudies;
-  const totalInvestmentPeriodMonths = totalInvestmentPeriodYears * 12;
-  const growthFactor = Math.pow(1 + annualRate, totalInvestmentPeriodYears) - 1;
 
   let geometricSum = 0;
   for (let i = 0; i < durationOfStudy; i++) {
       geometricSum += Math.pow(1 + monthlyRate, i);
   }
 
-  const monthlyPremium = goalAmount / ((growthFactor / d) * geometricSum * (1 - commissionRecoveryRate));
+  const monthlyPremium = goalAmount /(((1 + annualRate) ** yearsBeforeStudies - 1) /(monthlyRate / (1 + monthlyRate))) /(1 - 0.02);
 
   return monthlyPremium;
 }
 
-// // Example usage:
-// const goalAmount = 50000; // Desired investment goal
-// const yearsBeforeStudies = 3; // Years before studies start
-// const durationOfStudy = 4; // Duration of study in years
-// const annualRate = 0.05; // Annual interest rate (5%)
-// const commissionRecoveryRate = 0.02; // Commission recovery rate (2%)
-
-// const premium = calculateMonthlyPremium(goalAmount, yearsBeforeStudies, durationOfStudy, annualRate, commissionRecoveryRate);
-// console.log("Monthly Premium:", premium);
 
 document.addEventListener("DOMContentLoaded", function () {
     const calculationType = document.getElementById("calculationType");
@@ -210,109 +205,135 @@ document.addEventListener("DOMContentLoaded", function () {
         calculateResults();
     });
 
-    function calculateResults() {
-        let totalMonthlyContribution = 0;
-        let totalEducationCost = 0;
-     
-        childrenArray.forEach(child => {
-            const futureValue = child.annualCost * child.studyDuration;
+  function calculateResults() {
+    // Check if childrenArray exists and has data
+    if (!childrenArray || childrenArray.length === 0) {
+        console.warn("No children data available to process");
+        return; // Exit the function if no data
+    }
 
-          const annualHighrate= 0.10;
-          const annualLowrate= 0.06;
-          const commissionRecoveryRate= 0.02;
+    // Reset childrenData array
+    
+    let totalMonthlyContribution = 0;
+    let totalEducationCost = 0;
 
-           const monthlyHighPrem= calculateMonthlyPremium(futureValue,child.yearsBeforeStart,child.studyDuration,annualHighrate,commissionRecoveryRate);
-           const monthlyLowPrem= calculateMonthlyPremium(futureValue,child.yearsBeforeStart,child.studyDuration,annualLowrate,commissionRecoveryRate);
+    childrenArray.forEach(child => {
+        // Validate required child properties
+        if (!child.annualCost || !child.studyDuration || !child.yearsBeforeStart) {
+            console.warn("Missing required data for child:", child);
+            return; // Skip this iteration if data is incomplete
+        }
 
+        const futureValue = child.annualCost * child.studyDuration;
+        const annualHighrate = 0.10;
+        const annualLowrate = 0.06;
 
-     
-            // Monthly Contribution Calculation
-            const monthlyContributionLow = (futureValue * 0.06 / 12) / ((1 + 0.06 / 12) ** (child.yearsBeforeStart * 12) - 1);
-            const monthlyContributionHigh = (futureValue* 0.10 / 12) / ((1 + 0.10 / 12) ** (child.yearsBeforeStart * 12) - 1);
-            totalMonthlyContribution += monthlyContributionLow + monthlyContributionHigh; // Total contributions
-            totalEducationCost +=futureValue // Total education cost
+        const monthlyHighPrem = calculateMonthlyPremium(futureValue, child.yearsBeforeStart, child.studyDuration, annualHighrate);
+        const monthlyLowPrem = calculateMonthlyPremium(futureValue, child.yearsBeforeStart, child.studyDuration, annualLowrate);
 
-            console.log("MonthlyContribution Low",monthlyLowPrem);
-            console.log("MonthlyContribution High",monthlyHighPrem);
-            
+        const monthlyContributionLow = (futureValue * annualLowrate / 12) / ((1 + annualLowrate / 12) ** (child.yearsBeforeStart * 12) - 1);
+        const monthlyContributionHigh = (futureValue * annualHighrate / 12) / ((1 + annualHighrate / 12) ** (child.yearsBeforeStart * 12) - 1);
+        
+        totalMonthlyContribution += monthlyContributionLow + monthlyContributionHigh;
+        totalEducationCost += futureValue;
+
+        let factorSum = 0;
+        let highfactorSum = 0;
+
+        for (let i = 0; i <= child.studyDuration - 1; i++) {
+            const factorValue = (1 + annualLowrate) ** i;
+            const highFactorValue = (1 + annualHighrate) ** i;
+            factorSum += factorValue;
+            highfactorSum += highFactorValue;
+        }
+
+        const finalFactorSum = child.studyDuration / factorSum;
+        const finalHighFactorSum = child.studyDuration / highfactorSum;
+        const lowContribution = finalFactorSum * monthlyLowPrem;
+        const highContribution = finalHighFactorSum * monthlyHighPrem;
+
+        childrenData.push({
+            id: child.id,
+            name: child.childNames || 'Unnamed Child',
+            lowContribution: lowContribution.toFixed(2),
+            highContribution: highContribution.toFixed(2),
+            monthlyLowPrem: monthlyLowPrem.toFixed(2),
+            monthlyHighPrem: monthlyHighPrem.toFixed(2),
+            futureValue: futureValue.toFixed(2)
         });
-     
-        displayResults(monthlyLowPrem, futureValue);
+    });
+
+    // Only call displayResults if we have data to display
+    if (childrenData.length >= 0) {
+        displayResults(childrenData);
     }
-     
-    function displayResults(totalMonthlyContribution, totalEducationCost) {
-        document.getElementById("totalMonthlyContribution").textContent = `R${totalMonthlyContribution.toFixed(2)}`;
-        document.getElementById("totalEducationCost").textContent = `R${totalEducationCost.toFixed(2)}`;
-        document.getElementById("resultsContainer").classList.remove("hidden");
+}
+
+function displayResults(childrenData) {
+    const childList = document.querySelector('#child-list');
+    if (!childList) {
+        console.error("Child list container not found");
+        return;
     }
 
-    // function calculateEducationPlan() {
-    //     const childName = document.getElementById("childName").value;
-    //     const annualCost = parseFloat(document.getElementById("annualCost").value);
-    //     const studyDuration = parseInt(document.getElementById("studyDuration").value);
-    //     const yearsBeforeStart = parseInt(document.getElementById("yearsBeforeStart").value);
-    //     const contributeDuring = document.querySelector('input[name="contributeDuring"]:checked').value;
-    //     console.log(childName);
-        
-    //     const lowReturnRate = 0.06;  // 6% for conservative scenario
-    //     const highReturnRate = 0.10; // 10% for aggressive scenario
+    // Clear existing content
+    childList.innerHTML = '';
 
-    //     // Calculate total education cost
-    //     const totalCost = annualCost * studyDuration;
-
-    //     const savingPeriod = contributeDuring === "yes" 
-    //         ? yearsBeforeStart + studyDuration 
-    //         : yearsBeforeStart;
-
-    //     // Calculate for low return rate (6%)
-    //     const lowFutureValue = totalCost * (1 + lowReturnRate) ** yearsBeforeStart;
-    //     const lowMonthlyRate = lowReturnRate / 12;
-    //     const numberOfPayments = savingPeriod * 12;
-    //     const lowMonthlyContribution = (lowFutureValue * lowMonthlyRate) / 
-    //         ((1 + lowMonthlyRate) ** numberOfPayments - 1);
-
-
-
-
-    //     // Calculate for high return rate (10%)
-    //     const highFutureValue = totalCost * (1 + highReturnRate) ** yearsBeforeStart;
-    //     const highMonthlyRate = highReturnRate / 12;
-    //     const highMonthlyContribution = (highFutureValue * highMonthlyRate) / 
-    //         ((1 + highMonthlyRate) ** numberOfPayments - 1);
-
-    //     // Display results
-    //     educationResults.classList.remove("hidden");
-        
-    //     // Format currency values
-    //     const formatCurrency = (value) => {
-    //         return `R ${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ")}`;
-    //     };
-        
-    //     // Update all display locations
-    //     const updateValue = (id, value) => {
-    //         const elements = document.querySelectorAll(`#${id}`);
-    //         elements.forEach(element => {
-    //             element.textContent = formatCurrency(value);
-    //         });
-    //     };
-
-    //     // Update main results
-    //     updateValue("totalCostResult", totalCost);
-    //     updateValue("lowMonthlyContributionResult", lowMonthlyContribution);
-    //     updateValue("lowTotalSavingsResult", lowFutureValue);
-    //     updateValue("highMonthlyContributionResult", highMonthlyContribution);
-    //     updateValue("highTotalSavingsResult", highFutureValue);
-
-    //     // Update secondary display
-       
-    //     document.getElementById("childDetails").textContent = childName;
-      
-    //     document.getElementById("lowMonthlyContribution2").textContent = formatCurrency(lowMonthlyContribution);
-    //     document.getElementById("lowTotalSavings2").textContent = formatCurrency(lowFutureValue);
-    //     document.getElementById("highMonthlyContribution2").textContent = formatCurrency(highMonthlyContribution);
-    //     document.getElementById("highTotalSavings2").textContent = formatCurrency(highFutureValue);
-    // }
-
+    childrenData.forEach((data, index) => {
+        const listItem = document.createElement('li');
+        listItem.className = "py-3 sm:py-4";
+        listItem.innerHTML = `
+        <div class="flex items-center bg-red-50 rounded-2xl p-4 space-x-4">
+        <div class="flex-shrink-0">
+            <div class="w-12 h-12 rounded-full border-2 border-gray-200  bg-gray-100 dark:bg-gray-600 flex items-center justify-center">
+                <span class="text-lg font-bold text-gray-600">${index + 1}</span>
+            </div>
+        </div>
+        <div class="flex-1 min-w-0">
+            <p class="text-lg font-semibold text-red-600 truncate ">
+                ${data.name ? data.name : ''}
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 text-sm text-black">
+                <div class="space-y-1">
+                    <p class="flex justify-between">
+                        <span class="font-medium text-black">Low Contribution:</span>
+                        <span class="text-black">${ new Intl.NumberFormat('en-LS', {
+                          style: 'currency',
+                          currency: 'LSL',
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                          }).format(data.lowContribution)}</span>
+                    </p>
+                    <p class="flex justify-between">
+                        <span class="font-medium text-black">High Contribution:</span>
+                        <span class="text-black">${ new Intl.NumberFormat('en-LS', {
+                          style: 'currency',
+                          currency: 'LSL',
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                          }).format(data.highContribution)}</span>
+                    </p>
+                </div>
+            </div>
+            <div class="mt-2 text-sm">
+                <p class="flex justify-between items-center">
+                    <span class="font-medium  text-black ">Future Value:</span>
+                    <span class="text-lg font-bold text-black">${
+                      new Intl.NumberFormat('en-LS', {
+                        style: 'currency',
+                        currency: 'LSL',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                        }).format(data.futureValue)
+                    }</span>
+                </p>
+            </div>
+        </div>
+    </div>
+        `;
+        childList.appendChild(listItem);
+    });
+}
 
 });
 
