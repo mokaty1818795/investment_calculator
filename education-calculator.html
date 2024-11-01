@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education Savings Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .gradient-background {
+            background: linear-gradient(135deg, #fee2e2 0%, #ffffff 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="gradient-background min-h-screen">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Title Section -->
+        <div class="text-center mb-12 space-y-4">
+            <h1 class="text-4xl font-bold text-red-600 tracking-tight">Education Savings Calculator</h1>
+            <p class="mt-2 text-gray-600 text-lg max-w-2xl mx-auto">Plan ahead for your children's education expenses with our comprehensive calculator</p>
+            <div class="h-1 w-20 bg-red-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Children Section -->
+        <div class="mb-12">
+            <div class="flex justify-center space-x-4 items-center mb-8">
+                <button data-modal-target="default-modal" data-modal-toggle="default-modal" 
+                    class="group relative inline-flex items-center px-8 py-3 text-lg font-medium text-white bg-red-600 rounded-full overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <span class="absolute inset-0 w-full h-full transition-all duration-300 group-hover:bg-red-700"></span>
+                    <span class="relative flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Add Child
+                    </span>
+                </button>
+                <button id="calculateBtn"
+                    class="hidden group relative inline-flex items-center px-8 py-3 text-lg font-medium text-white bg-red-600 rounded-full overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <span class="absolute inset-0 w-full h-full transition-all duration-300 group-hover:bg-red-700"></span>
+                    <span class="relative">Calculate</span>
+                </button>
+            </div>
+
+            <!-- Modal -->
+            <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative p-4 w-full max-w-2xl max-h-full">
+                    <div class="relative bg-white rounded-2xl shadow-2xl">
+                        <div class="flex items-center justify-between p-6 border-b">
+                            <h3 class="text-2xl font-semibold text-red-600">
+                                Add Your Child
+                            </h3>
+                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" data-modal-hide="default-modal">
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <div id="educationSection" class="space-y-6 w-full p-6">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-gray-700 text-lg font-medium mb-2">Child's Name & Surname</label>
+                                    <input type="text" id="childName" placeholder="Enter Your Child's Name"
+                                        class="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200" />
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-700 text-lg font-medium mb-2">Annual Education Cost</label>
+                                    <div class="relative">
+                                        <span class="absolute inset-y-0 left-0 px-4 flex items-center text-gray-500">LSL</span>
+                                        <input type="number" id="annualCost"
+                                            class="w-full pl-12 px-4 py-3 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200"
+                                            placeholder="Enter annual cost" />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-gray-700 text-lg font-medium mb-2">Duration of Study (years)</label>
+                                    <input type="number" id="studyDuration"
+                                        class="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200" />
+                                </div>
+
+                                <div>
+                                    <label class="block text-gray-700 text-lg font-medium mb-2">Years Before Studies Begin</label>
+                                    <input type="number" id="yearsBeforeStart"
+                                        class="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200" />
+                                </div>
+
+                                <div>
+                                    <label class="block text-gray-700 text-lg font-medium mb-2">Contribute During Studies?</label>
+                                    <div class="flex items-center space-x-6">
+                                        <label class="inline-flex items-center">
+                                            <input type="radio" name="contributeDuring" value="yes" 
+                                                class="form-radio h-5 w-5 text-red-600 focus:ring-red-500" />
+                                            <span class="ml-2 text-lg text-gray-700">Yes</span>
+                                        </label>
+                                        <label class="inline-flex items-center">
+                                            <input type="radio" name="contributeDuring" value="no" 
+                                                class="form-radio h-5 w-5 text-red-600 focus:ring-red-500" checked />
+                                            <span class="ml-2 text-lg text-gray-700">No</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-end p-6 border-t border-gray-200 rounded-b space-x-4">
+                            <button data-modal-hide="default-modal" type="button" 
+                                class="px-6 py-3 text-sm font-medium text-gray-500 hover:text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 transition-all duration-200">
+                                Cancel
+                            </button>
+                            <button onclick="addChild()" data-modal-hide="default-modal" type="button"  
+                                class="px-6 py-3 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:ring-red-300 transition-all duration-200">
+                                Add Child
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="childrenContainer" class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"></div>
+        
+        <div id="results" class="mt-12">
+            <div class="max-w-5xl mx-auto">
+                <div class="flow-root">
+                    <ul id="child-list" role="list" class="space-y-6"></ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="./js/header.js"></script>
+    <script>loadHeader();</script>
+    <script src="./js/education.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script>
+        function displayResults(childrenData) {
+            const childList = document.querySelector('#child-list');
+            if (!childList) {
+                console.error("Child list container not found");
+                return;
+            }
+            childList.innerHTML = '';
+            
+            childrenData.forEach((data, index) => {
+                const listItem = document.createElement('li');
+                listItem.className = "py-3 sm:py-4";
+                listItem.innerHTML = `
+                    <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="p-6 space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex-shrink-0">
+                                    <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
+                                        <span class="text-2xl font-bold text-red-600">${index + 1}</span>
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="text-2xl font-bold text-red-600 mb-1">
+                                        ${data.name ? data.name : 'Unnamed Child'}
+                                    </h3>
+                                    <p class="text-sm text-gray-500">Education Savings Plan</p>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="space-y-3">
+                                    <div class="bg-gray-50 p-4 rounded-xl">
+                                        <p class="text-sm text-gray-500 mb-1">Low Contribution</p>
+                                        <p class="text-lg font-semibold text-gray-900">
+                                            ${new Intl.NumberFormat('en-LS', {
+                                                style: 'currency',
+                                                currency: 'LSL',
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            }).format(data.lowContribution)}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3">
+                                    <div class="bg-gray-50 p-4 rounded-xl">
+                                        <p class="text-sm text-gray-500 mb-1">High Contribution</p>
+                                        <p class="text-lg font-semibold text-gray-900">
+                                            ${new Intl.NumberFormat('en-LS', {
+                                                style: 'currency',
+                                                currency: 'LSL',
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            }).format(data.highContribution)}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="border-t pt-4">
+                                <div class="flex justify-between items-center">
+                                    <p class="text-lg font-medium text-gray-500">Future Value</p>
+                                    <p class="text-2xl font-bold text-red-600">
+                                        ${new Intl.NumberFormat('en-LS', {
+                                            style: 'currency',
+                                            currency: 'LSL',
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }).format(data.futureValue)}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                childList.appendChild(listItem);
+            });
+        }
+    </script>
+</body>
+</html>
