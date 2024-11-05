@@ -8,10 +8,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen py-8">
-    <div class="max-w-4xl mx-auto px-4">
+    <div id="header"></div>
+    <div class="max-w-4xl mt-20 mx-auto px-4">
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">Retirement Calculator</h1>
-            <p class="text-gray-600">Plan your financial future with confidence</p>
+            <h1 class="text-3xl font-bold text-red-600 mb-2">Retirement Calculator</h1>
+            <p class="text-red-600">Plan your financial future with confidence</p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
@@ -66,7 +67,8 @@
             </div>
         </div>
     </div>
-
+    <script src="./js/header.js"></script>
+    <script>loadHeader();</script>
     <script>
         let savingsChart = null;
 
