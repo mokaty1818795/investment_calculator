@@ -480,99 +480,108 @@
 
 
 
+    function displayFutureValueResults(lowInflationData, highInflationData, startDate) {
+            const resultsDiv = document.getElementById("results1");
+            const monthlyContribution= document.getElementById('monthlyContribution').value;
+            const investmentPeriod= document.getElementById("investmentPeriod").value
 
+            const day = String(startDate.getDate()).padStart(2, '0');
+            const month = String(startDate.getMonth() + 1).padStart(2, '0'); 
+            const year = startDate.getFullYear();
 
-    function displayFutureValueResults(
-        lowInflationData,
-        highInflationData,
-        startDate
-    ) {
-        const resultsDiv = document.getElementById("results1");
-        let tableHTML = `
-        <div class="w-full flex justify-between">
-            <h3 class="text-xl font-semibold text-red-600 mb-4">Future Value Results</h3>    
-            <button type="button" id="downloadButton" onclick="download()" class="bg-gray-100 text-gray-600 px-6 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium">
-                Save Results
-            </button>
-        </div>
-        <div class="pt-4">   
-    	<div class="overflow-x-auto" id="tableContent">
-            <div class="bg-gray-50 mb-2 rounded-lg w-full p-4">
-                <div class="flex flex-row justify-between space-x-16 items-center w-full ">
-                    <div>
-                        <img src="/images/logo.png"  width="500px" height="500p2"/>
+            const formattedDate = `${day}/${month}/${year}`;
+
+            let tableHTML = `
+                <div class="w-full flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Investment Projection Results</h3>    
+                    <button type="button" onclick="download()" 
+                            class="bg-gray-100 text-gray-600 px-6 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Save Results
+                    </button>
+                </div>
+                <div class="pt-4">   
+                <div class="overflow-x-auto" id="tableContent">
+                    <div class="bg-gray-50 mb-6 rounded-lg w-full p-6">
+                        <div class="flex flex-col md:flex-row justify-between md:space-x-16 items-start md:items-center w-full">
+                            <div class="mb-4 md:mb-0">
+                                <img src="/images/logo.png" alt="Logo" class="h-12 object-contain"/>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-xs text-red-600 leading-relaxed"> 
+                                    Disclaimer: The values presented by this calculator are estimates only and 
+                                    do not represent final or guaranteed outcomes. Actual results may vary based on market conditions, 
+                                    individual contributions, and other factors.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="text-sm font-medium text-gray-500 mb-1">Starting Date</h4>
+                                <p class="text-lg font-semibold text-red-600">${formattedDate}</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="text-sm font-medium text-gray-500 mb-1">Monthly Contribution</h4>
+                                <p class="text-lg font-semibold text-red-600">${monthlyContribution}</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="text-sm font-medium text-gray-500 mb-1">Duration</h4>
+                                <p class="text-lg font-semibold text-red-600">${investmentPeriod} years</p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <p class=""> 
-                            Disclaimer: The values presented by this calculator are estimates only and 
-                            do not represent final or guaranteed outcomes. Actual results may vary based on market conditions, 
-                            individual contributions, and other factors. For personalized advice or 
-                            additional information, please consult a financial professional.
-                        </p>
+                    <div class="relative overflow-x-auto shadow-sm rounded-lg">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-4">Year</th>
+                                    <th scope="col" class="px-6 py-4">Low Inflation (6%)</th>
+                                    <th scope="col" class="px-6 py-4">High Inflation (10%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            for (let i = 0; i < lowInflationData.length; i++) {
+                const lowBalance = lowInflationData[i].balance.toFixed(2);
+                const highBalance = highInflationData[i].balance.toFixed(2);
+                tableHTML += `
+                    <tr class="bg-white border-b hover:bg-gray-50">
+                        <td class="px-6 py-4 font-medium text-gray-900">${lowInflationData[i].year}</td>
+                        <td class="px-6 py-4">M${lowBalance}</td>
+                        <td class="px-6 py-4">M${highBalance}</td>
+                    </tr>
+                `;
+            }
+
+            tableHTML += `
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                 <div class="mt-12">
-                     <h4 class="text-lg font-medium text-gray-700 mb-2">Projection Summary</h4>
-                     <p class="text-sm text-gray-500">Starting Date: <span class="text-gray-800"></span></p>
-                     <p class="text-sm text-gray-500">Initial Investment: <span class="text-gray-800">M</span></p>
-                     <p class="text-sm text-gray-500">Annual Contribution: <span class="text-gray-800">M</span></p>
-                     <p class="text-sm text-gray-500">Investment Duration: <span class="text-gray-800"> years</span></p>
-                 </div>
-            </div>
-    		<table class="min-w-full divide-y divide-gray-200">
-    			<thead class="bg-gray-50">
-    				<tr>
-    					<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-red-500 uppercase tracking-wider">Year</th>
-    					<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-red-500 uppercase tracking-wider">Low Inflation (6%)</th>
-    					<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-red-500 uppercase tracking-wider">High Inflation (10%)</th>
-    				</tr>
-    			</thead>
-    			<tbody class="bg-white divide-y divide-gray-200">
-    `;
+            `;
 
-        for (let i = 0; i < lowInflationData.length; i++) {
-            const lowBalance = lowInflationData[i].balance.toFixed(2);
-            const highBalance = highInflationData[i].balance.toFixed(2);
-            tableHTML += `
-    		<tr>
-    			<td class="px-4 py-4 whitespace-nowrap text-sm">${lowInflationData[i].year}</td>
-    			<td class="px-4 py-4 whitespace-nowrap text-sm">M${lowBalance}</td>
-    			<td class="px-4 py-4 whitespace-nowrap text-sm">M${highBalance}</td>
-    		</tr>
-    	`;
+            resultsDiv.innerHTML = tableHTML;
         }
 
-        tableHTML += `
-    			</tbody>
-    		</table>
-    	</div>
-    `;
-
-        resultsDiv.innerHTML = tableHTML;
+    function download() {
+    const element = document.getElementById("tableContent");
+    try {
+        const options = {
+            margin: 0.4,
+            filename: 'Future_Value_Results.pdf',
+            image: { type: 'jpeg', quality: 0.98 }, 
+            html2canvas: { scale: 3, useCORS: true }, 
+            jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait', putOnlyUsedFonts: true }
+        };
+        html2pdf().set(options).from(element).save();
+    } catch (error) {
+        console.error("Error generating PDF:", error);
     }
+}
 
-
-    function download(){
-        const element = document.getElementById("tableContent");
-        const hiddenImage = document.getElementById("hiddenImage");
-        try {
-            const options = {
-                margin: 1,
-                filename: 'Future_Value_Results.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }
-
-            };
-            html2pdf().set(options).from(element).save();
-
-        } catch (error) {
-        console.log("body")
-            
-        }
-
-
-    }
 
     function displayMonthlyPremiumResults(lowPremium, highPremium) {
         const resultsDiv = document.getElementById("results");
