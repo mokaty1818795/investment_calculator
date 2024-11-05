@@ -61,6 +61,29 @@
             display: none;
         }
 
+        .relative {
+    position: relative;
+}
+
+.watermark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/logo.png'); /* Replace with your logo path */
+    background-repeat: repeat;
+    background-size: 100px; /* Adjust size as needed */
+    opacity: 0.1; /* Adjust opacity for subtlety */
+    z-index: 0; /* Places it behind the table */
+}
+
+#tableContent {
+    position: relative;
+    z-index: 1; /* Ensures table content stays on top of watermark */
+}
+
+
  
     </style>
 </head>
@@ -455,6 +478,10 @@
         return monthlyPremium;
     }
 
+
+
+
+
     function displayFutureValueResults(
         lowInflationData,
         highInflationData,
@@ -470,6 +497,28 @@
         </div>
         <div class="pt-4">   
     	<div class="overflow-x-auto" id="tableContent">
+            <div class="bg-gray-50 mb-2 rounded-lg w-full p-4">
+                <div class="flex flex-row justify-between space-x-16 items-center w-full ">
+                    <div>
+                        <img src="/images/logo.png"  width="500px" height="500p2"/>
+                    </div>
+                    <div>
+                        <p class=""> 
+                            Disclaimer: The values presented by this calculator are estimates only and 
+                            do not represent final or guaranteed outcomes. Actual results may vary based on market conditions, 
+                            individual contributions, and other factors. For personalized advice or 
+                            additional information, please consult a financial professional.
+                        </p>
+                    </div>
+                </div>
+                 <div class="mt-12">
+                     <h4 class="text-lg font-medium text-gray-700 mb-2">Projection Summary</h4>
+                     <p class="text-sm text-gray-500">Starting Date: <span class="text-gray-800"></span></p>
+                     <p class="text-sm text-gray-500">Initial Investment: <span class="text-gray-800">M</span></p>
+                     <p class="text-sm text-gray-500">Annual Contribution: <span class="text-gray-800">M</span></p>
+                     <p class="text-sm text-gray-500">Investment Duration: <span class="text-gray-800"> years</span></p>
+                 </div>
+            </div>
     		<table class="min-w-full divide-y divide-gray-200">
     			<thead class="bg-gray-50">
     				<tr>
@@ -502,6 +551,7 @@
         resultsDiv.innerHTML = tableHTML;
     }
 
+
     function download(){
         const element = document.getElementById("tableContent");
         const hiddenImage = document.getElementById("hiddenImage");
@@ -511,7 +561,7 @@
                 filename: 'Future_Value_Results.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }
 
             };
             html2pdf().set(options).from(element).save();
