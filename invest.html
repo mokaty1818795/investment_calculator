@@ -480,6 +480,25 @@
 
 
 
+    function getAdhocOriginaLValues(){
+        const adhocInputs = document.querySelectorAll('[id^="adhocAmount"]');
+        const adhocDates = document.querySelectorAll('[id^="adhocDate"]');
+        const adhocContributions = [];
+
+        for (let i = 0; i < adhocInputs.length; i++) {
+            const amount = parseFloat(adhocInputs[i].value);
+            const date = new Date(adhocDates[i].value);
+            if (!isNaN(amount) && !isNaN(date.getTime())) {
+                adhocContributions.push({ amount, date });
+            }
+        }
+
+        return adhocContributions;
+
+    }
+
+
+
     function displayFutureValueResults(lowInflationData, highInflationData, startDate) {
             const resultsDiv = document.getElementById("results1");
             const monthlyContribution= document.getElementById('monthlyContribution').value;
@@ -488,8 +507,17 @@
             const day = String(startDate.getDate()).padStart(2, '0');
             const month = String(startDate.getMonth() + 1).padStart(2, '0'); 
             const year = startDate.getFullYear();
-
             const formattedDate = `${day}/${month}/${year}`;
+            const adHocs= getAdhocOriginaLValues();
+
+            const getTotalAdhocs=()=>{
+                let adHocSum= 0;
+                 for(i=0; i<adHocs.length; i++){
+                    adHocSum+= adHocs[i].amount;
+                 }
+
+                 return adHocSum;
+            }
 
             let tableHTML = `
                 <div class="w-full flex justify-between items-center">
@@ -519,16 +547,20 @@
                         </div>
                         <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <h4 class="text-sm font-medium text-gray-500 mb-1">Starting Date</h4>
-                                <p class="text-lg font-semibold text-red-600">${formattedDate}</p>
+                                <h4 class="text-sm font-sm text-gray-500 mb-1">Starting Date</h4>
+                                <p class="text-sm font-semibold text-red-600">${formattedDate}</p>
                             </div>
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <h4 class="text-sm font-medium text-gray-500 mb-1">Monthly Contribution</h4>
-                                <p class="text-lg font-semibold text-red-600">${monthlyContribution}</p>
+                                <h4 class="text-sm font-sm text-gray-500 mb-1">Monthly Contribution</h4>
+                                <p class="text-sm font-semibold text-red-600">${monthlyContribution}</p>
                             </div>
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <h4 class="text-sm font-medium text-gray-500 mb-1">Duration</h4>
-                                <p class="text-lg font-semibold text-red-600">${investmentPeriod} years</p>
+                                <h4 class="text-sm font-sm text-gray-500 mb-1">Duration</h4>
+                                <p class="text-sm font-semibold text-red-600">${investmentPeriod} years</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="text-sm font-sm text-gray-500 mb-1">Adhoc Contributions</h4>
+                                <p class="text-sm font-semibold text-red-600">${getTotalAdhocs()}</p>
                             </div>
                         </div>
                     </div>
