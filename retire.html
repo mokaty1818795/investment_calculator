@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Retirement Calculator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 w-full h-screen">
+    <div id="header"></div>
+    <div class="max-w-6xl mt-10 mx-auto p-4">
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-white rounded-lg shadow-lg p-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold">Calculator Mode</h2>
+                    <select id="calculatorMode" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <option value="standard">Standard Mode</option>
+                        <option value="reverse">Target Amount Mode</option>
+                    </select>
+                </div>
+
+                <div id="standardInputs" class="space-y-2">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Age</label>
+                        <input type="number" id="currentAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="30">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Retirement Age</label>
+                        <input type="number" id="retirementAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="65">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Monthly Salary (R)</label>
+                        <input type="number" id="currentSalary" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="30000">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Monthly Contribution (%)</label>
+                        <input type="number" id="monthlyContribution" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="15">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Retirement Savings (R)</label>
+                        <input type="number" id="currentSavings" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="100000">
+                    </div>
+                </div>
+
+                <div id="reverseInputs" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Age</label>
+                        <input type="number" id="reverseCurrentAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="30">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Retirement Age</label>
+                        <input type="number" id="reverseRetirementAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="65">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Target Monthly Income in Retirement (R)</label>
+                        <input type="number" id="targetMonthlyIncome" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="50000">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Retirement Savings (R)</label>
+                        <input type="number" id="reverseCurrentSavings" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="100000">
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Expected Annual Return (%)</label>
+                        <input type="number" id="returnRate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="8">
+                    </div>
+                </div>
+
+                <button onclick="calculate()" class="w-full mt-6 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                    Calculate
+                </button>
+                <div class="text-center text-xs text-red-600 max-w-2xl mt-4">
+                    Disclaimer: The values presented by this calculator are estimates only and 
+                    do not represent final or guaranteed outcomes. Actual results may vary based on market conditions, 
+                    individual contributions, and other factors.
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Results</h2>
+                <div id="results" class="space-y-4">
+                    <div class="p-4 bg-gray-50 rounded-md">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Projected Retirement Savings</h3>
+                        <p id="projectedSavings" class="text-3xl font-bold text-red-600">R 0</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-md">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2" id="monthlyAmountLabel">Monthly Income in Retirement</h3>
+                        <p id="monthlyAmount" class="text-3xl font-bold text-red-600">R 0</p>
+                    </div>
+                    <div>
+                        <canvas id="savingsChart" class="w-full h-64"></canvas>
+                    </div>
+                    <div class="mt-4 p-4 bg-red-50 rounded-md">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Tips</h3>
+                        <ul id="tips" class="list-disc list-inside text-sm text-gray-600 space-y-2">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <script src="./js/header.js"></script>
+    <script>loadHeader();</script>
+    <script>
+        let savingsChart = null;
+        
+        function toggleCalculatorMode() {
+            const mode = document.getElementById('calculatorMode').value;
+            const standardInputs = document.getElementById('standardInputs');
+            const reverseInputs = document.getElementById('reverseInputs');
+            
+            if (mode === 'standard') {
+                standardInputs.classList.remove('hidden');
+                reverseInputs.classList.add('hidden');
+            } else {
+                standardInputs.classList.add('hidden');
+                reverseInputs.classList.remove('hidden');
+            }
+            
+            calculate();
+        }
+
+        document.getElementById('calculatorMode').addEventListener('change', toggleCalculatorMode);
+
+        function updateTips(monthlyContribution, targetAmount, currentAge, retirementAge) {
+            const tips = document.getElementById('tips');
+            tips.innerHTML = '';
+            const yearsToRetirement = retirementAge - currentAge;
+            
+            const addTip = (text) => {
+                const li = document.createElement('li');
+                li.textContent = text;
+                tips.appendChild(li);
+            };
+
+            if (monthlyContribution > 0) {
+                addTip(`You should save R${monthlyContribution.toLocaleString()} monthly to reach your goal.`);
+                addTip(`This represents ${((monthlyContribution / 30000) * 100).toFixed(1)}% of a R30,000 monthly salary.`);
+            }
+            
+            addTip(`You have ${yearsToRetirement} years until retirement to build your savings.`);
+            
+            if (targetAmount > 5000000) {
+                addTip("Consider consulting with a financial advisor for a detailed retirement strategy.");
+            }
+        }
+
+        function calculate() {
+            const mode = document.getElementById('calculatorMode').value;
+            const returnRate = parseFloat(document.getElementById('returnRate').value) / 100;
+            
+            if (mode === 'standard') {
+                calculateStandard();
+            } else {
+                calculateReverse();
+            }
+        }
+
+        function calculateStandard() {
+            const currentAge = parseInt(document.getElementById('currentAge').value);
+            const retirementAge = parseInt(document.getElementById('retirementAge').value);
+            const currentSalary = parseFloat(document.getElementById('currentSalary').value);
+            const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) / 100;
+            const currentSavings = parseFloat(document.getElementById('currentSavings').value);
+            const returnRate = parseFloat(document.getElementById('returnRate').value) / 100;
+
+            const yearsToRetirement = retirementAge - currentAge;
+            const monthlyContributionAmount = currentSalary * monthlyContribution;
+            
+            document.getElementById('monthlyAmountLabel').textContent = 'Monthly Income in Retirement';
+            
+            updateProjections(currentAge, retirementAge, currentSavings, monthlyContributionAmount, returnRate);
+        }
+
+        function calculateReverse() {
+            const currentAge = parseInt(document.getElementById('reverseCurrentAge').value);
+            const retirementAge = parseInt(document.getElementById('reverseRetirementAge').value);
+            const targetMonthlyIncome = parseFloat(document.getElementById('targetMonthlyIncome').value);
+            const currentSavings = parseFloat(document.getElementById('reverseCurrentSavings').value);
+            const returnRate = parseFloat(document.getElementById('returnRate').value) / 100;
+
+            // Using the 4% rule in reverse to calculate required savings
+            const targetAmount = targetMonthlyIncome * 12 / 0.04;
+            
+            // Calculate required monthly contribution
+            const yearsToRetirement = retirementAge - currentAge;
+            const monthsToRetirement = yearsToRetirement * 12;
+            const monthlyRate = returnRate / 12;
+            
+            // Calculate required monthly contribution using PMT formula
+            const pmt = (targetAmount - currentSavings * Math.pow(1 + returnRate, yearsToRetirement)) /
+                       ((Math.pow(1 + returnRate, yearsToRetirement) - 1) / returnRate);
+            
+            const requiredMonthlyContribution = pmt / 12;
+            
+            document.getElementById('monthlyAmountLabel').textContent = 'Required Monthly Contribution';
+            document.getElementById('monthlyAmount').textContent = 
+                'R ' + Math.abs(requiredMonthlyContribution).toLocaleString(undefined, { maximumFractionDigits: 0 });
+            
+            updateProjections(currentAge, retirementAge, currentSavings, Math.abs(requiredMonthlyContribution), returnRate);
+            updateTips(Math.abs(requiredMonthlyContribution), targetAmount, currentAge, retirementAge);
+        }
+
+        function updateProjections(currentAge, retirementAge, currentSavings, monthlyContribution, returnRate) {
+            const yearsToRetirement = retirementAge - currentAge;
+            const labels = [];
+            const data = [];
+            let runningTotal = currentSavings;
+
+            for (let i = 0; i <= yearsToRetirement; i++) {
+                labels.push(currentAge + i);
+                data.push(Math.round(runningTotal));
+                runningTotal = runningTotal * (1 + returnRate) + (monthlyContribution * 12);
+            }
+
+            const futureValue = data[data.length - 1];
+            const monthlyRetirementIncome = (futureValue * 0.04) / 12;
+
+            document.getElementById('projectedSavings').textContent = 
+                'R ' + futureValue.toLocaleString(undefined, { maximumFractionDigits: 0 });
+
+            updateChart(labels, data);
+        }
+
+        function updateChart(labels, data) {
+            if (savingsChart) {
+                savingsChart.destroy();
+            }
+
+            const ctx = document.getElementById('savingsChart').getContext('2d');
+            savingsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Projected Savings',
+                        data: data,
+                        borderColor: 'rgb(220, 38, 38)',
+                        backgroundColor: 'rgba(254, 226, 226, 0.5)',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: value => 'R ' + value.toLocaleString()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Calculate initially
+        calculate();
+    </script>
+</body>
+</html>
