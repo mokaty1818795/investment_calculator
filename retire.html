@@ -23,23 +23,23 @@
                 <div id="standardInputs" class="space-y-2">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Current Age</label>
-                        <input type="number" id="currentAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="30">
+                        <input type="number" id="currentAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="33">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Retirement Age</label>
-                        <input type="number" id="retirementAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="65">
+                        <input type="number" id="retirementAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="60">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Current Monthly Salary (R)</label>
-                        <input type="number" id="currentSalary" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="30000">
+                        <input type="number" id="currentSalary" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="41925.00">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Monthly Contribution (%)</label>
-                        <input type="number" id="monthlyContribution" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="15">
+                        <input type="number" id="monthlyContribution" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="20">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Current Retirement Savings (R)</label>
-                        <input type="number" id="currentSavings" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="100000">
+                        <input type="number" id="currentSavings" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="338013.13">
                     </div>
                 </div>
 
@@ -161,73 +161,195 @@
             }
         }
 
+
+
+
+
+
+
+
+
+
         function calculateStandard() {
             const currentAge = parseInt(document.getElementById('currentAge').value);
             const retirementAge = parseInt(document.getElementById('retirementAge').value);
-            const currentSalary = parseFloat(document.getElementById('currentSalary').value);
-            const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) / 100;
             const currentSavings = parseFloat(document.getElementById('currentSavings').value);
             const returnRate = parseFloat(document.getElementById('returnRate').value) / 100;
-
-            const yearsToRetirement = retirementAge - currentAge;
-            const monthlyContributionAmount = currentSalary * monthlyContribution;
-            
+        
             document.getElementById('monthlyAmountLabel').textContent = 'Monthly Income in Retirement';
+            updateProjections(currentAge, retirementAge, currentSavings, returnRate);
+        }
+        
+        function calculateMonthlyFundProjection(previousFundValue, monthlyContribution, annualReturn) {
+            // Convert annual return to monthly rate using the formula (1 + r)^(1/12) - 1
+            const monthlyRate = Math.pow(1 + annualReturn, 1/12) - 1;
+            // Calculate next month's value: Previous Value * (1 + monthly rate) + Monthly Contribution
+            const projectedValue = (previousFundValue * (1 + monthlyRate)) + monthlyContribution;
+            // Round to 2 decimal places
+            return Math.round(projectedValue * 100) / 100;
+        }
+        
+        function updateProjections(currentAge, retirementAge, currentSavings, returnRate) {
+            const yearsToRetirement = retirementAge - currentAge;
+            const labels = [];
+            const data = [];
+            const dataFinal = [];
+            let runningTotal = currentSavings;
+        
+            let currentSalary = parseFloat(document.getElementById('currentSalary').value);
+            let monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) / 100;
+            let monthlyContributionAmount = currentSalary * monthlyContribution;
+        
+            // Calculate month-by-month for more accurate compounding
+            for (let year = 0; year < yearsToRetirement; year++) {
+                labels.push(currentAge + year);
+                // Calculate monthly values for the year
+                for (let month = 0; month < 12; month++) {
+                    // console.log("Running total: ", runningTotal, " Monthly Contribution: ", monthlyContributionAmount, " Year: ", year)
+                    data.push(runningTotal);
+                    runningTotal = calculateMonthlyFundProjection(
+                        runningTotal,
+                        monthlyContributionAmount,
+                        returnRate
+                    );
+                    // console.log("1 Running total: ", runningTotal, " Monthly Contribution: ", monthlyContributionAmount, " Year: ", year)
+                }
+        
+                // Store the year-end total
+                
+                const men = data[data.length - 1];
+                dataFinal.push(men);
+                console.log(men)
+                
+                
+        
+                // Apply annual salary increase (6.4%)
+                currentSalary += currentSalary * 0.064;
+                monthlyContributionAmount = currentSalary * monthlyContribution;
+            }
+        
+            const futureValue = dataFinal[dataFinal.length - 1];
+            console.log("futureValue: ", futureValue)
+            const monthlyRetirementIncome = (futureValue * 0.04) / 12;
+        
+            document.getElementById('projectedSavings').textContent = 
+                'R ' + futureValue.toLocaleString(undefined, { maximumFractionDigits: 0 });
             
-            updateProjections(currentAge, retirementAge, currentSavings, monthlyContributionAmount, returnRate);
+            document.getElementById('monthlyAmount').textContent = 
+                'R ' + monthlyRetirementIncome.toLocaleString(undefined, { maximumFractionDigits: 0 });
+
+                
+            updateChart(labels, dataFinal);
         }
 
+
+
+
+
+
+
+        
+        
+        
         function calculateReverse() {
             const currentAge = parseInt(document.getElementById('reverseCurrentAge').value);
             const retirementAge = parseInt(document.getElementById('reverseRetirementAge').value);
             const targetMonthlyIncome = parseFloat(document.getElementById('targetMonthlyIncome').value);
             const currentSavings = parseFloat(document.getElementById('reverseCurrentSavings').value);
             const returnRate = parseFloat(document.getElementById('returnRate').value) / 100;
-
-            // Using the 4% rule in reverse to calculate required savings
+        
+            // Calculate target amount using 4% rule
             const targetAmount = targetMonthlyIncome * 12 / 0.04;
-            
-            // Calculate required monthly contribution
-            const yearsToRetirement = retirementAge - currentAge;
-            const monthsToRetirement = yearsToRetirement * 12;
-            const monthlyRate = returnRate / 12;
-            
-            // Calculate required monthly contribution using PMT formula
-            const pmt = (targetAmount - currentSavings * Math.pow(1 + returnRate, yearsToRetirement)) /
-                       ((Math.pow(1 + returnRate, yearsToRetirement) - 1) / returnRate);
-            
-            const requiredMonthlyContribution = pmt / 12;
-            
+            // Calculate required monthly contribution using binary search
+            const monthlyContribution = findRequiredMonthlyContribution(
+                currentSavings,
+                targetAmount,
+                returnRate,
+                retirementAge - currentAge
+            );
+        
+            // Update UI
             document.getElementById('monthlyAmountLabel').textContent = 'Required Monthly Contribution';
-            document.getElementById('monthlyAmount').textContent = 
-                'R ' + Math.abs(requiredMonthlyContribution).toLocaleString(undefined, { maximumFractionDigits: 0 });
+            document.getElementById('monthlyAmount').textContent =
+                'R ' + Math.abs(monthlyContribution).toLocaleString(undefined, { maximumFractionDigits: 0 });
+        
+            updateProjections(currentAge, retirementAge, currentSavings, Math.abs(monthlyContribution), returnRate);
+            updateTips(Math.abs(monthlyContribution), targetAmount, currentAge, retirementAge);
+
             
-            updateProjections(currentAge, retirementAge, currentSavings, Math.abs(requiredMonthlyContribution), returnRate);
-            updateTips(Math.abs(requiredMonthlyContribution), targetAmount, currentAge, retirementAge);
         }
-
-        function updateProjections(currentAge, retirementAge, currentSavings, monthlyContribution, returnRate) {
-            const yearsToRetirement = retirementAge - currentAge;
-            const labels = [];
-            const data = [];
-            let runningTotal = currentSavings;
-
-            for (let i = 0; i <= yearsToRetirement; i++) {
-                labels.push(currentAge + i);
-                data.push(Math.round(runningTotal));
-                runningTotal = runningTotal * (1 + returnRate) + (monthlyContribution * 12);
+        
+        
+        function projectFutureValue(initialAmount, monthlyContribution, annualReturn, years) {
+            let balance = initialAmount;
+            const months = years * 12;
+            for (let month = 0; month < months; month++) {
+                balance = calculateMonthlyFundProjection(balance, monthlyContribution, annualReturn);
             }
-
-            const futureValue = data[data.length - 1];
-            const monthlyRetirementIncome = (futureValue * 0.04) / 12;
-
-            document.getElementById('projectedSavings').textContent = 
-                'R ' + futureValue.toLocaleString(undefined, { maximumFractionDigits: 0 });
-
-            updateChart(labels, data);
+            return balance;
         }
+        
+        function findRequiredMonthlyContribution(currentSavings, targetAmount, annualReturn, years) {
+            let low = 0;
+            let high = targetAmount / (years * 12); // Maximum possible monthly contribution
+            let closestContribution = 0;
+            let closestDifference = Infinity;
+            // Binary search for the correct monthly contribution
+            for (let i = 0; i < 30; i++) { // 30 iterations for precision
+                const monthlyContribution = (low + high) / 2;
+                const projectedAmount = projectFutureValue(currentSavings, monthlyContribution, annualReturn, years);
+                const difference = Math.abs(projectedAmount - targetAmount);
+                // Keep track of the closest solution
+                if (difference < closestDifference) {
+                    closestContribution = monthlyContribution;
+                    closestDifference = difference;
+                }
+                if (Math.abs(projectedAmount - targetAmount) < 1) {
+                    return monthlyContribution;
+                } else if (projectedAmount < targetAmount) {
+                    low = monthlyContribution;
+                } else {
+                    high = monthlyContribution;
+                }
+            }
+            console.log("Closest Contribution: ", closestContribution)
+            return closestContribution;
+        }
+        
+        
 
-        function updateChart(labels, data) {
+        // function calculateReverse() {
+        //     const currentAge = parseInt(document.getElementById('reverseCurrentAge').value);
+        //     const retirementAge = parseInt(document.getElementById('reverseRetirementAge').value);
+        //     const targetMonthlyIncome = parseFloat(document.getElementById('targetMonthlyIncome').value);
+        //     const currentSavings = parseFloat(document.getElementById('reverseCurrentSavings').value);
+        //     const returnRate = parseFloat(document.getElementById('returnRate').value) / 100;
+
+        //     // Using the 4% rule in reverse to calculate required savings
+        //     const targetAmount = targetMonthlyIncome * 12 / 0.04;
+            
+        //     // Calculate required monthly contribution
+        //     const yearsToRetirement = retirementAge - currentAge;
+        //     const monthsToRetirement = yearsToRetirement * 12;
+        //     const monthlyRate = returnRate / 12;
+            
+        //     // Calculate required monthly contribution using PMT formula
+        //     const pmt = (targetAmount - currentSavings * Math.pow(1 + returnRate, yearsToRetirement)) /
+        //                ((Math.pow(1 + returnRate, yearsToRetirement) - 1) / returnRate);
+            
+        //     const requiredMonthlyContribution = pmt / 12;
+            
+        //     document.getElementById('monthlyAmountLabel').textContent = 'Required Monthly Contribution';
+        //     document.getElementById('monthlyAmount').textContent = 
+        //         'R ' + Math.abs(requiredMonthlyContribution).toLocaleString(undefined, { maximumFractionDigits: 0 });
+            
+        //     updateProjections(currentAge, retirementAge, currentSavings, Math.abs(requiredMonthlyContribution), returnRate);
+        //     updateTips(Math.abs(requiredMonthlyContribution), targetAmount, currentAge, retirementAge);
+        // }
+
+        
+
+        function updateChart(labels, dataFinal) {
             if (savingsChart) {
                 savingsChart.destroy();
             }
@@ -239,7 +361,7 @@
                     labels: labels,
                     datasets: [{
                         label: 'Projected Savings',
-                        data: data,
+                        data: dataFinal,
                         borderColor: 'rgb(220, 38, 38)',
                         backgroundColor: 'rgba(254, 226, 226, 0.5)',
                         fill: true
