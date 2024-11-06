@@ -46,19 +46,19 @@
                 <div id="reverseInputs" class="space-y-4 hidden">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Current Age</label>
-                        <input type="number" id="reverseCurrentAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="30">
+                        <input type="number" id="reverseCurrentAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="33">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Retirement Age</label>
-                        <input type="number" id="reverseRetirementAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="65">
+                        <input type="number" id="reverseRetirementAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="60">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Target Monthly Income in Retirement (R)</label>
-                        <input type="number" id="targetMonthlyIncome" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="50000">
+                        <input type="number" id="targetMonthlyIncome" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="65984">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Current Retirement Savings (R)</label>
-                        <input type="number" id="reverseCurrentSavings" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="100000">
+                        <input type="number" id="reverseCurrentSavings" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="338013.13">
                     </div>
                 </div>
 
@@ -202,7 +202,7 @@
         
             // Calculate month-by-month for more accurate compounding
             for (let year = 0; year < yearsToRetirement; year++) {
-                labels.push(currentAge + year);
+                labels.push(currentAge + year + 1);
                 // Calculate monthly values for the year
                 for (let month = 0; month < 12; month++) {
                     // console.log("Running total: ", runningTotal, " Monthly Contribution: ", monthlyContributionAmount, " Year: ", year)
@@ -260,12 +260,13 @@
         
             // Calculate target amount using 4% rule
             const targetAmount = targetMonthlyIncome * 12 / 0.04;
+
             // Calculate required monthly contribution using binary search
             const monthlyContribution = findRequiredMonthlyContribution(
                 currentSavings,
                 targetAmount,
-                returnRate,
-                retirementAge - currentAge
+                retirementAge - currentAge,
+                returnRate
             );
         
             // Update UI
@@ -289,32 +290,70 @@
             return balance;
         }
         
-        function findRequiredMonthlyContribution(currentSavings, targetAmount, annualReturn, years) {
-            let low = 0;
-            let high = targetAmount / (years * 12); // Maximum possible monthly contribution
-            let closestContribution = 0;
-            let closestDifference = Infinity;
-            // Binary search for the correct monthly contribution
-            for (let i = 0; i < 30; i++) { // 30 iterations for precision
-                const monthlyContribution = (low + high) / 2;
-                const projectedAmount = projectFutureValue(currentSavings, monthlyContribution, annualReturn, years);
-                const difference = Math.abs(projectedAmount - targetAmount);
-                // Keep track of the closest solution
-                if (difference < closestDifference) {
-                    closestContribution = monthlyContribution;
-                    closestDifference = difference;
-                }
-                if (Math.abs(projectedAmount - targetAmount) < 1) {
-                    return monthlyContribution;
-                } else if (projectedAmount < targetAmount) {
-                    low = monthlyContribution;
-                } else {
-                    high = monthlyContribution;
-                }
-            }
-            console.log("Closest Contribution: ", closestContribution)
-            return closestContribution;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// non
+        function findRequiredMonthlyContribution(currentSavings, targetAmount, years, annualReturn) {
+            const monthlyRate = (1 + annualReturn) ** (1 / 12) - 1;
+            // const totalMonths = investmentPeriod * 12;
+            const monthlyPremium = (targetAmount - (currentSavings * (1 + annualReturn) ** years)) / ((1 + annualReturn) ** years - 1);
+            //         (monthlyRate / (1 + monthlyRate)))
+            // const monthlyPremium =
+            //     goalAmount /
+            //     (((1 + annualRate) ** investmentPeriod - 1) /
+            //         (monthlyRate / (1 + monthlyRate))) /
+            //     (1 - 0.02);
+            console.log("Monthly: ", monthlyPremium)
+            return monthlyPremium;
         }
+// non
+
+
+        // function findRequiredMonthlyContribution(currentSavings, targetAmount, annualReturn, years) {
+        //     let low = 0;
+        //     let high = targetAmount / (years * 12); // Maximum possible monthly contribution
+        //     let closestContribution = 0;
+        //     let closestDifference = Infinity;
+        //     // Binary search for the correct monthly contribution
+        //     for (let i = 0; i < 30; i++) { // 30 iterations for precision
+        //         const monthlyContribution = (low + high) / 2;
+        //         const projectedAmount = projectFutureValue(currentSavings, monthlyContribution, annualReturn, years);
+        //         const difference = Math.abs(projectedAmount - targetAmount);
+        //         // Keep track of the closest solution
+        //         if (difference < closestDifference) {
+        //             closestContribution = monthlyContribution;
+        //             closestDifference = difference;
+        //         }
+        //         if (Math.abs(projectedAmount - targetAmount) < 1) {
+        //             return monthlyContribution;
+        //         } else if (projectedAmount < targetAmount) {
+        //             low = monthlyContribution;
+        //         } else {
+        //             high = monthlyContribution;
+        //         }
+        //     }
+        //     console.log("Closest Contribution: ", closestContribution)
+        //     return closestContribution;
+        // }
         
         
 
