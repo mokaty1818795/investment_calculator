@@ -16,9 +16,9 @@ function generateAdhocInputs() {
         adhocInputsDiv.innerHTML += `
             <div>
                 <label for="adhocAmount${i}" class="block text-lg font-semibold">Ad Hoc Amount ${i + 1} ($):</label>
-                <input type="number" id="adhocAmount${i}" min="0" step="100" value="1000" class="w-full mt-1 p-2 border rounded">
+                <input type="number" id="adhocAmount${i}" min="0" step="100" value="1000" class="w-full mt-1 p-2 border rounded focus:outline-none">
                 <label for="adhocDate${i}" class="block text-lg font-semibold">Date:</label>
-                <input type="date" id="adhocDate${i}" class="w-full mt-1 p-2 border rounded">
+                <input type="date" id="adhocDate${i}" class="w-full mt-1 p-2 border rounded focus:outline-none">
             </div>
         `;
     }
