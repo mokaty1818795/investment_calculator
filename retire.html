@@ -253,13 +253,13 @@
         
         function calculateReverse() {
             const currentAge = parseInt(document.getElementById('reverseCurrentAge').value);
-            const retirementAge = parseInt(document.getElementById('reverseRetirementAge').value);
+            let retirementAge = parseInt(document.getElementById('reverseRetirementAge').value);
             const targetMonthlyIncome = parseFloat(document.getElementById('targetMonthlyIncome').value);
             const currentSavings = parseFloat(document.getElementById('reverseCurrentSavings').value);
             const returnRate = parseFloat(document.getElementById('returnRate').value) / 100;
         
             // Calculate target amount using 4% rule
-            const targetAmount = targetMonthlyIncome * 12 / 0.04;
+            let targetAmount = targetMonthlyIncome * 12 / 0.04;
             
 
             // Calculate required monthly contribution using binary search
@@ -269,11 +269,28 @@
                 retirementAge - currentAge,
                 returnRate
             );
-        
+
+            document.getElementById('projectedSavings').textContent =
+                'R ' + Math.abs(targetAmount).toLocaleString(undefined, { maximumFractionDigits: 0 });
+            
+            let data = [];
+            let labels = [];
+            const yearsRetired = targetAmount / (targetMonthlyIncome * 12)
+            for (let i = 0; i <= yearsRetired; i++) {
+                data.push(targetAmount);
+                labels.push(retirementAge)
+                targetAmount = targetAmount - (targetMonthlyIncome * 12);
+                retirementAge += 1;
+            }
+
+            updateChart(labels, data);
+            console.log("Array last element: ", data[data.length - 1]);
             // Update UI
             document.getElementById('monthlyAmountLabel').textContent = 'Required Monthly Contribution';
             document.getElementById('monthlyAmount').textContent =
                 'R ' + Math.abs(monthlyContribution).toLocaleString(undefined, { maximumFractionDigits: 0 });
+
+            
         
             // updateProjections(currentAge, retirementAge, currentSavings, Math.abs(monthlyContribution), returnRate);
             // updateTips(Math.abs(monthlyContribution), targetAmount, currentAge, retirementAge);
