@@ -260,6 +260,7 @@
         
             // Calculate target amount using 4% rule
             const targetAmount = targetMonthlyIncome * 12 / 0.04;
+            
 
             // Calculate required monthly contribution using binary search
             const monthlyContribution = findRequiredMonthlyContribution(
@@ -274,8 +275,8 @@
             document.getElementById('monthlyAmount').textContent =
                 'R ' + Math.abs(monthlyContribution).toLocaleString(undefined, { maximumFractionDigits: 0 });
         
-            updateProjections(currentAge, retirementAge, currentSavings, Math.abs(monthlyContribution), returnRate);
-            updateTips(Math.abs(monthlyContribution), targetAmount, currentAge, retirementAge);
+            // updateProjections(currentAge, retirementAge, currentSavings, Math.abs(monthlyContribution), returnRate);
+            // updateTips(Math.abs(monthlyContribution), targetAmount, currentAge, retirementAge);
 
             
         }
@@ -313,9 +314,9 @@
 
 // non
         function findRequiredMonthlyContribution(currentSavings, targetAmount, years, annualReturn) {
-            const monthlyRate = (1 + annualReturn) ** (1 / 12) - 1;
+            const monthlyRate = ((1 + annualReturn) ** (1 / 12) - 1) / 12;
             // const totalMonths = investmentPeriod * 12;
-            const monthlyPremium = (targetAmount - (currentSavings * (1 + annualReturn) ** years)) / ((1 + annualReturn) ** years - 1);
+            const monthlyPremium = (targetAmount - (currentSavings * (1 + annualReturn) ** years)) / (((1 + monthlyRate) ** ((years * 12) - 1)) / monthlyRate);
             //         (monthlyRate / (1 + monthlyRate)))
             // const monthlyPremium =
             //     goalAmount /
