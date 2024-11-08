@@ -127,7 +127,7 @@
                             Contribution:</label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-black">M</span>
-                            <input oninput="setFormat('monthlyContribution')" type="text" id="monthlyContribution" min="0" step="50" value="100"
+                            <input oninput="setFormat('monthlyContribution')" type="text" id="monthlyContribution" min="0" step="50" value="0"
                                 class="w-full p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300 pl-8" />
                         </div>
                     </div>
@@ -151,8 +151,8 @@
                         <div class="relative">
                             <span
                                 class="absolute inset-y-0 left-0 pl-3 text-black flex items-center text-gray-600">M</span>
-                            <input type="number" id="goalAmount" min="0" step="1000" value="50000"
-                                class="w-full p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300" />
+                            <input oninput="setFormat('goalAmount')" type="text" id="goalAmount" min="0" step="1000" value="0"
+                                class="w-full p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300 pl-8" />
                         </div>
                     </div>
 
@@ -177,7 +177,7 @@
                         Calculate
                     </button>
                 </div>
-                <div class="space-y-8 mt-12 mb-12">
+                <div class="space-y-8 mt-12">
                     <div id="chartContainer" class="bg-white p-6 rounded-2xl shadow-lg">
                         <h3 class="text-xl sm:text-2xl font-bold text-red-600 mb-6">
                             Investment Growth Projection
@@ -200,25 +200,27 @@
 
     function setCalculationType(type) {
         calculationType = type;
-        if(calculationType==="futureValue")
-         {
-        const resultsDiv = document.getElementById("results1");
-        resultsDiv.style.display = "block";
+        if(calculationType==="futureValue"){
+            const resultsDiv = document.getElementById("results1");
+            resultsDiv.style.display = "block";
 
-        const resultsDiv1 = document.getElementById("results");
-        resultsDiv1.style.display = "none";
+            const resultsDiv1 = document.getElementById("results");
+            resultsDiv1.style.display = "none";
 
+            const adhocInputsDiv = document.getElementById("adhocInputs");
+            adhocInputsDiv.classList.remove("hidden");
         }
 
 
-        if(calculationType==="monthlyPremium")
-         {
-        const resultsDiv = document.getElementById("results1");
-        resultsDiv.style.display = "none";
+        if(calculationType==="monthlyPremium"){
+            const resultsDiv = document.getElementById("results1");
+            resultsDiv.style.display = "none";
 
-        const resultsDiv1 = document.getElementById("results");
-        resultsDiv1.style.display = "block";
-       
+            const resultsDiv1 = document.getElementById("results");
+            resultsDiv1.style.display = "block";
+
+            const adhocInputsDiv1 = document.getElementById("adhocInputs");
+            adhocInputsDiv1.classList.add("hidden");
         }
 
 
@@ -320,7 +322,7 @@
     					<label for="adhocAmount${i}" class="block text-sm font-medium text-gray-700 mb-1">Amount:</label>
     					<div class="relative">
     						<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">M</span>
-    						<input oninput="setFormat('adhocAmount${i}')" type="text" id="adhocAmount${i}" min="0" step="100" value="1000" class="w-full p-3 pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition-all duration-300 focus:outline-none">
+    						<input oninput="setFormat('adhocAmount${i}')" type="text" id="adhocAmount${i}" min="0" step="100" value="0" class="w-full p-3 pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition-all duration-300 focus:outline-none">
     					</div>
     				</div>
     				<div class="w-full sm:w-1/2">
@@ -640,9 +642,19 @@
     	<h3 class="text-xl font-semibold text-red-600 mb-4">Monthly Premium Results</h3>
        <p class="mb-2">
     	  To achieve your investment goal, your monthly premium can range between a minimum of
-    	  <span class="font-bold text-red-600">M${highPremium.toFixed(2)}</span>
+    	  <span class="font-bold text-red-600">${new Intl.NumberFormat('en-LS', {
+                                style: 'currency',
+                                currency: 'LSL',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0
+                            }).format(highPremium)}</span>
     	  and a maximum of
-    	  <span class="font-bold text-red-600">M${lowPremium.toFixed(2)}</span>
+    	  <span class="font-bold text-red-600">${new Intl.NumberFormat('en-LS', {
+                                style: 'currency',
+                                currency: 'LSL',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0
+                            }).format(lowPremium)}</span>
     	  per month.
     	</p>
     `;
