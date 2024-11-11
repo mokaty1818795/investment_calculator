@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retirement Calculator</title>
+    <title>Smart Retirement Calculator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -15,8 +15,8 @@
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-semibold">Calculator Mode</h2>
                     <select id="calculatorMode" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
-                        <option value="standard">Future Value</option>
-                        <option value="reverse">Monthly Contribution</option>
+                        <option value="standard">Standard Mode</option>
+                        <option value="reverse">Target Amount Mode</option>
                     </select>
                 </div>
 
@@ -253,13 +253,13 @@
         
         function calculateReverse() {
             const currentAge = parseInt(document.getElementById('reverseCurrentAge').value);
-            let retirementAge = parseInt(document.getElementById('reverseRetirementAge').value);
+            const retirementAge = parseInt(document.getElementById('reverseRetirementAge').value);
             const targetMonthlyIncome = parseFloat(document.getElementById('targetMonthlyIncome').value);
             const currentSavings = parseFloat(document.getElementById('reverseCurrentSavings').value);
             const returnRate = parseFloat(document.getElementById('returnRate').value) / 100;
         
             // Calculate target amount using 4% rule
-            let targetAmount = targetMonthlyIncome * 12 / 0.04;
+            const targetAmount = targetMonthlyIncome * 12 / 0.04;
             
 
             // Calculate required monthly contribution using binary search
@@ -269,28 +269,11 @@
                 retirementAge - currentAge,
                 returnRate
             );
-
-            document.getElementById('projectedSavings').textContent =
-                'R ' + Math.abs(targetAmount).toLocaleString(undefined, { maximumFractionDigits: 0 });
-            
-            let data = [];
-            let labels = [];
-            const yearsRetired = targetAmount / (targetMonthlyIncome * 12)
-            for (let i = 0; i <= yearsRetired; i++) {
-                data.push(targetAmount);
-                labels.push(retirementAge)
-                targetAmount = targetAmount - (targetMonthlyIncome * 12);
-                retirementAge += 1;
-            }
-
-            updateChart(labels, data);
-            console.log("Array last element: ", data[data.length - 1]);
+        
             // Update UI
             document.getElementById('monthlyAmountLabel').textContent = 'Required Monthly Contribution';
             document.getElementById('monthlyAmount').textContent =
                 'R ' + Math.abs(monthlyContribution).toLocaleString(undefined, { maximumFractionDigits: 0 });
-
-            
         
             // updateProjections(currentAge, retirementAge, currentSavings, Math.abs(monthlyContribution), returnRate);
             // updateTips(Math.abs(monthlyContribution), targetAmount, currentAge, retirementAge);
