@@ -1,442 +1,546 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Retirement Calculator</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 w-full h-screen">
-    <div id="header"></div>
+<body class="bg-gray-50">
     <div class="max-w-6xl mt-10 mx-auto p-4">
         <div class="grid md:grid-cols-2 gap-8">
+            <!-- Calculator Section -->
             <div class="bg-white rounded-lg shadow-lg p-4">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-semibold">Calculator Mode</h2>
-                    <select id="calculatorMode" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
-                        <option value="standard">Standard Mode</option>
-                        <option value="reverse">Target Amount Mode</option>
-                    </select>
-                </div>
-
-                <div id="standardInputs" class="space-y-2">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Age</label>
-                        <input type="number" id="currentAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="33">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Retirement Age</label>
-                        <input type="number" id="retirementAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="60">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Monthly Salary (R)</label>
-                        <input type="number" id="currentSalary" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="41925.00">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Monthly Contribution (%)</label>
-                        <input type="number" id="monthlyContribution" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="20">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Retirement Savings (R)</label>
-                        <input type="number" id="currentSavings" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="338013.13">
+                    <div class="space-x-2">
+                        <button id="standardMode" class="px-3 py-1 bg-blue-500 text-white rounded">Standard Mode</button>
+                        <button id="targetMode" class="px-3 py-1 bg-gray-200 rounded">Target Amount Mode</button>
                     </div>
                 </div>
 
+                <!-- Gender Selection -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                    <div class="space-x-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="gender" value="male" checked class="form-radio">
+                            <span class="ml-2">Male</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="gender" value="female" class="form-radio">
+                            <span class="ml-2">Female</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Standard Mode Inputs -->
+                <div id="standardInputs" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Current Age</label>
+                        <input type="number" id="currentAge" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Retirement Age</label>
+                        <input type="number" id="retirementAge" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Current Monthly Salary (R)</label>
+                        <input type="number" id="monthlySalary" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Monthly Contribution (%)</label>
+                        <input type="number" id="monthlyContribution" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Current Retirement Savings (R)</label>
+                        <input type="number" id="currentSavings" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <!-- Target Mode Inputs (Hidden by default) -->
                 <div id="reverseInputs" class="space-y-4 hidden">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Age</label>
-                        <input type="number" id="reverseCurrentAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="33">
+                        <label class="block text-sm font-medium text-gray-700">Current Age</label>
+                        <input type="number" id="targetCurrentAge" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Retirement Age</label>
-                        <input type="number" id="reverseRetirementAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="60">
+                        <label class="block text-sm font-medium text-gray-700">Retirement Age</label>
+                        <input type="number" id="targetRetirementAge" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Target Monthly Income in Retirement (R)</label>
-                        <input type="number" id="targetMonthlyIncome" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="65984">
+                        <label class="block text-sm font-medium text-gray-700">Target Monthly Income in Retirement (R)</label>
+                        <input type="number" id="targetMonthlyIncome" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Retirement Savings (R)</label>
-                        <input type="number" id="reverseCurrentSavings" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="338013.13">
+                        <label class="block text-sm font-medium text-gray-700">Current Retirement Savings (R)</label>
+                        <input type="number" id="targetCurrentSavings" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     </div>
                 </div>
 
                 <div class="mt-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Expected Annual Return (%)</label>
-                        <input type="number" id="returnRate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" value="8">
-                    </div>
+                    <label class="block text-sm font-medium text-gray-700">Expected Annual Return (%)</label>
+                    <input type="number" id="annualReturn" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </div>
 
-                <button onclick="calculate()" class="w-full mt-6 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                <button id="calculateBtn" class="mt-6 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                     Calculate
                 </button>
+
                 <div class="text-center text-xs text-red-600 max-w-2xl mt-4">
-                    Disclaimer: The values presented by this calculator are estimates only and 
-                    do not represent final or guaranteed outcomes. Actual results may vary based on market conditions, 
-                    individual contributions, and other factors.
+                    Disclaimer: The values presented by this calculator are estimates only and do not represent final or guaranteed outcomes. Actual results may vary based on market conditions, individual contributions, and other factors.
                 </div>
             </div>
 
+            <!-- Results Section -->
             <div class="bg-white rounded-lg shadow-lg p-6">
                 <h2 class="text-xl font-semibold mb-4">Results</h2>
                 <div id="results" class="space-y-4">
                     <div class="p-4 bg-gray-50 rounded-md">
                         <h3 class="text-lg font-medium text-gray-900 mb-2">Projected Retirement Savings</h3>
-                        <p id="projectedSavings" class="text-3xl font-bold text-red-600">R 0</p>
+                        <p id="projectedSavings" class="text-2xl font-bold">R 0</p>
                     </div>
+
                     <div class="p-4 bg-gray-50 rounded-md">
-                        <h3 class="text-lg font-medium text-gray-900 mb-2" id="monthlyAmountLabel">Monthly Income in Retirement</h3>
-                        <p id="monthlyAmount" class="text-3xl font-bold text-red-600">R 0</p>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Monthly Income in Retirement</h3>
+                        <p id="monthlyIncome" class="text-2xl font-bold">R 0</p>
+                        <p id="targetIncome" class="text-sm text-gray-600 mt-2"></p>
                     </div>
-                    <div>
-                        <canvas id="savingsChart" class="w-full h-64"></canvas>
+
+                    <div class="p-4 bg-gray-50 rounded-md">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Life Expectancy</h3>
+                        <p id="lifeExpectancy" class="text-2xl font-bold">- years</p>
                     </div>
-                    <div class="mt-4 p-4 bg-red-50 rounded-md">
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">Tips</h3>
-                        <ul id="tips" class="list-disc list-inside text-sm text-gray-600 space-y-2">
-                        </ul>
+
+                    <div id="statusAlert" class="p-4 rounded-md hidden">
+                        <p id="statusMessage" class="text-sm"></p>
                     </div>
                 </div>
             </div>
         </div>
-        
     </div>
 
-    <script src="./js/header.js"></script>
-    <script>loadHeader();</script>
     <script>
-        let savingsChart = null;
-        
-        function toggleCalculatorMode() {
-            const mode = document.getElementById('calculatorMode').value;
-            const standardInputs = document.getElementById('standardInputs');
-            const reverseInputs = document.getElementById('reverseInputs');
-            
-            if (mode === 'standard') {
-                standardInputs.classList.remove('hidden');
-                reverseInputs.classList.add('hidden');
-            } else {
-                standardInputs.classList.add('hidden');
-                reverseInputs.classList.remove('hidden');
+        // Life expectancy data
+        const LIFE_EXPECTANCY_DATA = {
+            male: {
+                18: 65.83, 19: 65.94, 20: 66.04, 21: 66.14, 22: 66.24, 23: 66.34, 24: 66.43,
+                25: 66.53, 26: 66.62, 27: 66.70, 28: 66.79, 29: 66.87, 30: 66.95, 31: 67.03,
+                32: 67.11, 33: 67.18, 34: 67.25, 35: 67.32, 36: 67.38, 37: 67.45, 38: 67.53,
+                39: 67.61, 40: 67.69, 41: 67.78, 42: 67.86, 43: 67.95, 44: 68.04, 45: 68.14,
+                46: 68.24, 47: 68.34, 48: 68.45, 49: 68.55, 50: 68.66, 51: 68.76, 52: 68.87,
+                53: 68.97, 54: 69.07, 55: 69.17, 56: 69.28, 57: 69.38, 58: 69.49, 59: 69.60,
+                60: 69.71, 61: 69.83, 62: 69.93, 63: 70.04, 64: 70.14, 65: 70.23, 66: 70.31,
+                67: 70.38, 68: 70.44, 69: 70.48, 70: 70.50
+            },
+            female: {
+                18: 68.40, 19: 68.41, 20: 68.41, 21: 68.42, 22: 68.43, 23: 68.44, 24: 68.45,
+                25: 68.47, 26: 68.49, 27: 68.51, 28: 68.53, 29: 68.56, 30: 68.59, 31: 68.61,
+                32: 68.64, 33: 68.66, 34: 68.68, 35: 68.71, 36: 68.73, 37: 68.75, 38: 68.78,
+                39: 68.81, 40: 68.84, 41: 68.88, 42: 68.92, 43: 68.96, 44: 69.01, 45: 69.06,
+                46: 69.11, 47: 69.17, 48: 69.23, 49: 69.29, 50: 69.35, 51: 69.42, 52: 69.48,
+                53: 69.55, 54: 69.62, 55: 69.69, 56: 69.75, 57: 69.82, 58: 69.89, 59: 69.96,
+                60: 70.03, 61: 70.10, 62: 70.16, 63: 70.22, 64: 70.28, 65: 70.34, 66: 70.39,
+                67: 70.43, 68: 70.46, 69: 70.49, 70: 70.50
             }
-            
-            calculate();
+        };
+
+        const REPLACEMENT_RATIO = 0.75;
+
+        // DOM Elements
+        const standardMode = document.getElementById('standardMode');
+        const targetMode = document.getElementById('targetMode');
+        const standardInputs = document.getElementById('standardInputs');
+        const reverseInputs = document.getElementById('reverseInputs');
+        const calculateBtn = document.getElementById('calculateBtn');
+
+        // Mode switching
+        standardMode.addEventListener('click', () => {
+            standardMode.classList.replace('bg-gray-200', 'bg-blue-500');
+            standardMode.classList.replace('text-gray-700', 'text-white');
+            targetMode.classList.replace('bg-blue-500', 'bg-gray-200');
+            targetMode.classList.replace('text-white', 'text-gray-700');
+            standardInputs.classList.remove('hidden');
+            reverseInputs.classList.add('hidden');
+        });
+
+        targetMode.addEventListener('click', () => {
+            targetMode.classList.replace('bg-gray-200', 'bg-blue-500');
+            targetMode.classList.replace('text-gray-700', 'text-white');
+            standardMode.classList.replace('bg-blue-500', 'bg-gray-200');
+            standardMode.classList.replace('text-white', 'text-gray-700');
+            reverseInputs.classList.remove('hidden');
+            standardInputs.classList.add('hidden');
+        });
+
+        function getLifeExpectancy(age, gender) {
+            const expectancy = LIFE_EXPECTANCY_DATA[gender][Math.floor(age)] || 70.5;
+            // return Math.max(Math.ceil(expectancy), Math.floor(age) + 1);
+            console.log("Expected: ", expectancy);
+            return expectancy
         }
 
-        document.getElementById('calculatorMode').addEventListener('change', toggleCalculatorMode);
-
-        function updateTips(monthlyContribution, targetAmount, currentAge, retirementAge) {
-            const tips = document.getElementById('tips');
-            tips.innerHTML = '';
-            const yearsToRetirement = retirementAge - currentAge;
-            
-            const addTip = (text) => {
-                const li = document.createElement('li');
-                li.textContent = text;
-                tips.appendChild(li);
-            };
-
-            if (monthlyContribution > 0) {
-                addTip(`You should save R${monthlyContribution.toLocaleString()} monthly to reach your goal.`);
-                addTip(`This represents ${((monthlyContribution / 30000) * 100).toFixed(1)}% of a R30,000 monthly salary.`);
-            }
-            
-            addTip(`You have ${yearsToRetirement} years until retirement to build your savings.`);
-            
-            if (targetAmount > 5000000) {
-                addTip("Consider consulting with a financial advisor for a detailed retirement strategy.");
-            }
+        function formatCurrency(amount) {
+            return 'R ' + amount.toLocaleString('en-ZA', { maximumFractionDigits: 0 });
         }
 
-        function calculate() {
-            const mode = document.getElementById('calculatorMode').value;
-            const returnRate = parseFloat(document.getElementById('returnRate').value) / 100;
-            
-            if (mode === 'standard') {
-                calculateStandard();
-            } else {
-                calculateReverse();
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-        function calculateStandard() {
-            const currentAge = parseInt(document.getElementById('currentAge').value);
-            const retirementAge = parseInt(document.getElementById('retirementAge').value);
+        function calculateRetirement() {
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const currentAge = parseFloat(document.getElementById('currentAge').value);
+            const retirementAge = parseFloat(document.getElementById('retirementAge').value);
+            let monthlySalary = parseFloat(document.getElementById('monthlySalary').value);
+            const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) / 100;
             const currentSavings = parseFloat(document.getElementById('currentSavings').value);
-            const returnRate = parseFloat(document.getElementById('returnRate').value) / 100;
-        
-            document.getElementById('monthlyAmountLabel').textContent = 'Monthly Income in Retirement';
-            updateProjections(currentAge, retirementAge, currentSavings, returnRate);
-        }
-        
-        function calculateMonthlyFundProjection(previousFundValue, monthlyContribution, annualReturn) {
-            // Convert annual return to monthly rate using the formula (1 + r)^(1/12) - 1
-            const monthlyRate = Math.pow(1 + annualReturn, 1/12) - 1;
-            // Calculate next month's value: Previous Value * (1 + monthly rate) + Monthly Contribution
-            const projectedValue = (previousFundValue * (1 + monthlyRate)) + monthlyContribution;
-            // Round to 2 decimal places
-            return Math.round(projectedValue * 100) / 100;
-        }
-        
-        function updateProjections(currentAge, retirementAge, currentSavings, returnRate) {
+            const annualReturn = parseFloat(document.getElementById('annualReturn').value) / 100;
+            
+            const lifeExpectancy = getLifeExpectancy(currentAge, gender);
             const yearsToRetirement = retirementAge - currentAge;
-            const labels = [];
+            const yearsInRetirement = lifeExpectancy - retirementAge;
+
             const data = [];
-            const dataFinal = [];
-            const salaryData = [];
-            let runningTotal = currentSavings;
-        
-            let currentSalary = parseFloat(document.getElementById('currentSalary').value);
-            let monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) / 100;
-            let monthlyContributionAmount = currentSalary * monthlyContribution;
-        
-            // Calculate month-by-month for more accurate compounding
-            for (let year = 0; year < yearsToRetirement; year++) {
+            
+            let projectedSavings = currentSavings;
+            let monthlyContributionAmount = monthlySalary * monthlyContribution
+            
+            // Calculate growth during accumulation phase
+            for (let i = 0; i < yearsToRetirement; i++) {
                 
-                labels.push(currentAge + year + 1);
-                // Calculate monthly values for the year
-                for (let month = 0; month < 12; month++) {
-                    // console.log("Running total: ", runningTotal, " Monthly Contribution: ", monthlyContributionAmount, " Year: ", year)
-                    data.push(runningTotal);
-                    runningTotal = calculateMonthlyFundProjection(
-                        runningTotal,
+                for (let index = 0; index < 12; index++) {
+                    // const element = array[index];
+                    projectedSavings = calculateMonthlyFundProjection(
+                        projectedSavings,
                         monthlyContributionAmount,
-                        returnRate
+                        annualReturn
                     );
-                    // console.log("1 Running total: ", runningTotal, " Monthly Contribution: ", monthlyContributionAmount, " Year: ", year)
+
+                    data.push(projectedSavings);
+
+                    // console.log("Salary: ", monthlySalary); 
+                    // console.log("monthlyContributionAmount: ", monthlyContributionAmount);
+                    // console.log("projected saving: ", projectedSavings);
                 }
-        
-                // Store the year-end total
+                monthlySalary = monthlySalary * 1.064;
+                monthlyContributionAmount = monthlySalary * monthlyContribution;
                 
-                const men = data[data.length - 1];
-                dataFinal.push(men);
-                console.log(men)
-                
-                
-        
-                // Apply annual salary increase (6.4%)
-                currentSalary += currentSalary * 0.064;
-                salaryData.push(currentSalary);
-                monthlyContributionAmount = currentSalary * monthlyContribution;
-            }
-        
-            let finalSalary = salaryData[salaryData.length - 1];
-            console.log("Final salary: ", finalSalary);
-
-
-            const futureValue = dataFinal[dataFinal.length - 1];
-            console.log("futureValue: ", futureValue)
-            // const monthlyRetirementIncome = (futureValue * 0.04) / 12;
-            const monthlyRetirementIncome = finalSalary * 0.75
-
-            document.getElementById('projectedSavings').textContent = 
-                'R ' + futureValue.toLocaleString(undefined, { maximumFractionDigits: 0 });
-            
-            document.getElementById('monthlyAmount').textContent = 
-                 'R ' + monthlyRetirementIncome.toLocaleString(undefined, { maximumFractionDigits: 0 });
-
-                
-            updateChart(labels, dataFinal);
-        }
-
-
-
-
-
-
-
-        
-        
-        
-        function calculateReverse() {
-            const currentAge = parseInt(document.getElementById('reverseCurrentAge').value);
-            const retirementAge = parseInt(document.getElementById('reverseRetirementAge').value);
-            const targetMonthlyIncome = parseFloat(document.getElementById('targetMonthlyIncome').value);
-            const currentSavings = parseFloat(document.getElementById('reverseCurrentSavings').value);
-            const returnRate = parseFloat(document.getElementById('returnRate').value) / 100;
-        
-            // Calculate target amount using 4% rule
-            const targetAmount = targetMonthlyIncome * 12 / 0.04;
-            
-            
-
-            // Calculate required monthly contribution using binary search
-            const monthlyContribution = findRequiredMonthlyContribution(
-                currentSavings,
-                targetAmount,
-                retirementAge - currentAge,
-                returnRate
-            );
-        
-            // Update UI
-            document.getElementById('monthlyAmountLabel').textContent = 'Required Monthly Contribution';
-            document.getElementById('monthlyAmount').textContent =
-                'R ' + Math.abs(monthlyContribution).toLocaleString(undefined, { maximumFractionDigits: 0 });
-        
-            // updateProjections(currentAge, retirementAge, currentSavings, Math.abs(monthlyContribution), returnRate);
-            // updateTips(Math.abs(monthlyContribution), targetAmount, currentAge, retirementAge);
-
-            
-        }
-        
-        
-        function projectFutureValue(initialAmount, monthlyContribution, annualReturn, years) {
-            let balance = initialAmount;
-            const months = years * 12;
-            for (let month = 0; month < months; month++) {
-                balance = calculateMonthlyFundProjection(balance, monthlyContribution, annualReturn);
-            }
-            return balance;
-        }
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// non
-        function findRequiredMonthlyContribution(currentSavings, targetAmount, years, annualReturn) {
-            const monthlyRate = ((1 + annualReturn) ** (1 / 12) - 1) / 12;
-            // const totalMonths = investmentPeriod * 12;
-            const monthlyPremium = (targetAmount - (currentSavings * (1 + annualReturn) ** years)) / (((1 + monthlyRate) ** ((years * 12) - 1)) / monthlyRate);
-            //         (monthlyRate / (1 + monthlyRate)))
-            // const monthlyPremium =
-            //     goalAmount /
-            //     (((1 + annualRate) ** investmentPeriod - 1) /
-            //         (monthlyRate / (1 + monthlyRate))) /
-            //     (1 - 0.02);
-            console.log("Monthly: ", monthlyPremium)
-            return monthlyPremium;
-        }
-// non
-
-
-        // function findRequiredMonthlyContribution(currentSavings, targetAmount, annualReturn, years) {
-        //     let low = 0;
-        //     let high = targetAmount / (years * 12); // Maximum possible monthly contribution
-        //     let closestContribution = 0;
-        //     let closestDifference = Infinity;
-        //     // Binary search for the correct monthly contribution
-        //     for (let i = 0; i < 30; i++) { // 30 iterations for precision
-        //         const monthlyContribution = (low + high) / 2;
-        //         const projectedAmount = projectFutureValue(currentSavings, monthlyContribution, annualReturn, years);
-        //         const difference = Math.abs(projectedAmount - targetAmount);
-        //         // Keep track of the closest solution
-        //         if (difference < closestDifference) {
-        //             closestContribution = monthlyContribution;
-        //             closestDifference = difference;
-        //         }
-        //         if (Math.abs(projectedAmount - targetAmount) < 1) {
-        //             return monthlyContribution;
-        //         } else if (projectedAmount < targetAmount) {
-        //             low = monthlyContribution;
-        //         } else {
-        //             high = monthlyContribution;
-        //         }
-        //     }
-        //     console.log("Closest Contribution: ", closestContribution)
-        //     return closestContribution;
-        // }
-        
-        
-
-        // function calculateReverse() {
-        //     const currentAge = parseInt(document.getElementById('reverseCurrentAge').value);
-        //     const retirementAge = parseInt(document.getElementById('reverseRetirementAge').value);
-        //     const targetMonthlyIncome = parseFloat(document.getElementById('targetMonthlyIncome').value);
-        //     const currentSavings = parseFloat(document.getElementById('reverseCurrentSavings').value);
-        //     const returnRate = parseFloat(document.getElementById('returnRate').value) / 100;
-
-        //     // Using the 4% rule in reverse to calculate required savings
-        //     const targetAmount = targetMonthlyIncome * 12 / 0.04;
-            
-        //     // Calculate required monthly contribution
-        //     const yearsToRetirement = retirementAge - currentAge;
-        //     const monthsToRetirement = yearsToRetirement * 12;
-        //     const monthlyRate = returnRate / 12;
-            
-        //     // Calculate required monthly contribution using PMT formula
-        //     const pmt = (targetAmount - currentSavings * Math.pow(1 + returnRate, yearsToRetirement)) /
-        //                ((Math.pow(1 + returnRate, yearsToRetirement) - 1) / returnRate);
-            
-        //     const requiredMonthlyContribution = pmt / 12;
-            
-        //     document.getElementById('monthlyAmountLabel').textContent = 'Required Monthly Contribution';
-        //     document.getElementById('monthlyAmount').textContent = 
-        //         'R ' + Math.abs(requiredMonthlyContribution).toLocaleString(undefined, { maximumFractionDigits: 0 });
-            
-        //     updateProjections(currentAge, retirementAge, currentSavings, Math.abs(requiredMonthlyContribution), returnRate);
-        //     updateTips(Math.abs(requiredMonthlyContribution), targetAmount, currentAge, retirementAge);
-        // }
-
-        
-
-        function updateChart(labels, dataFinal) {
-            if (savingsChart) {
-                savingsChart.destroy();
             }
 
-            const ctx = document.getElementById('savingsChart').getContext('2d');
-            savingsChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Projected Savings',
-                        data: dataFinal,
-                        borderColor: 'rgb(220, 38, 38)',
-                        backgroundColor: 'rgba(254, 226, 226, 0.5)',
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: value => 'R ' + value.toLocaleString()
-                            }
-                        }
+            projectedSavings = data[data.length - 2];
+            console.log(" Final projected savings: ", data[data.length - 2]);
+
+            function calculateMonthlyFundProjection(previousFundValue, monthlyContribution, annualReturn) {
+                // Convert annual return to monthly rate using the formula (1 + r)^(1/12) - 1
+                const monthlyRate = Math.pow(1 + annualReturn, 1/12) - 1;
+                // Calculate next month's value: Previous Value * (1 + monthly rate) + Monthly Contribution
+                const projectedValue = (previousFundValue * (1 + monthlyRate)) + monthlyContribution;
+                // Round to 2 decimal places
+                return Math.round(projectedValue * 100) / 100;
+            }
+
+            // Calculate monthly income in retirement using 75% replacement ratio
+            const targetMonthly = monthlySalary * REPLACEMENT_RATIO;
+            const monthlyWithdrawal = projectedSavings / (yearsInRetirement * 12);
+            
+            // Update results
+            document.getElementById('projectedSavings').textContent = formatCurrency(projectedSavings);
+            document.getElementById('monthlyIncome').textContent = formatCurrency(monthlyWithdrawal);
+            document.getElementById('targetIncome').textContent = `Target Monthly Income (75% of Salary at Retirement): ${formatCurrency(targetMonthly)}`;
+            document.getElementById('lifeExpectancy').textContent = `${lifeExpectancy} years`;
+
+            // Update status message
+          
+
+            // Update status message
+            const statusAlert = document.getElementById('statusAlert');
+            const statusMessage = document.getElementById('statusMessage');
+            
+            if (monthlyWithdrawal >= targetMonthly) {
+                statusAlert.classList.remove('bg-red-50');
+                statusAlert.classList.add('bg-green-50');
+                statusMessage.classList.remove('text-red-800');
+                statusMessage.classList.add('text-green-800');
+                statusMessage.textContent = "You're on track to meet your retirement goals!";
+            } else {
+                statusAlert.classList.remove('bg-green-50');
+                statusAlert.classList.add('bg-red-50');
+                statusMessage.classList.remove('text-green-800');
+                statusMessage.classList.add('text-red-800');
+                statusMessage.textContent = 
+                    "Your current savings plan may not be sufficient to meet your retirement goals. Consider increasing your monthly contributions or adjusting your retirement age.";
+            }
+            statusAlert.classList.remove('hidden');
+        }
+
+        // Validate inputs before calculation
+        function validateInputs() {
+            const requiredFields = [
+                { id: 'currentAge', name: 'Current Age' },
+                { id: 'retirementAge', name: 'Retirement Age' },
+                { id: 'monthlySalary', name: 'Monthly Salary' },
+                { id: 'monthlyContribution', name: 'Monthly Contribution' },
+                { id: 'currentSavings', name: 'Current Savings' },
+                { id: 'annualReturn', name: 'Annual Return' }
+            ];
+
+            for (const field of requiredFields) {
+                const element = document.getElementById(field.id);
+                const value = element.value.trim();
+                
+                if (value === '') {
+                    alert(`Please enter ${field.name}`);
+                    element.focus();
+                    return false;
+                }
+
+                const numValue = parseFloat(value);
+                if (isNaN(numValue) || numValue < 0) {
+                    alert(`Please enter a valid positive number for ${field.name}`);
+                    element.focus();
+                    return false;
+                }
+            }
+
+            const currentAge = parseFloat(document.getElementById('currentAge').value);
+            const retirementAge = parseFloat(document.getElementById('retirementAge').value);
+
+            if (currentAge >= retirementAge) {
+                alert('Retirement age must be greater than current age');
+                document.getElementById('retirementAge').focus();
+                return false;
+            }
+
+            if (currentAge < 18 || currentAge > 70) {
+                alert('Current age must be between 18 and 70');
+                document.getElementById('currentAge').focus();
+                return false;
+            }
+
+            if (retirementAge > 70) {
+                alert('Retirement age cannot be greater than 70');
+                document.getElementById('retirementAge').focus();
+                return false;
+            }
+
+            const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value);
+            if (monthlyContribution > 100) {
+                alert('Monthly contribution cannot exceed 100%');
+                document.getElementById('monthlyContribution').focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        // Calculate on button click
+        calculateBtn.addEventListener('click', () => {
+            if (validateInputs()) {
+                calculateRetirement();
+            }
+        });
+
+        // Add input event listeners for real-time validation
+        const numberInputs = document.querySelectorAll('input[type="number"]');
+        numberInputs.forEach(input => {
+            input.addEventListener('input', (e) => {
+                const value = e.target.value;
+                if (value !== '' && value < 0) {
+                    e.target.value = 0;
+                }
+            });
+        });
+
+        // Initialize the calculator
+        function initCalculator() {
+            // Set default values
+            document.getElementById('currentAge').value = '33';
+            document.getElementById('retirementAge').value = '60';
+            document.getElementById('monthlySalary').value = '41925';
+            document.getElementById('monthlyContribution').value = '20';
+            document.getElementById('currentSavings').value = '338013.13';
+            document.getElementById('annualReturn').value = '8';
+            
+            // Calculate initial results
+            calculateRetirement();
+        }
+
+        // Call initialization when the page loads
+        document.addEventListener('DOMContentLoaded', initCalculator);
+
+        // Handle Enter key in input fields
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    if (validateInputs()) {
+                        calculateRetirement();
                     }
                 }
             });
-        }
+        });
 
-        // Calculate initially
-        calculate();
+        // Target Amount Mode calculations
+        function calculateTargetMode() {            
+            const gender = document.querySelector('input[name="gender"]:checked').value;            
+            const currentAge = parseFloat(document.getElementById('targetCurrentAge').value);            
+            const retirementAge = parseFloat(document.getElementById('targetRetirementAge').value);            
+            const targetMonthlyIncome = parseFloat(document.getElementById('targetMonthlyIncome').value);            
+            const currentSavings = parseFloat(document.getElementById('targetCurrentSavings').value);            
+            const annualReturn = parseFloat(document.getElementById('annualReturn').value) / 100;            
+            const lifeExpectancy = getLifeExpectancy(currentAge, gender);            
+            const yearsToRetirement = retirementAge - currentAge;            
+            const yearsInRetirement = lifeExpectancy - retirementAge;            
+            
+            // Calculate required monthly contribution            
+            const requiredMonthlyContribution = calculateRequiredContribution(                
+                currentSavings,                 
+                targetMonthlyIncome,                 
+                yearsToRetirement,                 
+                yearsInRetirement,                 
+                annualReturn            
+            );            
+            
+            // Update results            
+            document.getElementById('projectedSavings').textContent = formatCurrency(                
+                calculateProjectedSavings(currentSavings, requiredMonthlyContribution, yearsToRetirement, annualReturn)            
+            );            
+            
+            document.getElementById('monthlyIncome').textContent = formatCurrency(                
+                (currentSavings + (requiredMonthlyContribution * yearsToRetirement * 12)) / (yearsInRetirement * 12)            
+            );            
+            
+            document.getElementById('targetIncome').textContent = `Required Monthly Contribution: R ${requiredMonthlyContribution.toLocaleString('en-ZA', { maximumFractionDigits: 0 })} (${(requiredMonthlyContribution / (targetMonthlyIncome / REPLACEMENT_RATIO) * 100).toFixed(1)}% of salary)`;            
+            document.getElementById('lifeExpectancy').textContent = `${lifeExpectancy} years`;            
+            
+            // Status message            
+            const statusAlert = document.getElementById('statusAlert');            
+            const statusMessage = document.getElementById('statusMessage');            
+            
+            if (requiredMonthlyContribution > 0) {                
+                statusAlert.classList.remove('bg-green-50', 'hidden');                
+                statusAlert.classList.add('bg-yellow-50');                
+                statusMessage.classList.add('text-yellow-800');                
+                statusMessage.textContent = `To achieve your target monthly income of R${targetMonthlyIncome.toLocaleString()}, you'll need to contribute R${requiredMonthlyContribution.toLocaleString()} monthly.`;            
+            } else {                
+                statusAlert.classList.remove('bg-yellow-50', 'hidden');                
+                statusAlert.classList.add('bg-green-50');                
+                statusMessage.classList.add('text-green-800');                
+                statusMessage.textContent = "Your current savings are sufficient to meet your retirement goals!";            
+            }            
+            
+            statusAlert.classList.remove('hidden');        
+        }        
+        
+        function calculateRequiredContribution(currentSavings, targetMonthlyIncome, yearsToRetirement, yearsInRetirement, annualReturn) {            
+            const targetTotalSavings = targetMonthlyIncome * yearsInRetirement * 12;            
+            // Future value of current savings            
+            const futureCurrentSavings = currentSavings * Math.pow(1 + annualReturn, yearsToRetirement);            
+            // Calculate required monthly contribution            
+            let monthlyContribution = 0;            
+            let projectedSavings = currentSavings;            
+            
+            while (projectedSavings * Math.pow(1 + annualReturn, yearsInRetirement) < targetTotalSavings) {                
+                monthlyContribution += 100; // Increment by 100                
+                projectedSavings = currentSavings;                // Simulate savings growth                
+                
+                for (let i = 0; i < yearsToRetirement * 12; i++) {                    
+                    projectedSavings *= (1 + annualReturn / 12);                    
+                    projectedSavings += 100;                
+                }           
+            }            
+            
+            return monthlyContribution / yearsToRetirement / 12;        
+        }        
+        
+        function calculateProjectedSavings(currentSavings, monthlyContribution, years, annualReturn) {            
+            let projectedSavings = currentSavings;            
+            
+            for (let i = 0; i < years * 12; i++) {                
+                projectedSavings *= (1 + annualReturn / 12);                
+                projectedSavings += monthlyContribution;            
+            
+            }            
+            
+            return projectedSavings;        
+        }        // Modify the existing validateInputs function to handle target mode        
+        
+        function validateTargetModeInputs() {            
+            const requiredFields = 
+            [                
+                { id: 'targetCurrentAge', name: 'Current Age' },                
+                { id: 'targetRetirementAge', name: 'Retirement Age' },                
+                { id: 'targetMonthlyIncome', name: 'Target Monthly Income' },                
+                { id: 'targetCurrentSavings', name: 'Current Savings' },                
+                { id: 'annualReturn', name: 'Annual Return' }            
+            ];            
+            
+            for (const field of requiredFields) {                
+                const element = document.getElementById(field.id);                
+                const value = element.value.trim();                
+                
+                if (value === '') {                    
+                    alert(`Please enter ${field.name}`);                    
+                    element.focus();                    
+                    return false;                
+                }                
+                
+                const numValue = parseFloat(value);                
+                
+                if (isNaN(numValue) || numValue < 0) {                    
+                    alert(`Please enter a valid positive number for ${field.name}`);                    
+                    
+                    element.focus();                    
+                    return false;                
+                }            
+            }            
+            
+            const currentAge = parseFloat(document.getElementById('targetCurrentAge').value);            
+            const retirementAge = parseFloat(document.getElementById('targetRetirementAge').value);            
+            
+            if (currentAge >= retirementAge) {                
+                alert('Retirement age must be greater than current age');                
+                document.getElementById('targetRetirementAge').focus();                
+                
+                return false;            
+            }            
+            
+            if (currentAge < 18 || currentAge > 70) {                
+                alert('Current age must be between 18 and 70');                
+                document.getElementById('targetCurrentAge').focus();                
+                return false;            
+            }            
+            
+            if (retirementAge > 70) {                
+                alert('Retirement age cannot be greater than 70');                
+                document.getElementById('targetRetirementAge').focus();                
+                
+                return false;            
+            }            
+            
+            return true;        
+        }        // Update calculation event listener to handle both modes        
+        
+        calculateBtn.addEventListener('click', () => {            // Check which mode is active            
+            const isStandardMode = !standardInputs.classList.contains('hidden');            
+            if (isStandardMode) {                
+                if (validateInputs()) {                    
+                    calculateRetirement();                
+                }            
+            } else {                
+                if (validateTargetModeInputs()) {                    
+                    calculateTargetMode();                
+                }            
+            }        
+        });        // Target mode initialization        
+        
+        function initTargetMode() {            // Set default values for target mode           
+            document.getElementById('targetCurrentAge').value = '33';            
+            document.getElementById('targetRetirementAge').value = '60';            
+            document.getElementById('targetMonthlyIncome').value = '229749';            
+            document.getElementById('targetCurrentSavings').value = '338013.13';            
+            document.getElementById('annualReturn').value = '8';        
+        }        // Update initialization to support both modes        
+            
+            document.addEventListener('DOMContentLoaded', () => {            
+                initCalculator();            
+                initTargetMode();        
+            });
     </script>
 </body>
 </html>
