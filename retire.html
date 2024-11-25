@@ -376,7 +376,9 @@
         });
 
         // Target Amount Mode calculations
-        function calculateTargetMode() {            
+        function calculateTargetMode() {   
+
+             console.log("Tergeted Mode Is Here");         
             const gender = document.querySelector('input[name="gender"]:checked').value;            
             const currentAge = parseFloat(document.getElementById('targetCurrentAge').value);            
             const retirementAge = parseFloat(document.getElementById('targetRetirementAge').value);            
@@ -385,33 +387,47 @@
             const annualReturn = parseFloat(document.getElementById('annualReturn').value) / 100;            
             const lifeExpectancy = getLifeExpectancy(currentAge, gender);            
             const yearsToRetirement = retirementAge - currentAge;            
-            const yearsInRetirement = lifeExpectancy - retirementAge;            
+            const yearsInRetirement = lifeExpectancy - retirementAge;
             
-            // Calculate required monthly contribution            
+            console.log("Here Im Updated");
+            
+            // Calculate required monthly contribution   
+   
+              
             const requiredMonthlyContribution = calculateRequiredContribution(                
                 currentSavings,                 
                 targetMonthlyIncome,                 
                 yearsToRetirement,                 
                 yearsInRetirement,                 
                 annualReturn            
-            );            
+            );  
+        
+            
+            // console.log("Required:  ", requiredMonthlyContribution);
             
             // Update results            
             document.getElementById('projectedSavings').textContent = formatCurrency(                
                 calculateProjectedSavings(currentSavings, requiredMonthlyContribution, yearsToRetirement, annualReturn)            
-            );            
+            );       
+            
+            console.log("Savings Updated ");
             
             document.getElementById('monthlyIncome').textContent = formatCurrency(                
                 (currentSavings + (requiredMonthlyContribution * yearsToRetirement * 12)) / (yearsInRetirement * 12)            
-            );            
+            );
             
-            document.getElementById('targetIncome').textContent = `Required Monthly Contribution: R ${requiredMonthlyContribution.toLocaleString('en-ZA', { maximumFractionDigits: 0 })} (${(requiredMonthlyContribution / (targetMonthlyIncome / REPLACEMENT_RATIO) * 100).toFixed(1)}% of salary)`;            
+            console.log("Incomes Updated ");
+            
+            
+            document.getElementById('targetIncome').textContent = `Required Monthly Contribution: R ${requiredMonthlyContribution.toLocaleString('en-ZA', { maximumFractionDigits: 0 })} (${(requiredMonthlyContribution / (targetMonthlyIncome / REPLACEMENT_RATIO) * 100).toFixed(1)}% of salary)`;
+            console.log("Tergeted INcome "); 
+
             document.getElementById('lifeExpectancy').textContent = `${lifeExpectancy} years`;            
-            
+              console.log("Life Expectacy ");
             // Status message            
             const statusAlert = document.getElementById('statusAlert');            
             const statusMessage = document.getElementById('statusMessage');            
-            
+            console.log("We are Here ");
             if (requiredMonthlyContribution > 0) {                
                 statusAlert.classList.remove('bg-green-50', 'hidden');                
                 statusAlert.classList.add('bg-yellow-50');                
@@ -427,27 +443,45 @@
             statusAlert.classList.remove('hidden');        
         }        
         
-        function calculateRequiredContribution(currentSavings, targetMonthlyIncome, yearsToRetirement, yearsInRetirement, annualReturn) {            
-            const targetTotalSavings = targetMonthlyIncome * yearsInRetirement * 12;            
-            // Future value of current savings            
-            const futureCurrentSavings = currentSavings * Math.pow(1 + annualReturn, yearsToRetirement);            
-            // Calculate required monthly contribution            
-            let monthlyContribution = 0;            
-            let projectedSavings = currentSavings;            
-            
-            while (projectedSavings * Math.pow(1 + annualReturn, yearsInRetirement) < targetTotalSavings) {                
-                monthlyContribution += 100; // Increment by 100                
-                projectedSavings = currentSavings;                // Simulate savings growth                
-                
-                for (let i = 0; i < yearsToRetirement * 12; i++) {                    
-                    projectedSavings *= (1 + annualReturn / 12);                    
-                    projectedSavings += 100;                
-                }           
-            }            
-            
-            return monthlyContribution / yearsToRetirement / 12;        
-        }        
-        
+        function calculateRequiredContribution(currentSavings, targetMonthlyIncome, yearsToRetirement, yearsInRetirement, annualReturn) { 
+    console.log("Inputs:", { 
+        currentSavings, 
+        targetMonthlyIncome, 
+        yearsToRetirement, 
+        yearsInRetirement, 
+        annualReturn 
+    });
+
+
+        // Monthly return rate
+    const monthlyReturn = Math.pow(1 + annualReturn, 1 / 12) - 1;
+    console.log("Monthly Return Rate:", monthlyReturn);
+
+
+    // Calculate total savings required
+    const targetTotalSavings =  targetMonthlyIncome * ((1 - (1 + monthlyReturn) ** -(yearsInRetirement*12)) / monthlyReturn)
+    console.log("Target Total Savings:", targetTotalSavings);
+
+    // Future value of current savings
+    const futureCurrentSavings = currentSavings * Math.pow(1 + annualReturn, yearsToRetirement);
+    console.log("Future Value of Current Savings:", futureCurrentSavings);
+
+    // Future monthly savings needed
+    const futureMonthlysavings = targetTotalSavings - futureCurrentSavings;
+    console.log("Future Monthly Savings Needed:", futureMonthlysavings);
+
+
+
+    // Calculate required monthly contribution
+    const denominator = Math.pow(1 + monthlyReturn, yearsToRetirement * 12) - 1;
+    console.log("Denominator for Contribution Formula:", denominator);
+
+    const monthlyContribution = (futureMonthlysavings * monthlyReturn) / denominator;
+    console.log("Monthly Contribution:", monthlyContribution);
+
+    return monthlyContribution;
+}
+
         function calculateProjectedSavings(currentSavings, monthlyContribution, years, annualReturn) {            
             let projectedSavings = currentSavings;            
             
