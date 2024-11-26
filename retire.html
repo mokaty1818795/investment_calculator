@@ -27,8 +27,8 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
                     <div class="space-x-4">
                         <label class="inline-flex items-center">
-                            <input type="radio" name="gender" value="male" checked class="form-radio">
-                            <span class="ml-2">Male</span>
+                            <input type="radio" name="gender" value="male" checked class="form-radio  focus:ring-red-500">
+                            <span class="ml-2 ">Male</span>
                         </label>
                         <label class="inline-flex items-center">
                             <input type="radio" name="gender" value="female" class="form-radio">
@@ -41,23 +41,23 @@
                 <div id="standardInputs" class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Current Age</label>
-                        <input type="number" id="currentAge" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <input type="number" id="currentAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Retirement Age</label>
-                        <input type="number" id="retirementAge" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <input type="number" id="retirementAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Current Monthly Salary (R)</label>
-                        <input type="number" id="monthlySalary" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <input type="number" id="monthlySalary" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Monthly Contribution (%)</label>
-                        <input type="number" id="monthlyContribution" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <input type="number" id="monthlyContribution" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Current Retirement Savings (R)</label>
-                        <input type="number" id="currentSavings" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <input type="number" id="currentSavings" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                 </div>
 
@@ -65,25 +65,29 @@
                 <div id="reverseInputs" class="space-y-4 hidden">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Current Age</label>
-                        <input type="number" id="targetCurrentAge" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <input type="number" id="targetCurrentAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Retirement Age</label>
-                        <input type="number" id="targetRetirementAge" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <input type="number" id="targetRetirementAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Target Monthly Income in Retirement (R)</label>
-                        <input type="number" id="targetMonthlyIncome" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <input type="number" id="targetMonthlyIncome" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Current Retirement Savings (R)</label>
-                        <input type="number" id="targetCurrentSavings" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <input type="number" id="targetCurrentSavings" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                 </div>
 
                 <div class="mt-4">
                     <label class="block text-sm font-medium text-gray-700">Expected Annual Return (%)</label>
-                    <select id="annualReturn" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <select id="annualReturn" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md 
+                                focus:outline-none focus:ring-2 focus:ring-red-500
+                                appearance-none cursor-pointer
+                                bg-white">
                         <option value="8">8%</option>
                         <option value="10">10%</option>
                         <option value="12">12%</option>
@@ -379,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             document.getElementById('projectedSavings').textContent = formatCurrency(projectedSavings);
             document.getElementById('monthlyIncome').textContent = formatCurrency(requiredMonthlyContribution);
-            document.getElementById('targetIncome').textContent = `You will need to contribute : ${formatCurrency(requiredMonthlyContribution)} monthly`;
+            document.getElementById('targetIncome').textContent = ``;
             document.getElementById('lifeExpectancy').textContent = `${lifeExpectancy} years`;
 
             // Status message
