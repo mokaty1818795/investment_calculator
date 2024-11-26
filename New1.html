@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mt-10 mx-auto p-4">
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Calculator Section -->
+            <div class="bg-white rounded-lg shadow-lg p-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold">Calculator Mode</h2>
+                    <div class="space-x-2">
+                        <button id="standardMode" class="px-3 py-1 bg-blue-500 text-white rounded">Standard Mode</button>
+                        <button id="targetMode" class="px-3 py-1 bg-gray-200 rounded">Target Amount Mode</button>
+                    </div>
+                </div>
+
+                <!-- Gender Selection -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                    <div class="space-x-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="gender" value="male" checked class="form-radio">
+                            <span class="ml-2">Male</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="gender" value="female" class="form-radio">
+                            <span class="ml-2">Female</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Standard Mode Inputs -->
+                <div id="standardInputs" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Current Age</label>
+                        <input type="number" id="currentAge" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Retirement Age</label>
+                        <input type="number" id="retirementAge" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Current Monthly Salary (R)</label>
+                        <input type="number" id="monthlySalary" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Monthly Contribution (%)</label>
+                        <input type="number" id="monthlyContribution" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Current Retirement Savings (R)</label>
+                        <input type="number" id="currentSavings" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <!-- Target Mode Inputs -->
+                <div id="reverseInputs" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Current Age</label>
+                        <input type="number" id="targetCurrentAge" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Retirement Age</label>
+                        <input type="number" id="targetRetirementAge" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Target Monthly Income in Retirement (R)</label>
+                        <input type="number" id="targetMonthlyIncome" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Current Retirement Savings (R)</label>
+                        <input type="number" id="targetCurrentSavings" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700">Expected Annual Return (%)</label>
+                    <select id="annualReturn" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="8">8%</option>
+                        <option value="10">10%</option>
+                        <option value="12">12%</option>
+                    </select>
+                </div>
+
+                <button id="calculateBtn" class="mt-6 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Calculate
+                </button>
+
+                <div class="text-center text-xs text-red-600 max-w-2xl mt-4">
+                    Disclaimer: The values presented by this calculator are estimates only and do not represent final or guaranteed outcomes. Actual results may vary based on market conditions, individual contributions, and other factors.
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Results</h2>
+                <div id="results" class="space-y-4">
+                    <div class="p-4 bg-gray-50 rounded-md">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Projected Retirement Savings</h3>
+                        <p id="projectedSavings" class="text-2xl font-bold">R 0</p>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 rounded-md">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Monthly Income in Retirement</h3>
+                        <p id="monthlyIncome" class="text-2xl font-bold">R 0</p>
+                        <p id="targetIncome" class="text-sm text-gray-600 mt-2"></p>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 rounded-md">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Life Expectancy</h3>
+                        <p id="lifeExpectancy" class="text-2xl font-bold">- years</p>
+                    </div>
+
+                    <div id="statusAlert" class="p-4 rounded-md hidden">
+                        <p id="statusMessage" class="text-sm"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Life expectancy data
+        const LIFE_EXPECTANCY_DATA = {
+            male: {
+                18: 65.83, 19: 65.94, 20: 66.04, 21: 66.14, 22: 66.24, 23: 66.34, 24: 66.43,
+                25: 66.53, 26: 66.62, 27: 66.70, 28: 66.79, 29: 66.87, 30: 66.95, 31: 67.03,
+                32: 67.11, 33: 67.18, 34: 67.25, 35: 67.32, 36: 67.38, 37: 67.45, 38: 67.53,
+                39: 67.61, 40: 67.69, 41: 67.78, 42: 67.86, 43: 67.95, 44: 68.04, 45: 68.14,
+                46: 68.24, 47: 68.34, 48: 68.45, 49: 68.55, 50: 68.66, 51: 68.76, 52: 68.87,
+                53: 68.97, 54: 69.07, 55: 69.17, 56: 69.28, 57: 69.38, 58: 69.49, 59: 69.60,
+                60: 69.71, 61: 69.83, 62: 69.93, 63: 70.04, 64: 70.14, 65: 70.23, 66: 70.31,
+                67: 70.38, 68: 70.44, 69: 70.48, 70: 70.50
+            },
+            female: {
+                18: 68.40, 19: 68.41, 20: 68.41, 21: 68.42, 22: 68.43, 23: 68.44, 24: 68.45,
+                25: 68.47, 26: 68.49, 27: 68.51, 28: 68.53, 29: 68.56, 30: 68.59, 31: 68.61,
+                32: 68.64, 33: 68.66, 34: 68.68, 35: 68.71, 36: 68.73, 37: 68.75, 38: 68.78,
+                39: 68.81, 40: 68.84, 41: 68.88, 42: 68.92, 43: 68.96, 44: 69.01, 45: 69.06,
+                46: 69.11, 47: 69.17, 48: 69.23, 49: 69.29, 50: 69.35, 51: 69.42, 52: 69.48,
+                53: 69.55, 54: 69.62, 55: 69.69, 56: 69.75, 57: 69.82, 58: 69.89, 59: 69.96,
+                60: 70.03, 61: 70.10, 62: 70.16, 63: 70.22, 64: 70.28, 65: 70.34, 66: 70.39,
+                67: 70.43, 68: 70.46, 69: 70.49, 70: 70.50
+            }
+        };
+
+        const REPLACEMENT_RATIO = 0.75;
+
+        // DOM Elements
+        const standardMode = document.getElementById('standardMode');
+        const targetMode = document.getElementById('targetMode');
+        const standardInputs = document.getElementById('standardInputs');
+        const reverseInputs = document.getElementById('reverseInputs');
+        const calculateBtn = document.getElementById('calculateBtn');
+
+        // Mode switching
+        standardMode.addEventListener('click', () => {
+            standardMode.classList.replace('bg-gray-200', 'bg-blue-500');
+            standardMode.classList.replace('text-gray-700', 'text-white');
+            targetMode.classList.replace('bg-blue-500', 'bg-gray-200');
+            targetMode.classList.replace('text-white', 'text-gray-700');
+            standardInputs.classList.remove('hidden');
+            reverseInputs.classList.add('hidden');
+        });
+
+        targetMode.addEventListener('click', () => {
+            targetMode.classList.replace('bg-gray-200', 'bg-blue-500');
+            targetMode.classList.replace('text-gray-700', 'text-white');
+            standardMode.classList.replace('bg-blue-500', 'bg-gray-200');
+            standardMode.classList.replace('text-white', 'text-gray-700');
+            reverseInputs.classList.remove('hidden');
+            standardInputs.classList.add('hidden');
+        });
+
+        function getLifeExpectancy(age, gender) {
+            const expectancy = LIFE_EXPECTANCY_DATA[gender][Math.floor(age)] || 70.5;
+            return expectancy;
+        }
+
+        function formatCurrency(amount) {
+            return 'R ' + amount.toLocaleString('en-ZA', { maximumFractionDigits: 0 });
+        }
+
+        function calculateRetirement() {
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const currentAge = parseFloat(document.getElementById('currentAge').value);
+            const retirementAge = parseFloat(document.getElementById('retirementAge').value);
+            let monthlySalary = parseFloat(document.getElementById('monthlySalary').value);
+            const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) / 100;
+            const currentSavings = parseFloat(document.getElementById('currentSavings').value);
+            const annualReturn = parseFloat(document.getElementById('annualReturn').value) / 100;
+            
+            const lifeExpectancy = getLifeExpectancy(currentAge, gender);
+            const yearsToRetirement = retirementAge - currentAge;
+            const yearsInRetirement = lifeExpectancy - retirementAge;
+
+            const data = [];
+            
+            let projectedSavings = currentSavings;
+            let monthlyContributionAmount = monthlySalary * monthlyContribution;
+            
+            // Calculate growth during accumulation phase
+            for (let i = 0; i < yearsToRetirement; i++) {
+                for (let index = 0; index < 12; index++) {
+                    projectedSavings = calculateMonthlyFundProjection(
+                        projectedSavings,
+                        monthlyContributionAmount,
+                        annualReturn
+                    );
+                    data.push(projectedSavings);
+                }
+                monthlySalary = monthlySalary * 1.064;
+                monthlyContributionAmount = monthlySalary * monthlyContribution;
+            }
+
+            projectedSavings = data[data.length - 2];
+
+            function calculateMonthlyFundProjection(previousFundValue, monthlyContribution, annualReturn) {
+                const monthlyRate = Math.pow(1 + annualReturn, 1/12) - 1;
+                const projectedValue = (previousFundValue * (1 + monthlyRate)) +
