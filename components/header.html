@@ -1,17 +1,111 @@
-<header class="bg-white shadow-sm">
+<header class="bg-white shadow-sm relative z-50">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div class="flex justify-between items-center">
+            <!-- Logo Section -->
             <div class="flex items-center">
-                <a href="/">
-
-                    <img src="../images/logo.png" alt="Company Logo" height="50%" width="50%" class="mb-4 sm:mb-0">
+                <a href="/" class="flex items-center">
+                    <img src="../images/logo.png" alt="Company Logo" 
+                         class="h-12 w-auto sm:h-16 md:h-20 object-contain">
                 </a>
             </div>
-            <div class="flex space-x-4">
-                <a href="retire.html" class="text-gray-600  hover:text-red-600">Retirement Plan</a>
-                <a href="invest.html" class="text-gray-600  hover:text-red-600">Investment Plan</a>
-                <a href="educate.html" class="text-gray-600  hover:text-red-600">Education Plan</a>
+
+            <!-- Mobile Menu Button -->
+            <button type="button" 
+                    id="mobile-menu-button"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 
+                           hover:text-red-600 hover:bg-gray-100 lg:hidden">
+                <span class="sr-only">Open menu</span>
+                <svg id="menu-icon" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+                <svg id="close-icon" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden lg:flex lg:items-center lg:space-x-8">
+                <a href="retire.html" class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
+                    Retirement Plan
+                </a>
+                <a href="invest.html" class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
+                    Investment Plan
+                </a>
+                <a href="educate.html" class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
+                    Education Plan
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" 
+             class="hidden lg:hidden fixed left-0 right-0 top-[72px] bg-white shadow-lg border-t border-gray-200 z-50"
+             style="max-height: calc(100vh - 72px); overflow-y: auto;">
+            <div class="px-4 py-3 space-y-2">
+                <a href="retire.html" 
+                   class="block px-4 py-2 text-base font-medium text-gray-600 hover:text-red-600 hover:bg-gray-50 rounded-lg">
+                    Retirement Plan
+                </a>
+                <a href="invest.html" 
+                   class="block px-4 py-2 text-base font-medium text-gray-600 hover:text-red-600 hover:bg-gray-50 rounded-lg">
+                    Investment Plan
+                </a>
+                <a href="educate.html" 
+                   class="block px-4 py-2 text-base font-medium text-gray-600 hover:text-red-600 hover:bg-gray-50 rounded-lg">
+                    Education Plan
+                </a>
             </div>
         </div>
     </nav>
 </header>
+
+<script>
+    (function() {
+        console.log('Script initialized'); // Debug log
+
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+
+        console.log('Elements found:', { // Debug log
+            menuButton: !!menuButton,
+            mobileMenu: !!mobileMenu,
+            menuIcon: !!menuIcon,
+            closeIcon: !!closeIcon
+        });
+
+        if (menuButton && mobileMenu && menuIcon && closeIcon) {
+            menuButton.addEventListener('click', function(e) {
+                console.log('Menu button clicked'); // Debug log
+                e.stopPropagation();
+                mobileMenu.classList.toggle('hidden');
+                menuIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+                console.log('Menu state:', !mobileMenu.classList.contains('hidden')); // Debug log
+            });
+
+            document.addEventListener('click', function(e) {
+                console.log('Document clicked'); // Debug log
+                if (!mobileMenu.contains(e.target) && !menuButton.contains(e.target)) {
+                    mobileMenu.classList.add('hidden');
+                    menuIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                }
+            });
+
+            window.addEventListener('resize', function() {
+                console.log('Window resized'); // Debug log
+                if (window.innerWidth >= 1024) {
+                    mobileMenu.classList.add('hidden');
+                    menuIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                }
+            });
+
+            console.log('Event listeners attached'); // Debug log
+        } else {
+            console.error('One or more elements not found'); // Debug log
+        }
+    })();
+</script>
