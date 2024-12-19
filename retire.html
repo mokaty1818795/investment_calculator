@@ -4,8 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        .modal-backdrop {
+            backdrop-filter: blur(4px);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        .modal-content {
+            transform: translate(-50%, -50%) scale(0.95);
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .modal-content.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+    
+        .input-effect {
+            position: relative;
+            margin-bottom: 30px;
+        }
+    
+        .input-effect input {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid #ddd;
+        }
+    
+        .input-effect input:focus {
+            border-bottom-color: #F72C25;
+        }
+    
+        .input-effect label {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+    
+        .input-effect input:focus + label,
+        .input-effect input:not(:placeholder-shown) + label {
+            top: -12px;
+            font-size: 12px;
+            color: #F72C25;
+        }
+    </style>
+
+
 </head>
 <body class="bg-gray-50">
+    <div id="contactModal" class="fixed inset-0 z-[100] hidden">
+        <div class="modal-backdrop absolute inset-0"></div>
+        <div class="modal-content absolute top-1/2 left-1/2 w-11/12 max-w-md bg-white rounded-2xl p-6 shadow-2xl">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">Contact Information</h3>
+                <p class="text-gray-600 mt-2">Please provide your details to continue</p>
+            </div>
+            
+            <form id="contactForm" class="space-y-6">
+                <div class="input-effect">
+                    <input type="text" id="name" required
+                           class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
+                           placeholder=" ">
+                    <label for="name" class="text-gray-500">Full Name</label>
+                </div>
+                
+                <div class="input-effect">
+                    <input type="email" id="email" required
+                           class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
+                           placeholder=" ">
+                    <label for="email" class="text-gray-500">Email Address</label>
+                </div>
+                
+                <div class="input-effect">
+                    <input type="tel" id="phone" required
+                           class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
+                           placeholder=" ">
+                    <label for="phone" class="text-gray-500">Phone Number</label>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button type="button" onclick="closeModal()"
+                            class="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors duration-300">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="flex-1 px-6 py-3 bg-[#F72C25] text-white rounded-xl hover:bg-red-700 transition-colors duration-300">
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
     <header class="bg-white shadow-sm relative z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex justify-between items-center">
@@ -698,5 +791,84 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })();
     </script>
+<script>
+    // Store original calculate functions
+    const originalCalculateRetirement = calculateRetirement;
+    const originalCalculateTargetMode = calculateTargetMode;
+
+    // Override the calculate button click handler
+    calculateBtn.removeEventListener('click', calculateRetirement);
+    calculateBtn.removeEventListener('click', calculateTargetMode);
+    
+    calculateBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isStandardMode = !standardInputs.classList.contains('hidden');
+        
+        if (isStandardMode) {
+            if (validateInputs()) {
+                showModal();
+            }
+        } else {
+            if (validateTargetModeInputs()) {
+                showModal();
+            }
+        }
+    });
+
+    function showModal() {
+        const modal = document.getElementById('contactModal');
+        const modalContent = modal.querySelector('.modal-content');
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modalContent.classList.add('show');
+        }, 10);
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('contactModal');
+        const modalContent = modal.querySelector('.modal-content');
+        modalContent.classList.remove('show');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
+    }
+
+    // Handle form submission
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const contactData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value
+        };
+
+        localStorage.setItem("names",contactData.name);
+        localStorage.setItem("email",contactData.email);
+        localStorage.setItem("phone",contactData.phone);
+        
+        // Store the contact data (you can send it to a server here)
+        console.log('Contact Data:', contactData);
+        
+        // Close the modal
+        closeModal();
+        
+        // Call the appropriate calculate function based on mode
+        const isStandardMode = !standardInputs.classList.contains('hidden');
+        if (isStandardMode) {
+            originalCalculateRetirement();
+        } else {
+            originalCalculateTargetMode();
+        }
+    });
+
+    // Close modal when clicking outside
+    document.getElementById('contactModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+</script>
 </body>
 </html>
