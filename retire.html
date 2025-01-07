@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,32 +11,32 @@
             backdrop-filter: blur(4px);
             background-color: rgba(0, 0, 0, 0.4);
         }
-        
+
         .modal-content {
             transform: translate(-50%, -50%) scale(0.95);
             opacity: 0;
             transition: all 0.3s ease-in-out;
         }
-        
+
         .modal-content.show {
             transform: translate(-50%, -50%) scale(1);
             opacity: 1;
         }
-    
+
         .input-effect {
             position: relative;
             margin-bottom: 30px;
         }
-    
+
         .input-effect input {
             transition: all 0.3s ease;
             border-bottom: 2px solid #ddd;
         }
-    
+
         .input-effect input:focus {
             border-bottom-color: #F72C25;
         }
-    
+
         .input-effect label {
             position: absolute;
             left: 12px;
@@ -44,9 +45,9 @@
             transition: all 0.3s ease;
             pointer-events: none;
         }
-    
-        .input-effect input:focus + label,
-        .input-effect input:not(:placeholder-shown) + label {
+
+        .input-effect input:focus+label,
+        .input-effect input:not(:placeholder-shown)+label {
             top: -12px;
             font-size: 12px;
             color: #F72C25;
@@ -55,6 +56,7 @@
 
 
 </head>
+
 <body class="bg-gray-50">
     <div id="contactModal" class="fixed inset-0 z-[100] hidden">
         <div class="modal-backdrop absolute inset-0"></div>
@@ -63,36 +65,36 @@
                 <h3 class="text-2xl font-bold text-gray-800">Contact Information</h3>
                 <p class="text-gray-600 mt-2">Please provide your details to continue</p>
             </div>
-            
+
             <form id="contactForm" class="space-y-6">
                 <div class="input-effect">
                     <input type="text" id="name" required
-                           class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
-                           placeholder=" ">
+                        class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
+                        placeholder=" ">
                     <label for="name" class="text-gray-500">Full Name</label>
                 </div>
-                
+
                 <div class="input-effect">
                     <input type="email" id="email" required
-                           class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
-                           placeholder=" ">
+                        class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
+                        placeholder=" ">
                     <label for="email" class="text-gray-500">Email Address</label>
                 </div>
-                
+
                 <div class="input-effect">
                     <input type="tel" id="phone" required
-                           class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
-                           placeholder=" ">
+                        class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
+                        placeholder=" ">
                     <label for="phone" class="text-gray-500">Phone Number</label>
                 </div>
-                
+
                 <div class="flex space-x-4">
                     <button type="button" onclick="closeModal()"
-                            class="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors duration-300">
+                        class="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors duration-300">
                         Cancel
                     </button>
                     <button type="submit"
-                            class="flex-1 px-6 py-3 bg-[#F72C25] text-white rounded-xl hover:bg-red-700 transition-colors duration-300">
+                        class="flex-1 px-6 py-3 bg-[#F72C25] text-white rounded-xl hover:bg-red-700 transition-colors duration-300">
                         Submit
                     </button>
                 </div>
@@ -105,93 +107,144 @@
                 <!-- Logo Section -->
                 <div class="flex items-center">
                     <a href="/" class="flex items-center">
-                        <img src="../images/logo.png" alt="Company Logo" 
-                             class="h-12 w-auto sm:h-16 md:h-20 object-contain">
+                        <img src="../images/logo.png" alt="Company Logo"
+                            class="h-12 w-auto sm:h-16 md:h-20 object-contain">
                     </a>
                 </div>
-    
+
                 <!-- Mobile Menu Button -->
-                <button type="button" 
-                        id="mobile-menu-button"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 
+                <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 
                                hover:text-red-600 hover:bg-gray-100 lg:hidden">
                     <span class="sr-only">Open menu</span>
                     <svg id="menu-icon" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                     <svg id="close-icon" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-    
+
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex lg:items-center lg:space-x-8">
-                    <a href="retire.html" class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
+                    <a href="retire.html"
+                        class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
                         Retirement Plan
                     </a>
-                    <a href="invest.html" class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
+                    <a href="invest.html"
+                        class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
                         Investment Plan
                     </a>
-                    <a href="educate.html" class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
+                    <a href="educate.html"
+                        class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
                         Education Plan
                     </a>
                 </div>
             </div>
-    
+
             <!-- Mobile Menu -->
-            <div id="mobile-menu" 
-     class="hidden lg:hidden fixed left-0 right-0 top-[72px] bg-white shadow-lg border-t border-gray-200 z-50 
+            <div id="mobile-menu" class="hidden lg:hidden fixed left-0 right-0 top-[72px] bg-white shadow-lg border-t border-gray-200 z-50 
      transform transition-all duration-300 ease-in-out opacity-0 translate-y-[-10px]"
-     style="max-height: calc(100vh - 72px); overflow-y: auto;">
-    
-    <div class="container mx-auto px-4 py-6">
-        <div class="space-y-3">
-            <a href="retire.html" 
-               class="block px-6 py-3 text-base font-medium text-gray-600 hover:text-red-600 
+                style="max-height: calc(100vh - 72px); overflow-y: auto;">
+
+                <div class="container mx-auto px-4 py-6">
+                    <div class="space-y-3">
+                        <a href="retire.html" class="block px-6 py-3 text-base font-medium text-gray-600 hover:text-red-600 
                       rounded-xl transition-all duration-200 ease-in-out
                       hover:bg-red-50 hover:scale-[1.02] hover:shadow-sm
                       transform opacity-0 translate-y-4 transition-transform">
-                <div class="flex items-center space-x-3">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                    </svg>
-                    <span>Retirement Plan</span>
-                </div>
-            </a>
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                                <span>Retirement Plan</span>
+                            </div>
+                        </a>
 
-            <a href="invest.html" 
-               class="block px-6 py-3 text-base font-medium text-gray-600 hover:text-red-600 
+                        <a href="invest.html" class="block px-6 py-3 text-base font-medium text-gray-600 hover:text-red-600 
                       rounded-xl transition-all duration-200 ease-in-out
                       hover:bg-red-50 hover:scale-[1.02] hover:shadow-sm
                       transform opacity-0 translate-y-4 transition-transform delay-100">
-                <div class="flex items-center space-x-3">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                              d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-                    </svg>
-                    <span>Investment Plan</span>
-                </div>
-            </a>
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                </svg>
+                                <span>Investment Plan</span>
+                            </div>
+                        </a>
 
-            <a href="educate.html" 
-               class="block px-6 py-3 text-base font-medium text-gray-600 hover:text-red-600 
+                        <a href="educate.html" class="block px-6 py-3 text-base font-medium text-gray-600 hover:text-red-600 
                       rounded-xl transition-all duration-200 ease-in-out
                       hover:bg-red-50 hover:scale-[1.02] hover:shadow-sm
                       transform opacity-0 translate-y-4 transition-transform delay-200">
-                <div class="flex items-center space-x-3">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                    </svg>
-                    <span>Education Plan</span>
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                <span>Education Plan</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-            </a>
-        </div>
-    </div>
-</div>
+            </div>
         </nav>
     </header>
+    <!-- Alert Container -->
+    <div class="w-96 mx-auto">
+        <!-- Success Alert -->
+        <div id="alert-success"
+            class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+            role="alert" style="display: none;">
+            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                viewBox="0 0 20 20">
+                <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Success</span>
+            <div id="alert-success-content" class="ms-3 text-sm font-medium">
+                Request successful!
+            </div>
+            <button type="button"
+                class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
+                data-dismiss-target="#alert-success" aria-label="Close">
+                <span class="sr-only">Close</span>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Error Alert -->
+        <div id="alert-error"
+            class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+            role="alert" style="display: none;">
+            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                viewBox="0 0 20 20">
+                <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Error</span>
+            <div id="alert-error-content" class="ms-3 text-sm font-medium">
+                Something went wrong!
+            </div>
+            <button type="button"
+                class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                data-dismiss-target="#alert-error" aria-label="Close">
+                <span class="sr-only">Close</span>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                </svg>
+            </button>
+        </div>
+    </div>
     <div class="max-w-6xl mt-10 mx-auto p-4">
         <div class="grid md:grid-cols-2 gap-8">
             <!-- Calculator Section -->
@@ -201,16 +254,14 @@
                         Calculator
                     </h2>
                     <div class="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
-                        <button id="standardMode" 
-                                class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-red-600 text-white 
+                        <button id="standardMode" class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-red-600 text-white 
                                        rounded-lg text-sm font-medium whitespace-nowrap
                                        transition-all duration-200 hover:bg-red-700 
                                        focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
                             Income Estimate
                         </button>
-                        
-                        <button id="targetMode" 
-                                class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-red-100 text-red-600 
+
+                        <button id="targetMode" class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-red-100 text-red-600 
                                        rounded-lg text-sm font-medium whitespace-nowrap
                                        transition-all duration-200 hover:bg-red-200 
                                        focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
@@ -224,7 +275,8 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
                     <div class="space-x-4">
                         <label class="inline-flex items-center">
-                            <input type="radio" name="gender" value="male" checked class="form-radio  focus:ring-red-500">
+                            <input type="radio" name="gender" value="male" checked
+                                class="form-radio  focus:ring-red-500">
                             <span class="ml-2 ">Male</span>
                         </label>
                         <label class="inline-flex items-center">
@@ -238,23 +290,28 @@
                 <div id="standardInputs" class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Current Age</label>
-                        <input type="number" id="currentAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <input type="number" id="currentAge"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Retirement Age</label>
-                        <input type="number" id="retirementAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <input type="number" id="retirementAge"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Current Monthly Salary (R)</label>
-                        <input type="number" id="monthlySalary" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <input type="number" id="monthlySalary"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Monthly Contribution (%)</label>
-                        <input type="number" id="monthlyContribution" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <input type="number" id="monthlyContribution"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Current Retirement Savings (R)</label>
-                        <input type="number" id="currentSavings" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <input type="number" id="currentSavings"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                 </div>
 
@@ -262,26 +319,30 @@
                 <div id="reverseInputs" class="space-y-4 hidden">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Current Age</label>
-                        <input type="number" id="targetCurrentAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <input type="number" id="targetCurrentAge"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Retirement Age</label>
-                        <input type="number" id="targetRetirementAge" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <input type="number" id="targetRetirementAge"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Target Monthly Income in Retirement (R)</label>
-                        <input type="number" id="targetMonthlyIncome" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <label class="block text-sm font-medium text-gray-700">Target Monthly Income in Retirement
+                            (R)</label>
+                        <input type="number" id="targetMonthlyIncome"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Current Retirement Savings (R)</label>
-                        <input type="number" id="targetCurrentSavings" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <input type="number" id="targetCurrentSavings"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                 </div>
 
                 <div class="mt-4">
                     <label class="block text-sm font-medium text-gray-700">Expected Annual Return (%)</label>
-                    <select id="annualReturn" 
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md 
+                    <select id="annualReturn" class="w-full px-3 py-2 border border-gray-300 rounded-md 
                                 focus:outline-none focus:ring-2 focus:ring-red-500
                                 appearance-none cursor-pointer
                                 bg-white">
@@ -291,12 +352,15 @@
                     </select>
                 </div>
 
-                <button id="calculateBtn" class="mt-6 w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-100 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                <button id="calculateBtn"
+                    class="mt-6 w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-100 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
                     Calculate
                 </button>
 
                 <div class="text-center text-xs text-red-600 max-w-2xl mt-4">
-                    Disclaimer: The values presented by this calculator are estimates only and do not represent final or guaranteed outcomes. Actual results may vary based on market conditions, individual contributions, and other factors.
+                    Disclaimer: The values presented by this calculator are estimates only and do not represent final or
+                    guaranteed outcomes. Actual results may vary based on market conditions, individual contributions,
+                    and other factors.
                 </div>
             </div>
 
@@ -310,7 +374,8 @@
                     </div>
 
                     <div class="p-6 bg-gray-50 rounded-xl border border-gray-200">
-                        <h3 class="text-lg font-medium text-gray-800 mb-2" id="modeText">Monthly Income in Retirement</h3>
+                        <h3 class="text-lg font-medium text-gray-800 mb-2" id="modeText">Monthly Income in Retirement
+                        </h3>
                         <p id="monthlyIncome" class="text-3xl font-bold text-red-600">R 0</p>
                         <p id="targetIncome" class="text-sm text-gray-600 mt-2"></p>
                     </div>
@@ -328,10 +393,6 @@
             </div>
         </div>
     </div>
-
-    <script src="./js/header.js"></script>
-    
-
     <script>
         // Life expectancy data
         const LIFE_EXPECTANCY_DATA = {
@@ -366,53 +427,38 @@
         const reverseInputs = document.getElementById('reverseInputs');
         const calculateBtn = document.getElementById('calculateBtn');
 
-        // Mode switching
-        // standardMode.addEventListener('click', () => {
-        //     standardMode.classList.replace('bg-gray-200', 'bg-blue-500');
-        //     standardMode.classList.replace('text-gray-700', 'text-white');
-        //     targetMode.classList.replace('bg-blue-500', 'bg-gray-200');
-        //     targetMode.classList.replace('text-white', 'text-gray-700');
-            
-        //     standardInputs.classList.remove('hidden');
-        //     reverseInputs.classList.add('hidden');
-        //     document.getElementById('modeText').textContent= "Required Monthly Contribution"
 
-        // });
+        document.querySelectorAll('[data-dismiss-target]').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-dismiss-target');
+                document.querySelector(targetId).style.display = 'none';
+            });
+        });
 
-        // targetMode.addEventListener('click', () => {
-        //     targetMode.classList.replace('bg-gray-200', 'bg-blue-500');
-        //     targetMode.classList.replace('text-gray-700', 'text-white');
-        //     standardMode.classList.replace('bg-blue-500', 'bg-gray-200');
-        //     standardMode.classList.replace('text-white', 'text-gray-700');
-        //     reverseInputs.classList.remove('hidden');
-        //     standardInputs.classList.add('hidden');
-        //     document.getElementById('modeText').textContent= "Required Monthly Contribution"
-         
-        // });
 
-document.addEventListener('DOMContentLoaded', () => {
-    standardMode.addEventListener('click', () => {
-        standardMode.classList.remove('bg-red-200', 'text-red-600');
-        standardMode.classList.add('bg-red-600', 'text-white');
-        targetMode.classList.remove('bg-red-600', 'text-white');
-        targetMode.classList.add('bg-red-200', 'text-red-600')
-        
-        standardInputs.classList.remove('hidden');
-        reverseInputs.classList.add('hidden');
-        document.getElementById('modeText').textContent = "Monthly Income in Retirement";
+        document.addEventListener('DOMContentLoaded', () => {
+            standardMode.addEventListener('click', () => {
+                standardMode.classList.remove('bg-red-200', 'text-red-600');
+                standardMode.classList.add('bg-red-600', 'text-white');
+                targetMode.classList.remove('bg-red-600', 'text-white');
+                targetMode.classList.add('bg-red-200', 'text-red-600')
 
-    });
+                standardInputs.classList.remove('hidden');
+                reverseInputs.classList.add('hidden');
+                document.getElementById('modeText').textContent = "Monthly Income in Retirement";
 
-    targetMode.addEventListener('click', () => {
-        targetMode.classList.remove('bg-red-200', 'text-red-600');
-        targetMode.classList.add('bg-red-600', 'text-white');
-        standardMode.classList.remove('bg-red-600', 'text-white');
-        standardMode.classList.add('bg-red-200', 'text-red-600');
-        reverseInputs.classList.remove('hidden');
-        standardInputs.classList.add('hidden');
-        document.getElementById('modeText').textContent = "Required Monthly Contribution";
-    });
-});
+            });
+
+            targetMode.addEventListener('click', () => {
+                targetMode.classList.remove('bg-red-200', 'text-red-600');
+                targetMode.classList.add('bg-red-600', 'text-white');
+                standardMode.classList.remove('bg-red-600', 'text-white');
+                standardMode.classList.add('bg-red-200', 'text-red-600');
+                reverseInputs.classList.remove('hidden');
+                standardInputs.classList.add('hidden');
+                document.getElementById('modeText').textContent = "Required Monthly Contribution";
+            });
+        });
 
         function getLifeExpectancy(age, gender) {
             const expectancy = LIFE_EXPECTANCY_DATA[gender][Math.floor(age)] || 70.5;
@@ -433,16 +479,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) / 100;
             const currentSavings = parseFloat(document.getElementById('currentSavings').value);
             const annualReturn = parseFloat(document.getElementById('annualReturn').value) / 100;
-            
+
             const lifeExpectancy = getLifeExpectancy(currentAge, gender);
             const yearsToRetirement = retirementAge - currentAge;
             const yearsInRetirement = lifeExpectancy - retirementAge;
 
             const data = [];
-            
+
             let projectedSavings = currentSavings;
             let monthlyContributionAmount = monthlySalary * monthlyContribution;
-            
+
             // Calculate growth during accumulation phase
             for (let i = 0; i < yearsToRetirement; i++) {
                 for (let index = 0; index < 12; index++) {
@@ -460,15 +506,15 @@ document.addEventListener('DOMContentLoaded', () => {
             projectedSavings = data[data.length - 2];
 
             function calculateMonthlyFundProjection(previousFundValue, monthlyContribution, annualReturn) {
-                const monthlyRate = Math.pow(1 + annualReturn, 1/12) - 1;
-                const projectedValue = (previousFundValue * (1 + monthlyRate)) +monthlyContribution;
+                const monthlyRate = Math.pow(1 + annualReturn, 1 / 12) - 1;
+                const projectedValue = (previousFundValue * (1 + monthlyRate)) + monthlyContribution;
                 return Math.round(projectedValue * 100) / 100;
             }
 
             // Calculate monthly income in retirement using 75% replacement ratio
             const targetMonthly = monthlySalary * REPLACEMENT_RATIO;
             const monthlyWithdrawal = projectedSavings / (yearsInRetirement * 12);
-            
+
             // Update results
             document.getElementById('projectedSavings').textContent = formatCurrency(projectedSavings);
             document.getElementById('monthlyIncome').textContent = formatCurrency(monthlyWithdrawal);
@@ -478,7 +524,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Update status message
             const statusAlert = document.getElementById('statusAlert');
             const statusMessage = document.getElementById('statusMessage');
-            
+
             if (monthlyWithdrawal >= targetMonthly) {
                 statusAlert.classList.remove('bg-red-50');
                 statusAlert.classList.add('bg-green-50');
@@ -508,7 +554,7 @@ document.addEventListener('DOMContentLoaded', () => {
             for (const field of requiredFields) {
                 const element = document.getElementById(field.id);
                 const value = element.value.trim();
-                
+
                 if (value === '') {
                     alert(`Please enter ${field.name}`);
                     element.focus();
@@ -576,12 +622,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update results
             const projectedSavings = calculateProjectedSavings(
-                currentSavings, 
-                requiredMonthlyContribution, 
-                yearsToRetirement, 
+                currentSavings,
+                requiredMonthlyContribution,
+                yearsToRetirement,
                 annualReturn
             );
-            
+
             document.getElementById('projectedSavings').textContent = formatCurrency(projectedSavings);
             document.getElementById('monthlyIncome').textContent = formatCurrency(requiredMonthlyContribution);
             document.getElementById('targetIncome').textContent = ``;
@@ -602,36 +648,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusMessage.classList.add('text-green-800');
                 statusMessage.textContent = "Your current savings are sufficient to meet your retirement goals!";
             }
-            
+
             statusAlert.classList.remove('hidden');
         }
 
         function calculateRequiredContribution(currentSavings, targetMonthlyIncome, yearsToRetirement, yearsInRetirement, annualReturn) {
-            const monthlyReturn = Math.pow(1 + annualReturn, 1/12) - 1;
-            
+            const monthlyReturn = Math.pow(1 + annualReturn, 1 / 12) - 1;
+
             // Calculate total savings required
             const targetTotalSavings = targetMonthlyIncome * ((1 - Math.pow(1 + monthlyReturn, -(yearsInRetirement * 12))) / monthlyReturn);
-            
+
             // Future value of current savings
             const futureCurrentSavings = currentSavings * Math.pow(1 + annualReturn, yearsToRetirement);
-            
+
             // Additional savings needed
             const additionalSavingsNeeded = targetTotalSavings - futureCurrentSavings;
-            
+
             // Calculate required monthly contribution
             const monthlyContribution = (additionalSavingsNeeded * monthlyReturn) / (Math.pow(1 + monthlyReturn, yearsToRetirement * 12) - 1);
-            
+
             return Math.max(0, monthlyContribution);
         }
 
         function calculateProjectedSavings(currentSavings, monthlyContribution, years, annualReturn) {
             let projectedSavings = currentSavings;
-            
+
             for (let i = 0; i < years * 12; i++) {
                 projectedSavings *= (1 + annualReturn / 12);
                 projectedSavings += monthlyContribution;
             }
-            
+
             return projectedSavings;
         }
 
@@ -646,7 +692,7 @@ document.addEventListener('DOMContentLoaded', () => {
             for (const field of requiredFields) {
                 const element = document.getElementById(field.id);
                 const value = element.value.trim();
-                
+
                 if (value === '') {
                     alert(`Please enter ${field.name}`);
                     element.focus();
@@ -685,18 +731,71 @@ document.addEventListener('DOMContentLoaded', () => {
             return true;
         }
 
+
+        async function sendEmail() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phoneNumber = document.getElementById('phone').value;
+            const successAlert = document.getElementById('alert-success');
+            const errorAlert = document.getElementById('alert-error');
+            const successContent = document.getElementById('alert-success-content');
+            const errorContent = document.getElementById('alert-error-content');
+
+            successAlert.style.display = 'none';
+            errorAlert.style.display = 'none'
+
+            const postData = {
+                names: name,
+                email: email,
+                phoneNumber: phoneNumber
+            }
+
+            try {
+                const response =
+                    await axios.post('https://aic-api-cphradewfgehdpb7.southafricanorth-01.azurewebsites.net/v1/api/send-email', postData, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                successContent.innerHTML = `Thank you for considering Alliance Insurance`;
+                successAlert.style.display = 'flex';
+
+            } catch (error) {
+                console.log("Error", error);
+                errorContent.innerHTML = `We are unable to process your request`;
+                errorAlert.style.display = 'flex';
+            }
+        }
+
         // Calculate button event listener
         calculateBtn.addEventListener('click', () => {
             const isStandardMode = !standardInputs.classList.contains('hidden');
-            if (isStandardMode) {
-                if (validateInputs()) {
-                    calculateRetirement();
+            const contactData = {
+                name: localStorage.getItem("names"),
+                email: localStorage.getItem("email"),
+                phone: localStorage.getItem("phone")
+            };
+
+            if (contactData.name && contactData.email && contactData.phone) {
+                if (isStandardMode) {
+                    if (validateInputs()) {
+                        calculateRetirement();
+                    }
+                } else {
+                    if (validateTargetModeInputs()) {
+                        calculateTargetMode();
+                    }
                 }
             } else {
-                if (validateTargetModeInputs()) {
-                    calculateTargetMode();
-                }
+                sendEmail();
+                const modal = document.getElementById('contactModal');
+                const modalContent = modal.querySelector('.modal-content');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modalContent.classList.add('show');
+                }, 10);
             }
+
         });
 
         // Initialize calculator
@@ -707,13 +806,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('monthlyContribution').value = '20';
             document.getElementById('currentSavings').value = '338013.13';
             document.getElementById('annualReturn').value = '8';
-            
+
             // Initialize target mode fields
             document.getElementById('targetCurrentAge').value = '33';
             document.getElementById('targetRetirementAge').value = '60';
             document.getElementById('targetMonthlyIncome').value = '229749';
             document.getElementById('targetCurrentSavings').value = '338013.13';
-            
+
             calculateRetirement();
         }
 
@@ -739,18 +838,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     </script>
     <script>
-        (function() {
+        (function () {
             const menuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             const menuIcon = document.getElementById('menu-icon');
             const closeIcon = document.getElementById('close-icon');
             const menuItems = mobileMenu.querySelectorAll('a');
-    
+
             if (menuButton && mobileMenu && menuIcon && closeIcon) {
-                menuButton.addEventListener('click', function(e) {
+                menuButton.addEventListener('click', function (e) {
                     e.stopPropagation();
                     const isOpen = !mobileMenu.classList.contains('hidden');
-    
+
                     if (isOpen) {
                         // Close menu
                         mobileMenu.classList.add('opacity-0', 'translate-y-[-10px]');
@@ -766,7 +865,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             mobileMenu.classList.remove('opacity-0', 'translate-y-[-10px]');
                             menuIcon.classList.add('hidden');
                             closeIcon.classList.remove('hidden');
-                            
+
                             // Animate menu items
                             menuItems.forEach((item, index) => {
                                 setTimeout(() => {
@@ -776,9 +875,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         }, 10);
                     }
                 });
-    
+
                 // Close menu when clicking outside
-                document.addEventListener('click', function(e) {
+                document.addEventListener('click', function (e) {
                     if (!mobileMenu.contains(e.target) && !menuButton.contains(e.target)) {
                         mobileMenu.classList.add('opacity-0', 'translate-y-[-10px]');
                         setTimeout(() => {
@@ -791,84 +890,53 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })();
     </script>
-<script>
-    // Store original calculate functions
-    const originalCalculateRetirement = calculateRetirement;
-    const originalCalculateTargetMode = calculateTargetMode;
+    <script>
+        // Store original calculate functions
+        const originalCalculateRetirement = calculateRetirement;
+        const originalCalculateTargetMode = calculateTargetMode;
 
-    // Override the calculate button click handler
-    calculateBtn.removeEventListener('click', calculateRetirement);
-    calculateBtn.removeEventListener('click', calculateTargetMode);
-    
-    calculateBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const isStandardMode = !standardInputs.classList.contains('hidden');
-        
-        if (isStandardMode) {
-            if (validateInputs()) {
-                showModal();
-            }
-        } else {
-            if (validateTargetModeInputs()) {
-                showModal();
-            }
+        // Override the calculate button click handler
+        calculateBtn.removeEventListener('click', calculateRetirement);
+        calculateBtn.removeEventListener('click', calculateTargetMode);
+
+        function closeModal() {
+            const modal = document.getElementById('contactModal');
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.classList.remove('show');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
         }
-    });
 
-    function showModal() {
-        const modal = document.getElementById('contactModal');
-        const modalContent = modal.querySelector('.modal-content');
-        modal.classList.remove('hidden');
-        setTimeout(() => {
-            modalContent.classList.add('show');
-        }, 10);
-    }
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
 
-    function closeModal() {
-        const modal = document.getElementById('contactModal');
-        const modalContent = modal.querySelector('.modal-content');
-        modalContent.classList.remove('show');
-        setTimeout(() => {
-            modal.classList.add('hidden');
-        }, 300);
-    }
+            const contactData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value
+            };
 
-    // Handle form submission
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get form values
-        const contactData = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value
-        };
+            localStorage.setItem("names", contactData.name);
+            localStorage.setItem("email", contactData.email);
+            localStorage.setItem("phone", contactData.phone);
 
-        localStorage.setItem("names",contactData.name);
-        localStorage.setItem("email",contactData.email);
-        localStorage.setItem("phone",contactData.phone);
-        
-        // Store the contact data (you can send it to a server here)
-        console.log('Contact Data:', contactData);
-        
-        // Close the modal
-        closeModal();
-        
-        // Call the appropriate calculate function based on mode
-        const isStandardMode = !standardInputs.classList.contains('hidden');
-        if (isStandardMode) {
-            originalCalculateRetirement();
-        } else {
-            originalCalculateTargetMode();
-        }
-    });
-
-    // Close modal when clicking outside
-    document.getElementById('contactModal').addEventListener('click', function(e) {
-        if (e.target === this) {
             closeModal();
-        }
-    });
-</script>
+            const isStandardMode = !standardInputs.classList.contains('hidden');
+            if (isStandardMode) {
+                originalCalculateRetirement();
+            } else {
+                originalCalculateTargetMode();
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('contactModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
 </body>
+
 </html>
