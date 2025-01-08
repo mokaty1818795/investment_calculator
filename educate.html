@@ -10,12 +10,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="./css/educate.css">
+    <!-- <link rel="stylesheet" href="./css/styles.css"> -->
 
     <style>
-
-        [x-cloak] { 
-            display: none !important; 
+        [x-cloak] {
+            display: none !important;
         }
+
         .input-effect {
             position: relative;
             margin-bottom: 1.5rem;
@@ -44,6 +45,51 @@
             left: 0;
             font-size: 0.875rem;
             color: #EF4444;
+        }
+
+        .loader-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loader-container.show {
+            display: flex;
+        }
+
+        .loader-spinner {
+            width: 64px;
+            height: 64px;
+            position: relative;
+        }
+
+        .loader-spinner .circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .loader-spinner .background {
+            border: 8px solid #f3f3f3;
+        }
+
+        .loader-spinner .foreground {
+            border: 8px solid transparent;
+            border-top: 8px solid #ef4444;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -142,7 +188,15 @@
             </div>
         </nav>
     </header>
-    
+
+    <div class="loader-container" id="loaderContainer">
+        <div class="loader-spinner">
+            <div class="circle background"></div>
+            <div class="circle foreground"></div>
+        </div>
+    </div>
+
+
 
     <div class="container max-w-7xl mx-auto px-4 py-12" x-data="{ 
         showModal: false,
@@ -263,6 +317,7 @@
             try {
                 this.loading = true;
                 this.error = null;
+                showLoader();
                 
                 // Make API call
                 const response = await axios.post('https://aic-api-cphradewfgehdpb7.southafricanorth-01.azurewebsites.net/v1/api/send-email', {
@@ -288,70 +343,75 @@
                 this.error = err.response?.data?.message || 'An error occurred while saving your information';
             } finally {
                 this.loading = false;
+                hideLoader();
             }
         },
     }">
 
-    <div x-show="showModal" class="fixed inset-0 z-[100]" x-cloak x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0">
 
-        <!-- Modal Backdrop -->
-        <div class="modal-backdrop absolute inset-0 bg-black bg-opacity-50" @click="showModal = false"></div>
+        <div x-show="showModal" class="fixed inset-0 z-[100]" x-cloak
+            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
 
-        <!-- Modal Content -->
-        <div
-            class="modal-content absolute top-1/2 left-1/2 w-11/12 max-w-md bg-white rounded-2xl p-6 shadow-2xl transform -translate-x-1/2 -translate-y-1/2">
-            <div class="text-center mb-6">
-                <h3 class="text-2xl font-bold text-gray-800">Contact Information</h3>
-                <p class="text-gray-600 mt-2">Please provide your details to continue</p>
-            </div>
+            <!-- Modal Backdrop -->
+            <div class="modal-backdrop absolute inset-0 bg-black bg-opacity-50" @click="showModal = false"></div>
 
-            <form @submit.prevent="saveContact" class="space-y-6">
-                <div class="input-effect">
-                    <input type="text" x-model="formData.name"
-                        class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
-                        placeholder=" " required>
-                    <label class="text-gray-500">Full Name</label>
+            <!-- Modal Content -->
+            <div
+                class="modal-content absolute top-1/2 left-1/2 w-11/12 max-w-md bg-white rounded-2xl p-6 shadow-2xl transform -translate-x-1/2 -translate-y-1/2">
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">Contact Information</h3>
+                    <p class="text-gray-600 mt-2">Please provide your details to continue</p>
                 </div>
 
-                <div class="input-effect">
-                    <input type="email" x-model="formData.email"
-                        class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
-                        placeholder=" " required>
-                    <label class="text-gray-500">Email Address</label>
-                </div>
+                <form @submit.prevent="saveContact" class="space-y-6">
+                    <div class="input-effect">
+                        <input type="text" x-model="formData.name"
+                            class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
+                            placeholder=" " required>
+                        <label class="text-gray-500">Full Name</label>
+                    </div>
 
-                <div class="input-effect">
-                    <input type="tel" x-model="formData.phone"
-                        class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
-                        placeholder=" " required>
-                    <label class="text-gray-500">Phone Number</label>
-                </div>
+                    <div class="input-effect">
+                        <input type="email" x-model="formData.email"
+                            class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
+                            placeholder=" " required>
+                        <label class="text-gray-500">Email Address</label>
+                    </div>
 
-                <div class="flex space-x-4">
-                    <button type="button" 
-                            @click="showModal = false"
+                    <div class="input-effect">
+                        <input type="tel" x-model="formData.phone"
+                            class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
+                            placeholder=" " required>
+                        <label class="text-gray-500">Phone Number</label>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <button type="button" @click="showModal = false"
                             class="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors duration-300"
                             :disabled="loading">
-                        Cancel
-                    </button>
-                    <button type="submit"
+                            Cancel
+                        </button>
+                        <button type="submit"
                             class="flex-1 px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors duration-300 relative"
                             :disabled="loading">
-                        <span x-show="!loading">Submit</span>
-                        <span x-show="loading" class="absolute inset-0 flex items-center justify-center">
-                            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                        </span>
-                    </button>
-                </div>
-            </form>
+                            <span x-show="!loading">Submit</span>
+                            <span x-show="loading" class="absolute inset-0 flex items-center justify-center">
+                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
         <h1 class="text-3xl font-bold text-center text-red-600 mb-8 flex items-center justify-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -601,7 +661,17 @@
                 });
             }
         })();
+
+        function showLoader() {
+            document.getElementById('loaderContainer').classList.add('show');
+        }
+
+        function hideLoader() {
+            document.getElementById('loaderContainer').classList.remove('show');
+        }
+
     </script>
+
 </body>
 
 </html>

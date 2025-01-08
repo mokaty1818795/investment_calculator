@@ -19,6 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
     <link href="styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/styles.css">
     <meta charset="UTF-8" />
     <style>
         body {
@@ -289,6 +290,14 @@
 </div>
 </nav>
 </header>
+    <div class="loader-overlay" id="loader">
+        <div class="relative">
+            <div class="w-16 h-16 rounded-full absolute border-8 border-solid border-gray-200"></div>
+            <div
+                class="w-16 h-16 rounded-full animate-spin absolute border-8 border-solid border-red-600 border-t-transparent">
+            </div>
+        </div>
+    </div>
      <!-- Alert Container -->
      <div class="w-96 mx-auto">
         <!-- Success Alert -->
@@ -594,9 +603,11 @@
         const errorAlert = document.getElementById('alert-error');
         const successContent = document.getElementById('alert-success-content');
         const errorContent = document.getElementById('alert-error-content');
+        const loader = document.getElementById('loader');
 
         successAlert.style.display = 'none';
-            errorAlert.style.display = 'none'
+        errorAlert.style.display = 'none'
+        loader.style.display = 'flex';
 
         const postData= {
             names: name,
@@ -611,11 +622,13 @@
                         'Content-Type': 'application/json'
                     }
                 });
+                loader.style.display = 'none';
                 successContent.innerHTML = `Thank you for considering Alliance Insurance`;
                 successAlert.style.display = 'flex';
 
         } catch (error) {
            console.log("Error",error);
+           loader.style.display = 'none';
            errorContent.innerHTML = `We are unable to process your request`;
            errorAlert.style.display = 'flex'; 
         }
