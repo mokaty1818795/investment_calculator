@@ -16,7 +16,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine-ie11.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
     <link href="styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="./css/styles.css">
@@ -27,7 +28,7 @@
             background-color: #f0f4f8;
         }
 
-        
+
         .glassmorphism {
             background: rgba(255, 255, 255, 0.5);
             border-radius: 10px;
@@ -69,50 +70,54 @@
 
         }
 
-        #results
-        {
+        #results {
             display: none;
         }
 
-      .relative {
-        position: relative;
-      }
+        .relative {
+            position: relative;
+        }
 
-.watermark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('/images/logo.png'); /* Replace with your logo path */
-    background-repeat: repeat;
-    background-size: 100px; /* Adjust size as needed */
-    opacity: 0.1; /* Adjust opacity for subtlety */
-    z-index: 0; /* Places it behind the table */
-}
+        .watermark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/images/logo.png');
+            /* Replace with your logo path */
+            background-repeat: repeat;
+            background-size: 100px;
+            /* Adjust size as needed */
+            opacity: 0.1;
+            /* Adjust opacity for subtlety */
+            z-index: 0;
+            /* Places it behind the table */
+        }
 
-#tableContent {
-    position: relative;
-    z-index: 1; /* Ensures table content stays on top of watermark */
-}
+        #tableContent {
+            position: relative;
+            z-index: 1;
+            /* Ensures table content stays on top of watermark */
+        }
 
 
-.accent {            
-    accent-color: #E53935;       
-}  
+        .accent {
+            accent-color: #E53935;
+        }
 
 
-.modal-backdrop {
+        .modal-backdrop {
             backdrop-filter: blur(4px);
             background-color: rgba(0, 0, 0, 0.4);
         }
-        
+
         .modal-content {
             transform: translate(-50%, -50%) scale(0.95);
             opacity: 0;
             transition: all 0.3s ease-in-out;
         }
-        
+
         .modal-content.show {
             transform: translate(-50%, -50%) scale(1);
             opacity: 1;
@@ -141,60 +146,59 @@
             pointer-events: none;
         }
 
-        .input-effect input:focus + label,
-        .input-effect input:not(:placeholder-shown) + label {
+        .input-effect input:focus+label,
+        .input-effect input:not(:placeholder-shown)+label {
             top: -12px;
             font-size: 12px;
             color: #F72C25;
         }
-
- 
-</style>
+    </style>
 </head>
 
-<body class="min-h-screen"> <div id="contactModal" class="fixed inset-0 z-50 hidden">      
-<div class="modal-backdrop absolute inset-0"></div>
-    <div class="modal-content absolute top-1/2 left-1/2 w-11/12 max-w-md bg-white rounded-2xl p-6 shadow-2xl">
-        <div class="text-center mb-6">
-            <h3 class="text-2xl font-bold text-gray-800">Contact Information</h3>
-            <p class="text-gray-600 mt-2">Please provide your details to continue</p>
-        </div>
-        
-        <form id="contactForm" class="space-y-6">
-            <div class="input-effect">
-                <input type="text" id="name" required
-                       class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
-                       placeholder=" ">
-                <label for="name" class="text-gray-500">Full Name</label>
+<body class="min-h-screen">
+    <div id="contactModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-backdrop absolute inset-0"></div>
+        <div class="modal-content absolute top-1/2 left-1/2 w-11/12 max-w-md bg-white rounded-2xl p-6 shadow-2xl">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">Contact Information</h3>
+                <p class="text-gray-600 mt-2">Please provide your details to continue</p>
             </div>
-            
-            <div class="input-effect">
-                <input type="email" id="email" required
-                       class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
-                       placeholder=" ">
-                <label for="email" class="text-gray-500">Email Address</label>
-            </div>
-            
-            <div class="input-effect">
-                <input type="tel" id="phone" required
-                       class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
-                       placeholder=" ">
-                <label for="phone" class="text-gray-500">Phone Number</label>
-            </div>
-            
-            <div class="flex space-x-4">
-                <button type="button" onclick="closeModal()"
+
+            <form id="contactForm" class="space-y-6">
+                <div class="input-effect">
+                    <input type="text" id="name" required
+                        class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
+                        placeholder=" ">
+                    <label for="name" class="text-gray-500">Full Name</label>
+                </div>
+
+                <div class="input-effect">
+                    <input type="email" id="email" required
+                        class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
+                        placeholder=" ">
+                    <label for="email" class="text-gray-500">Email Address</label>
+                </div>
+
+                <div class="input-effect">
+                    <input type="tel" id="phone" required
+                        class="w-full px-4 py-3 bg-transparent border-0 border-b-2 focus:ring-0 focus:outline-none"
+                        placeholder=" ">
+                    <label for="phone" class="text-gray-500">Phone Number</label>
+                </div>
+
+                <div class="flex space-x-4">
+                    <button type="button" onclick="closeModal()"
                         class="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors duration-300">
-                    Cancel
-                </button>
-                <button  onclick="calculate()"
+                        Cancel
+                    </button>
+                    <button onclick="calculate()"
                         class="flex-1 px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors duration-300">
-                    Submit
-                </button>
-            </div>
-        </form>
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
 
     <header class="bg-white shadow-sm relative z-50">
@@ -203,93 +207,92 @@
                 <!-- Logo Section -->
                 <div class="flex items-center">
                     <a href="/" class="flex items-center">
-                        <img src="../images/logo.png" alt="Company Logo" 
-                             class="h-12 w-auto sm:h-16 md:h-20 object-contain">
+                        <img src="../images/logo.png" alt="Company Logo"
+                            class="h-12 w-auto sm:h-16 md:h-20 object-contain">
                     </a>
                 </div>
-    
+
                 <!-- Mobile Menu Button -->
-                <button type="button" 
-                        id="mobile-menu-button"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 
+                <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 
                                hover:text-red-600 hover:bg-gray-100 lg:hidden">
                     <span class="sr-only">Open menu</span>
                     <svg id="menu-icon" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                     <svg id="close-icon" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-    
+
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex lg:items-center lg:space-x-8">
-                    <a href="retire.html" class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
+                    <a href="retire.html"
+                        class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
                         Retirement Plan
                     </a>
-                    <a href="invest.html" class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
+                    <a href="invest.html"
+                        class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
                         Investment Plan
                     </a>
-                    <a href="educate.html" class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
+                    <a href="educate.html"
+                        class="text-base font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
                         Education Plan
                     </a>
                 </div>
             </div>
-    
+
             <!-- Mobile Menu -->
-    <div id="mobile-menu" 
-     class="hidden lg:hidden fixed left-0 right-0 top-[72px] bg-white shadow-lg border-t border-gray-200 z-50 
+            <div id="mobile-menu" class="hidden lg:hidden fixed left-0 right-0 top-[72px] bg-white shadow-lg border-t border-gray-200 z-50 
      transform transition-all duration-300 ease-in-out opacity-0 translate-y-[-10px]"
-     style="max-height: calc(100vh - 72px); overflow-y: auto;">
-    
-    <div class="container mx-auto px-4 py-6">
-        <div class="space-y-3">
-            <a href="retire.html" 
-               class="block px-6 py-3 text-base font-medium text-gray-600 hover:text-red-600 
+                style="max-height: calc(100vh - 72px); overflow-y: auto;">
+
+                <div class="container mx-auto px-4 py-6">
+                    <div class="space-y-3">
+                        <a href="retire.html" class="block px-6 py-3 text-base font-medium text-gray-600 hover:text-red-600 
                       rounded-xl transition-all duration-200 ease-in-out
                       hover:bg-red-50 hover:scale-[1.02] hover:shadow-sm
                       transform opacity-0 translate-y-4 transition-transform">
-                <div class="flex items-center space-x-3">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                    </svg>
-                    <span>Retirement Plan</span>
-                </div>
-            </a>
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                                <span>Retirement Plan</span>
+                            </div>
+                        </a>
 
-            <a href="invest.html" 
-               class="block px-6 py-3 text-base font-medium text-gray-600 hover:text-red-600 
+                        <a href="invest.html" class="block px-6 py-3 text-base font-medium text-gray-600 hover:text-red-600 
                       rounded-xl transition-all duration-200 ease-in-out
                       hover:bg-red-50 hover:scale-[1.02] hover:shadow-sm
                       transform opacity-0 translate-y-4 transition-transform delay-100">
-                <div class="flex items-center space-x-3">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                              d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-                    </svg>
-                    <span>Investment Plan</span>
-                </div>
-            </a>
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                </svg>
+                                <span>Investment Plan</span>
+                            </div>
+                        </a>
 
-            <a href="educate.html" 
-               class="block px-6 py-3 text-base font-medium text-gray-600 hover:text-red-600 
+                        <a href="educate.html" class="block px-6 py-3 text-base font-medium text-gray-600 hover:text-red-600 
                       rounded-xl transition-all duration-200 ease-in-out
                       hover:bg-red-50 hover:scale-[1.02] hover:shadow-sm
                       transform opacity-0 translate-y-4 transition-transform delay-200">
-                <div class="flex items-center space-x-3">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                    </svg>
-                    <span>Education Plan</span>
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                <span>Education Plan</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-            </a>
-        </div>
-    </div>
-</div>
-</nav>
-</header>
+            </div>
+        </nav>
+    </header>
     <div class="loader-overlay" id="loader">
         <div class="relative">
             <div class="w-16 h-16 rounded-full absolute border-8 border-solid border-gray-200"></div>
@@ -298,38 +301,54 @@
             </div>
         </div>
     </div>
-     <!-- Alert Container -->
-     <div class="w-96 mx-auto">
+    <!-- Alert Container -->
+    <div class="w-96 mx-auto">
         <!-- Success Alert -->
-        <div id="alert-success" class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert" style="display: none;">
-            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+        <div id="alert-success"
+            class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+            role="alert" style="display: none;">
+            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                viewBox="0 0 20 20">
+                <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <span class="sr-only">Success</span>
             <div id="alert-success-content" class="ms-3 text-sm font-medium">
                 Request successful!
             </div>
-            <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-success" aria-label="Close">
+            <button type="button"
+                class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
+                data-dismiss-target="#alert-success" aria-label="Close">
                 <span class="sr-only">Close</span>
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                 </svg>
             </button>
         </div>
 
         <!-- Error Alert -->
-        <div id="alert-error" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" style="display: none;">
-            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+        <div id="alert-error"
+            class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+            role="alert" style="display: none;">
+            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                viewBox="0 0 20 20">
+                <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <span class="sr-only">Error</span>
             <div id="alert-error-content" class="ms-3 text-sm font-medium">
                 Something went wrong!
             </div>
-            <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-error" aria-label="Close">
+            <button type="button"
+                class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                data-dismiss-target="#alert-error" aria-label="Close">
                 <span class="sr-only">Close</span>
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                 </svg>
             </button>
         </div>
@@ -337,99 +356,118 @@
     <div id="response"></div>
     <main class="container max-w-7xl mx-auto px-4 py-12">
         <div class="glassmorphism border border-red-600 p-8 mb-12" id="calculator-container">
-                <h1 id="plan-your-future-investments" class="text-3xl font-bold text-red-600 mb-8">
-                    Plan Your Future Investments
-                </h1>
-                <div class="space-y-4">
-                    <div>
-                        <label for="calculationType" class="block text-lg text-gray-700 font-semibold mb-2">Calculation Type:</label>
-                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-                            <button id="futureValueBtn"
-                                class="flex-1 py-3 px-6 bg-red-100 rounded-lg font-semibold text-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-300"
-                                onclick="setCalculationType('futureValue')">
-                                Future Value
-                            </button>
-                            <button id="monthlyPremiumBtn"
-                                class="flex-1 py-3 px-6 bg-gray-100 rounded-lg font-semibold text-gray-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-300"
-                                onclick="setCalculationType('monthlyPremium')">
-                                Monthly Premium
-                            </button>
-                        </div>
+            <h1 id="plan-your-future-investments"
+                class="text-xl md:text-2xl lg:text-3xl font-bold text-red-600 mb-4 md:mb-6 lg:mb-8">
+                Plan Your Future Investments
+            </h1>
+            <div class="space-y-4">
+                <div class="w-full">
+                    <label for="calculationType"
+                        class="block text-base md:text-lg text-gray-700 font-semibold mb-2 md:mb-3">
+                        Calculation Type:
+                    </label>
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                        <button id="futureValueBtn"
+                            class="w-full sm:flex-1 py-2 md:py-3 px-4 md:px-6 bg-red-100 rounded-lg text-sm md:text-base font-semibold text-red-600 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-300"
+                            onclick="setCalculationType('futureValue')">
+                            Future Value
+                        </button>
+                        <button id="monthlyPremiumBtn"
+                            class="w-full sm:flex-1 py-2 md:py-3 px-4 md:px-6 bg-gray-100 rounded-lg text-sm md:text-base font-semibold text-gray-600 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-300"
+                            onclick="setCalculationType('monthlyPremium')">
+                            Monthly Premium
+                        </button>
                     </div>
+                </div>
 
-                    <div>
-                        <label for="startDate" class="block text-md text-gray-700 font-semibold mb-2">Start Date:</label>
-                        <input type="date" id="startDate"
-                            class="w-full p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300 " />
+                <div class="w-full">
+                    <label for="startDate" class="block text-sm md:text-md text-gray-700 font-semibold mb-1 md:mb-2">
+                        Start Date:
+                    </label>
+                    <input type="date" id="startDate"
+                        class="w-full py-2 md:py-3 px-3 text-sm md:text-base text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300 hover:border-gray-400" />
+                </div>
+
+                <div id="monthlyContributionInput" class="w-full">
+                    <label for="monthlyContribution"
+                        class="block text-sm md:text-md text-gray-700 font-semibold mb-1 md:mb-2">
+                        Monthly Contribution:
+                    </label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sm md:text-base text-black">
+                            M
+                        </span>
+                        <input oninput="setFormat('monthlyContribution')" type="text" id="monthlyContribution" min="0"
+                            step="50" value="0"
+                            class="w-full py-2 md:py-3 px-3 pl-8 text-sm md:text-base text-black border border-gray-300 rounded-lg hover:border-gray-400 focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300" />
                     </div>
+                </div>
 
-                    <div id="monthlyContributionInput">
-                        <label for="monthlyContribution" class="block text-md text-gray-700 font-semibold mb-2">Monthly
-                            Contribution:</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-black">M</span>
-                            <input oninput="setFormat('monthlyContribution')" type="text" id="monthlyContribution" min="0" step="50" value="0"
-                                class="w-full p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300 pl-8" />
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="investmentPeriod" class="block text-md text-gray-700 font-semibold mb-2">Investment
-                            Period:</label>
-                        <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-                            <input type="range" id="investmentPeriodSlider" min="1" max="40" step="1" value="10"
-                                class="w-full text-black custom-range accent " />
-                            <div class="flex items-center space-x-2">
-                                <input type="number" id="investmentPeriod" min="1" max="50" step="1" value="10"
-                                    class="lg:w-20 md:w-full w-full p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition-all duration-300 focus:outline-none" />
-                                <span class="text-black">years</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="goalAmountInput" class="hidden">
-                        <label for="goalAmount" class="block text-md text-gray-700 font-semibold mb-2">Goal Amount:</label>
-                        <div class="relative">
-                            <span
-                                class="absolute inset-y-0 left-0 pl-3 text-black flex items-center text-gray-600">M</span>
-                            <input oninput="setFormat('goalAmount')" type="text" id="goalAmount" min="0" step="1000" value="0"
-                                class="w-full p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300 pl-8" />
-                        </div>
-                    </div>
-
-                    <div id="adhocSection">
-                        <label for="numAdhoc" class="block text-md text-gray-700 font-semibold mb-2">
-                            Number Of AdHoc Contributions:</label>
-                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-                            <input type="number" id="numAdhoc" min="0" max="10" step="1" value="0"
-                                class="w-full sm:w-2/3 p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300" />
-                            <button onclick="generateAdhocInputs()"
-                                class="w-full sm:w-1/3 bg-red-600 text-white rounded-lg py-3 px-6 font-semibold transition-all duration-300">
-                                Add
-                            </button>
+                <div class="w-full">
+                    <label for="investmentPeriod"
+                        class="block text-sm md:text-md text-gray-700 font-semibold mb-1 md:mb-2">
+                        Investment Period:
+                    </label>
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                        <input type="range" id="investmentPeriodSlider" min="1" max="40" step="1" value="10"
+                            class="w-full text-black custom-range accent" />
+                        <div class="flex items-center gap-2 min-w-[120px] sm:w-auto">
+                            <input type="number" id="investmentPeriod" min="1" max="50" step="1" value="10"
+                                class="w-20 py-2 md:py-3 px-3 text-sm md:text-base text-black border border-gray-300 rounded-lg hover:border-gray-400 focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300" />
+                            <span class="text-sm md:text-base text-black">years</span>
                         </div>
                     </div>
                 </div>
 
-                <div id="adhocInputs" class="space-y-6 mt-6"></div>
-                <div class="mt-6">
-                    <button onclick="showModal()"
-                        class="w-full bg-red-600 text-white rounded-lg py-4 px-6 font-semibold mt-8 hover:bg-white hover:border hover: hover:text-red-500  hover:border-red-600 transition-all duration-300 transform ">
-                        Calculate
-                    </button>
-                </div>
-                <div class="space-y-8 mt-12">
-                    <div id="chartContainer" class="bg-white p-6 rounded-2xl shadow-lg">
-                        <h3 class="text-xl sm:text-2xl font-bold text-red-600 mb-6">
-                            Investment Growth Projection
-                        </h3>
-                        <div class="relative h-[400px]"> <!-- Added wrapper div -->
-                            <canvas id="investmentChart"></canvas>
-                        </div>
+                <div id="goalAmountInput" class="hidden w-full">
+                    <label for="goalAmount" class="block text-sm md:text-md text-gray-700 font-semibold mb-1 md:mb-2">
+                        Goal Amount:
+                    </label>
+                    <div class="relative">
+                        <span
+                            class="absolute inset-y-0 left-0 flex items-center pl-3 text-sm md:text-base text-gray-600">
+                            M
+                        </span>
+                        <input oninput="setFormat('goalAmount')" type="text" id="goalAmount" min="0" step="1000"
+                            value="0"
+                            class="w-full py-2 md:py-3 px-3 pl-8 text-sm md:text-base text-black border border-gray-300 rounded-lg hover:border-gray-400 focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300" />
                     </div>
-                    <div id="results1" class="text-black p-6 rounded-2xl overflow-hidden"></div>
-                    <div id="results" class="bg-red-50 text-black p-6 rounded-2xl shadow-lg overflow-hidden"></div>
-                </div> 
+                </div>
+
+                <div id="adhocSection" class="w-full">
+                    <label for="numAdhoc" class="block text-sm md:text-md text-gray-700 font-semibold mb-1 md:mb-2">
+                        Number Of AdHoc Contributions:
+                    </label>
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                        <input type="number" id="numAdhoc" min="0" max="10" step="1" value="0"
+                            class="w-full py-2 md:py-3 px-3 text-sm md:text-base text-black border border-gray-300 rounded-lg hover:border-gray-400 focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300" />
+                        <button onclick="generateAdhocInputs()"
+                            class="w-full sm:w-auto px-6 py-2 md:py-3 bg-red-600 hover:bg-red-700 text-sm md:text-base text-white rounded-lg font-semibold transition-all duration-300">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="adhocInputs" class="space-y-6 mt-6"></div>
+            <div class="mt-4 md:mt-6">
+                <button onclick="showModal()"
+                    class="w-full sm:w-auto px-6 py-2 md:py-3 bg-red-600 hover:bg-red-700 text-sm md:text-base text-white rounded-lg font-semibold transition-all duration-300">
+                    Calculate
+                </button>
+            </div>
+            <div class="space-y-8 mt-12">
+                <div id="chartContainer" class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl sm:text-2xl font-bold text-red-600 mb-6">
+                        Investment Growth Projection
+                    </h3>
+                    <div class="relative h-[400px]"> <!-- Added wrapper div -->
+                        <canvas id="investmentChart"></canvas>
+                    </div>
+                </div>
+                <div id="results1" class="text-black p-6 rounded-2xl overflow-hidden"></div>
+                <div id="results" class="bg-red-50 text-black p-6 rounded-2xl shadow-lg overflow-hidden"></div>
+            </div>
         </div>
     </main>
 </body>
@@ -442,7 +480,7 @@
 
     function setCalculationType(type) {
         calculationType = type;
-        if(calculationType==="futureValue"){
+        if (calculationType === "futureValue") {
             const resultsDiv = document.getElementById("results1");
             resultsDiv.style.display = "block";
 
@@ -454,7 +492,7 @@
         }
 
 
-        if(calculationType==="monthlyPremium"){
+        if (calculationType === "monthlyPremium") {
             const resultsDiv = document.getElementById("results1");
             resultsDiv.style.display = "none";
 
@@ -534,19 +572,19 @@
 
 
     function resetCalculator() {
-    // Clear all result fields
-    document.getElementById("totalCostResult").textContent = "";
-    document.getElementById("lowMonthlyContributionResult").textContent = "";
-    document.getElementById("lowTotalSavingsResult").textContent = "";
-    document.getElementById("highMonthlyContributionResult").textContent = "";
-    document.getElementById("highTotalSavingsResult").textContent = "";
+        // Clear all result fields
+        document.getElementById("totalCostResult").textContent = "";
+        document.getElementById("lowMonthlyContributionResult").textContent = "";
+        document.getElementById("lowTotalSavingsResult").textContent = "";
+        document.getElementById("highMonthlyContributionResult").textContent = "";
+        document.getElementById("highTotalSavingsResult").textContent = "";
 
-    // If there are any input fields, reset them as well
-    document.querySelectorAll('input').forEach(input => input.value = "");
+        // If there are any input fields, reset them as well
+        document.querySelectorAll('input').forEach(input => input.value = "");
 
-    // Optionally reset dropdowns or other form elements if present
-    document.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
-}
+        // Optionally reset dropdowns or other form elements if present
+        document.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+    }
 
 
     function generateAdhocInputs() {
@@ -556,23 +594,48 @@
         for (let i = 0; i < numAdhoc; i++) {
             const newInput = document.createElement("div");
             newInput.innerHTML = `
-    		<div class="bg-red-50 p-6 rounded-xl">
-    			<h3 class="text-lg font-semibold text-red-600 mb-4">Ad Hoc Contribution #${i + 1
-                }</h3>
-    			<div class="space-y-4 sm:space-y-0 sm:flex sm:space-x-4">
-    				<div class="w-full sm:w-1/2">
-    					<label for="adhocAmount${i}" class="block text-sm font-medium text-gray-700 mb-1">Amount:</label>
-    					<div class="relative">
-    						<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">M</span>
-    						<input oninput="setFormat('adhocAmount${i}')" type="text" id="adhocAmount${i}" min="0" step="100" value="0" class="w-full p-3 pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition-all duration-300 focus:outline-none">
-    					</div>
-    				</div>
-    				<div class="w-full sm:w-1/2">
-    					<label for="adhocDate${i}" class="block text-sm font-medium text-gray-700 mb-1">Date:</label>
-    					<input type="date" id="adhocDate${i}" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition-all duration-300 focus:outline-none">
-    				</div>
-    			</div>
-    		</div>
+            <div class="bg-red-50 p-4 md:p-6 rounded-xl">
+                <h3 class="text-base md:text-lg font-semibold text-red-600 mb-2 md:mb-4">
+                    Ad Hoc Contribution #${i + 1}
+                </h3>
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <div class="w-full sm:w-1/2">
+                        <label 
+                            for="adhocAmount${i}" 
+                            class="block text-sm md:text-md text-gray-700 font-semibold mb-1 md:mb-2"
+                        >
+                            Amount:
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sm md:text-base text-gray-600">
+                                M
+                            </span>
+                            <input 
+                                oninput="setFormat('adhocAmount${i}')" 
+                                type="text" 
+                                id="adhocAmount${i}" 
+                                min="0" 
+                                step="100" 
+                                value="0"
+                                class="w-full py-2 md:py-3 px-3 pl-8 text-sm md:text-base border border-gray-300 rounded-lg hover:border-gray-400 focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300"
+                            />
+                        </div>
+                        </div>
+                        <div class="w-full sm:w-1/2">
+                        <label 
+                            for="adhocDate${i}" 
+                            class="block text-sm md:text-md text-gray-700 font-semibold mb-1 md:mb-2"
+                        >
+                            Date:
+                        </label>
+                        <input 
+                            type="date" 
+                            id="adhocDate${i}"
+                            class="w-full py-2 md:py-3 px-3 text-sm md:text-base border border-gray-300 rounded-lg hover:border-gray-400 focus:ring-2 focus:ring-red-400 focus:border-red-400 focus:outline-none transition-all duration-300"
+                        />
+                        </div>
+                </div>
+            </div>
     	`;
             adhocInputsDiv.appendChild(newInput);
             gsap.from(newInput, {
@@ -586,19 +649,19 @@
 
 
     document.querySelectorAll('[data-dismiss-target]').forEach(button => {
-            button.addEventListener('click', () => {
-                const targetId = button.getAttribute('data-dismiss-target');
-                document.querySelector(targetId).style.display = 'none';
-            });
+        button.addEventListener('click', () => {
+            const targetId = button.getAttribute('data-dismiss-target');
+            document.querySelector(targetId).style.display = 'none';
         });
+    });
 
 
 
-   async function calculate() {
+    async function calculate() {
 
         const name = document.getElementById('name').value;
-        const email= document.getElementById('email').value;
-        const phoneNumber= document.getElementById('phone').value;
+        const email = document.getElementById('email').value;
+        const phoneNumber = document.getElementById('phone').value;
         const successAlert = document.getElementById('alert-success');
         const errorAlert = document.getElementById('alert-error');
         const successContent = document.getElementById('alert-success-content');
@@ -609,28 +672,28 @@
         errorAlert.style.display = 'none'
         loader.style.display = 'flex';
 
-        const postData= {
+        const postData = {
             names: name,
-            email:email,
-            phoneNumber:phoneNumber
+            email: email,
+            phoneNumber: phoneNumber
         }
 
         try {
-            const response = 
-            await axios.post('https://aic-api-cphradewfgehdpb7.southafricanorth-01.azurewebsites.net/v1/api/send-email', postData, {
+            const response =
+                await axios.post('https://aic-api-cphradewfgehdpb7.southafricanorth-01.azurewebsites.net/v1/api/send-email', postData, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
-                loader.style.display = 'none';
-                successContent.innerHTML = `Thank you for considering Alliance Insurance`;
-                successAlert.style.display = 'flex';
+            loader.style.display = 'none';
+            successContent.innerHTML = `Thank you for considering Alliance Insurance`;
+            successAlert.style.display = 'flex';
 
         } catch (error) {
-           console.log("Error",error);
-           loader.style.display = 'none';
-           errorContent.innerHTML = `We are unable to process your request`;
-           errorAlert.style.display = 'flex'; 
+            console.log("Error", error);
+            loader.style.display = 'none';
+            errorContent.innerHTML = `We are unable to process your request`;
+            errorAlert.style.display = 'flex';
         }
 
         const startDate = new Date(document.getElementById("startDate").value);
@@ -647,7 +710,7 @@
 
             // Get additional contributions if any
             const adhocContributions = getAdhocContributions();
-            
+
             // Calculate future values for both growth rates
             const lowInflationData = calculateGrowth(
                 monthlyContribution,
@@ -781,7 +844,7 @@
 
 
 
-    function getAdhocOriginaLValues(){
+    function getAdhocOriginaLValues() {
         const adhocInputs = document.querySelectorAll('[id^="adhocAmount"]');
         const adhocDates = document.querySelectorAll('[id^="adhocDate"]');
         const adhocContributions = [];
@@ -920,20 +983,20 @@
     }
 
     function download() {
-    const element = document.getElementById("tableContent");
-    try {
-        const options = {
-            margin: 0.4,
-            filename: 'Future_Value_Results.pdf',
-            image: { type: 'jpeg', quality: 0.98 }, 
-            html2canvas: { scale: 3, useCORS: true }, 
-            jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait', putOnlyUsedFonts: true }
-        };
-        html2pdf().set(options).from(element).save();
-    } catch (error) {
-        console.error("Error generating PDF:", error);
+        const element = document.getElementById("tableContent");
+        try {
+            const options = {
+                margin: 0.4,
+                filename: 'Future_Value_Results.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 3, useCORS: true },
+                jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait', putOnlyUsedFonts: true }
+            };
+            html2pdf().set(options).from(element).save();
+        } catch (error) {
+            console.error("Error generating PDF:", error);
+        }
     }
-}
 
 
     function displayMonthlyPremiumResults(lowPremium, highPremium) {
@@ -943,18 +1006,18 @@
        <p class="mb-2">
     	  To achieve your investment goal, your monthly premium can range between a minimum of
     	  <span class="font-bold text-red-600">${new Intl.NumberFormat('en-LS', {
-                                style: 'currency',
-                                currency: 'LSL',
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0
-                            }).format(highPremium)}</span>
+            style: 'currency',
+            currency: 'LSL',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(highPremium)}</span>
     	  and a maximum of
     	  <span class="font-bold text-red-600">${new Intl.NumberFormat('en-LS', {
-                                style: 'currency',
-                                currency: 'LSL',
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0
-                            }).format(lowPremium)}</span>
+            style: 'currency',
+            currency: 'LSL',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(lowPremium)}</span>
     	  per month.
     	</p>
     `;
@@ -1087,38 +1150,38 @@
             const yearsBeforeStart = parseInt(document.getElementById("yearsBeforeStart").value);
             const contributeDuring = document.querySelector('input[name="contributeDuring"]:checked').value;
             console.log(childName);
-            
+
             const lowReturnRate = 0.06;  // 6% for conservative scenario
             const highReturnRate = 0.10; // 10% for aggressive scenario
 
             // Calculate total education cost
             const totalCost = annualCost * studyDuration;
 
-            const savingPeriod = contributeDuring === "yes" 
-                ? yearsBeforeStart + studyDuration 
+            const savingPeriod = contributeDuring === "yes"
+                ? yearsBeforeStart + studyDuration
                 : yearsBeforeStart;
 
             // Calculate for low return rate (6%)
             const lowFutureValue = totalCost * (1 + lowReturnRate) ** yearsBeforeStart;
             const lowMonthlyRate = lowReturnRate / 12;
             const numberOfPayments = savingPeriod * 12;
-            const lowMonthlyContribution = (lowFutureValue * lowMonthlyRate) / 
+            const lowMonthlyContribution = (lowFutureValue * lowMonthlyRate) /
                 ((1 + lowMonthlyRate) ** numberOfPayments - 1);
 
             // Calculate for high return rate (10%)
             const highFutureValue = totalCost * (1 + highReturnRate) ** yearsBeforeStart;
             const highMonthlyRate = highReturnRate / 12;
-            const highMonthlyContribution = (highFutureValue * highMonthlyRate) / 
+            const highMonthlyContribution = (highFutureValue * highMonthlyRate) /
                 ((1 + highMonthlyRate) ** numberOfPayments - 1);
 
             // Display results
             educationResults.classList.remove("hidden");
-            
+
             // Format currency values
             const formatCurrency = (value) => {
                 return `R ${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ")}`;
             };
-            
+
             // Update all display locations
             const updateValue = (id, value) => {
                 const elements = document.querySelectorAll(`#${id}`);
@@ -1135,9 +1198,9 @@
             updateValue("highTotalSavingsResult", highFutureValue);
 
             // Update secondary display
-           
+
             document.getElementById("childDetails").textContent = childName;
-          
+
             document.getElementById("lowMonthlyContribution2").textContent = formatCurrency(lowMonthlyContribution);
             document.getElementById("lowTotalSavings2").textContent = formatCurrency(lowFutureValue);
             document.getElementById("highMonthlyContribution2").textContent = formatCurrency(highMonthlyContribution);
@@ -1149,76 +1212,76 @@
             document.getElementById("annualCost").value = "";
             document.getElementById("studyDuration").value = "";
             document.getElementById("yearsBeforeStart").value = "";
-            
+
             // Hide results
             document.getElementById("educationResults").classList.add("hidden");
         }
-        
+
         let savingsChart = null;
 
         function updateSavingsChart(yearsBeforeStart, lowMonthlyContribution, highMonthlyContribution) {
-        // Destroy existing chart if it exists
-        if (savingsChart) {
-            savingsChart.destroy();
+            // Destroy existing chart if it exists
+            if (savingsChart) {
+                savingsChart.destroy();
+            }
+
+            const years = Array.from({ length: yearsBeforeStart }, (_, i) => `Year ${i + 1}`);
+            const lowReturnRate = 0.06;
+            const highReturnRate = 0.10;
+
+            // Calculate cumulative savings for each year
+            const lowSavings = [];
+            const highSavings = [];
+            let lowAccumulated = 0;
+            let highAccumulated = 0;
+
+            for (let i = 0; i < yearsBeforeStart; i++) {
+                // Add monthly contributions for the year
+                lowAccumulated += lowMonthlyContribution * 12;
+                highAccumulated += highMonthlyContribution * 12;
+
+                // Add returns
+                lowAccumulated *= (1 + lowReturnRate);
+                highAccumulated *= (1 + highReturnRate);
+
+                lowSavings.push(lowAccumulated);
+                highSavings.push(highAccumulated);
+            }
+
         }
 
-        const years = Array.from({length: yearsBeforeStart}, (_, i) => `Year ${i + 1}`);
-        const lowReturnRate = 0.06;
-        const highReturnRate = 0.10;
 
-        // Calculate cumulative savings for each year
-        const lowSavings = [];
-        const highSavings = [];
-        let lowAccumulated = 0;
-        let highAccumulated = 0;
+        function resetCalculator() {
+            // Reset all input fields
+            document.getElementById("annualCost").value = "";
+            document.getElementById("studyDuration").value = "";
+            document.getElementById("yearsBeforeStart").value = "";
 
-        for (let i = 0; i < yearsBeforeStart; i++) {
-            // Add monthly contributions for the year
-            lowAccumulated += lowMonthlyContribution * 12;
-            highAccumulated += highMonthlyContribution * 12;
+            // Hide results
+            document.getElementById("educationResults").classList.add("hidden");
 
-            // Add returns
-            lowAccumulated *= (1 + lowReturnRate);
-            highAccumulated *= (1 + highReturnRate);
+            // Clear the chart
+            if (savingsChart) {
+                savingsChart.destroy();
+                savingsChart = null;
+            }
+        }
+    });
 
-            lowSavings.push(lowAccumulated);
-            highSavings.push(highAccumulated);
+
+    function setFormat(id) {
+        if (document.getElementById(id).value != "") {
+
+
+            document.getElementById(id).value = parseFloat(document.getElementById(id).value.replace(/,/g, ""))
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
     }
-
-
-    function resetCalculator() {
-        // Reset all input fields
-        document.getElementById("annualCost").value = "";
-        document.getElementById("studyDuration").value = "";
-        document.getElementById("yearsBeforeStart").value = "";
-        
-        // Hide results
-        document.getElementById("educationResults").classList.add("hidden");
-        
-        // Clear the chart
-        if (savingsChart) {
-            savingsChart.destroy();
-            savingsChart = null;
-        }
-    }
-});
-
-
-function setFormat(id) {
-    if (document.getElementById(id).value != "") {
-    
-
-    document.getElementById(id).value = parseFloat(document.getElementById(id).value.replace(/,/g, ""))
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-
-}
 </script>
 <script>
-    (function() {
+    (function () {
         const menuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuIcon = document.getElementById('menu-icon');
@@ -1226,7 +1289,7 @@ function setFormat(id) {
         const menuItems = mobileMenu.querySelectorAll('a');
 
         if (menuButton && mobileMenu && menuIcon && closeIcon) {
-            menuButton.addEventListener('click', function(e) {
+            menuButton.addEventListener('click', function (e) {
                 e.stopPropagation();
                 const isOpen = !mobileMenu.classList.contains('hidden');
 
@@ -1245,7 +1308,7 @@ function setFormat(id) {
                         mobileMenu.classList.remove('opacity-0', 'translate-y-[-10px]');
                         menuIcon.classList.add('hidden');
                         closeIcon.classList.remove('hidden');
-                        
+
                         // Animate menu items
                         menuItems.forEach((item, index) => {
                             setTimeout(() => {
@@ -1257,7 +1320,7 @@ function setFormat(id) {
             });
 
             // Close menu when clicking outside
-            document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
                 if (!mobileMenu.contains(e.target) && !menuButton.contains(e.target)) {
                     mobileMenu.classList.add('opacity-0', 'translate-y-[-10px]');
                     setTimeout(() => {
@@ -1277,16 +1340,16 @@ function setFormat(id) {
 
 
     function showModal() {
-        const contacts= {
+        const contacts = {
             name: localStorage.getItem("names"),
             email: localStorage.getItem("email"),
-            phone:localStorage.getItem("phone")
+            phone: localStorage.getItem("phone")
         }
 
 
-        if(contacts.email && contacts.name && contacts.phone){
+        if (contacts.email && contacts.name && contacts.phone) {
             calculate()
-        }else{
+        } else {
 
             const modal = document.getElementById('contactModal');
             const modalContent = modal.querySelector('.modal-content');
@@ -1308,9 +1371,9 @@ function setFormat(id) {
     }
 
     // Handle form submission
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
         e.preventDefault();
-        
+
         // Get form values
         const contactData = {
             name: document.getElementById('name').value,
@@ -1318,28 +1381,29 @@ function setFormat(id) {
             phone: document.getElementById('phone').value
         };
 
-        
 
-        
-        localStorage.setItem("names",contactData.name);
-        localStorage.setItem("email",contactData.email);
-        localStorage.setItem("phone",contactData.phone);
-        
+
+
+        localStorage.setItem("names", contactData.name);
+        localStorage.setItem("email", contactData.email);
+        localStorage.setItem("phone", contactData.phone);
+
         // Store the contact data (you can send it to a server here)
         console.log('Contact Data:', contactData);
-        
+
         // Close the modal
         closeModal();
-        
+
         // Call the original calculate function
         originalCalculate();
     });
 
     // Close modal when clicking outside
-    document.getElementById('contactModal').addEventListener('click', function(e) {
+    document.getElementById('contactModal').addEventListener('click', function (e) {
         if (e.target === this) {
             closeModal();
         }
     });
 </script>
+
 </html>
