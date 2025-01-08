@@ -93,7 +93,7 @@
                         class="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors duration-300">
                         Cancel
                     </button>
-                    <button type="submit"
+                    <button id="btnCalcuate"
                         class="flex-1 px-6 py-3 bg-[#F72C25] text-white rounded-xl hover:bg-red-700 transition-colors duration-300">
                         Submit
                     </button>
@@ -426,6 +426,7 @@
         const standardInputs = document.getElementById('standardInputs');
         const reverseInputs = document.getElementById('reverseInputs');
         const calculateBtn = document.getElementById('calculateBtn');
+        const btnCalcuate = document.getElementById('btnCalcuate')
 
 
         document.querySelectorAll('[data-dismiss-target]').forEach(button => {
@@ -732,7 +733,30 @@
         }
 
 
+        const originalCalculateRetirement = calculateRetirement;
+        const originalCalculateTargetMode = calculateTargetMode;
+
+        // Override the calculate button click handler
+        calculateBtn.removeEventListener('click', calculateRetirement);
+        calculateBtn.removeEventListener('click', calculateTargetMode);
+
+        function closeModal() {
+            const modal = document.getElementById('contactModal');
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.classList.remove('show');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        document.getElementById('contactModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
         async function sendEmail() {
+            console.log("Requesting here");
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const phoneNumber = document.getElementById('phone').value;
@@ -767,6 +791,42 @@
             }
         }
 
+
+        btnCalcuate.addEventListener('click', (e) => {
+
+            e.preventDefault();
+
+            const contactData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value
+            };
+
+            if (!contactData.name && !contactData.email && !contactData.phoneNumber) {
+                return
+            } else {
+
+                localStorage.setItem("names", contactData.name);
+                localStorage.setItem("email", contactData.email);
+                localStorage.setItem("phone", contactData.phone);
+
+                console.log("Tring to request");
+
+                sendEmail();
+                closeModal();
+
+
+                const isStandardMode = !standardInputs.classList.contains('hidden');
+                if (isStandardMode) {
+                    originalCalculateRetirement();
+                } else {
+                    originalCalculateTargetMode();
+                }
+            }
+        })
+
+
+
         // Calculate button event listener
         calculateBtn.addEventListener('click', () => {
             const isStandardMode = !standardInputs.classList.contains('hidden');
@@ -775,6 +835,8 @@
                 email: localStorage.getItem("email"),
                 phone: localStorage.getItem("phone")
             };
+
+            console.log("Heree menanddssdhfhdsshfhfh")
 
             if (contactData.name && contactData.email && contactData.phone) {
                 if (isStandardMode) {
@@ -787,7 +849,6 @@
                     }
                 }
             } else {
-                sendEmail();
                 const modal = document.getElementById('contactModal');
                 const modalContent = modal.querySelector('.modal-content');
                 modal.classList.remove('hidden');
@@ -892,50 +953,32 @@
     </script>
     <script>
         // Store original calculate functions
-        const originalCalculateRetirement = calculateRetirement;
-        const originalCalculateTargetMode = calculateTargetMode;
+        
 
-        // Override the calculate button click handler
-        calculateBtn.removeEventListener('click', calculateRetirement);
-        calculateBtn.removeEventListener('click', calculateTargetMode);
+        // document.getElementById('contactForm').addEventListener('submit', function (e) {
+        //     e.preventDefault();
 
-        function closeModal() {
-            const modal = document.getElementById('contactModal');
-            const modalContent = modal.querySelector('.modal-content');
-            modalContent.classList.remove('show');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
-        }
+        //     const contactData = {
+        //         name: document.getElementById('name').value,
+        //         email: document.getElementById('email').value,
+        //         phone: document.getElementById('phone').value
+        //     };
 
-        document.getElementById('contactForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+        //     localStorage.setItem("names", contactData.name);
+        //     localStorage.setItem("email", contactData.email);
+        //     localStorage.setItem("phone", contactData.phone);
 
-            const contactData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value
-            };
-
-            localStorage.setItem("names", contactData.name);
-            localStorage.setItem("email", contactData.email);
-            localStorage.setItem("phone", contactData.phone);
-
-            closeModal();
-            const isStandardMode = !standardInputs.classList.contains('hidden');
-            if (isStandardMode) {
-                originalCalculateRetirement();
-            } else {
-                originalCalculateTargetMode();
-            }
-        });
+        //     closeModal();
+        //     const isStandardMode = !standardInputs.classList.contains('hidden');
+        //     if (isStandardMode) {
+        //         originalCalculateRetirement();
+        //     } else {
+        //         originalCalculateTargetMode();
+        //     }
+        // });
 
         // Close modal when clicking outside
-        document.getElementById('contactModal').addEventListener('click', function (e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
+
     </script>
 </body>
 
