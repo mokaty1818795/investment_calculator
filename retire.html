@@ -6,55 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <style>
-        .modal-backdrop {
-            backdrop-filter: blur(4px);
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .modal-content {
-            transform: translate(-50%, -50%) scale(0.95);
-            opacity: 0;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .modal-content.show {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
-
-        .input-effect {
-            position: relative;
-            margin-bottom: 30px;
-        }
-
-        .input-effect input {
-            transition: all 0.3s ease;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .input-effect input:focus {
-            border-bottom-color: #F72C25;
-        }
-
-        .input-effect label {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            transition: all 0.3s ease;
-            pointer-events: none;
-        }
-
-        .input-effect input:focus+label,
-        .input-effect input:not(:placeholder-shown)+label {
-            top: -12px;
-            font-size: 12px;
-            color: #F72C25;
-        }
-    </style>
-
-
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <body class="bg-gray-50">
@@ -193,6 +145,17 @@
             </div>
         </nav>
     </header>
+
+    <div class="loader-overlay" id="loader">
+        <div class="relative">
+            <div class="w-16 h-16 rounded-full absolute border-8 border-solid border-gray-200"></div>
+            <div
+                class="w-16 h-16 rounded-full animate-spin absolute border-8 border-solid border-red-600 border-t-transparent">
+            </div>
+        </div>
+    </div>
+
+
     <!-- Alert Container -->
     <div class="w-96 mx-auto">
         <!-- Success Alert -->
@@ -764,9 +727,11 @@
             const errorAlert = document.getElementById('alert-error');
             const successContent = document.getElementById('alert-success-content');
             const errorContent = document.getElementById('alert-error-content');
+            const loader = document.getElementById('loader');
 
             successAlert.style.display = 'none';
             errorAlert.style.display = 'none'
+            loader.style.display = 'flex';
 
             const postData = {
                 names: name,
@@ -781,11 +746,14 @@
                             'Content-Type': 'application/json'
                         }
                     });
+
+                loader.style.display = 'none';
                 successContent.innerHTML = `Thank you for considering Alliance Insurance`;
                 successAlert.style.display = 'flex';
 
             } catch (error) {
                 console.log("Error", error);
+                loader.style.display = 'none';
                 errorContent.innerHTML = `We are unable to process your request`;
                 errorAlert.style.display = 'flex';
             }
@@ -897,6 +865,14 @@
                 }
             });
         });
+
+        function showLoader() {
+            document.getElementById('loader').classList.add('active');
+        }
+
+        function hideLoader() {
+            document.getElementById('loader').classList.remove('active');
+        }
     </script>
     <script>
         (function () {
@@ -950,35 +926,6 @@
                 });
             }
         })();
-    </script>
-    <script>
-        // Store original calculate functions
-        
-
-        // document.getElementById('contactForm').addEventListener('submit', function (e) {
-        //     e.preventDefault();
-
-        //     const contactData = {
-        //         name: document.getElementById('name').value,
-        //         email: document.getElementById('email').value,
-        //         phone: document.getElementById('phone').value
-        //     };
-
-        //     localStorage.setItem("names", contactData.name);
-        //     localStorage.setItem("email", contactData.email);
-        //     localStorage.setItem("phone", contactData.phone);
-
-        //     closeModal();
-        //     const isStandardMode = !standardInputs.classList.contains('hidden');
-        //     if (isStandardMode) {
-        //         originalCalculateRetirement();
-        //     } else {
-        //         originalCalculateTargetMode();
-        //     }
-        // });
-
-        // Close modal when clicking outside
-
     </script>
 </body>
 
