@@ -191,7 +191,7 @@
                         class="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors duration-300">
                         Cancel
                     </button>
-                    <button onclick="calculate()"
+                    <button onclick="sendEmail()"
                         class="flex-1 px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors duration-300">
                         Submit
                     </button>
@@ -456,12 +456,12 @@
                     Calculate
                 </button>
             </div>
-            <div class="space-y-8 mt-12">
+            <div class="space-y-8 mt-12 hidden" id="resultsContainer">
                 <div id="chartContainer" class="bg-white p-6 rounded-2xl shadow-lg">
                     <h3 class="text-xl sm:text-2xl font-bold text-red-600 mb-6">
-                        Investment Growth Projection
+                        Investment Growth Projections
                     </h3>
-                    <div class="relative h-[400px]"> <!-- Added wrapper div -->
+                    <div class="relative h-[400px]">
                         <canvas id="investmentChart"></canvas>
                     </div>
                 </div>
@@ -657,8 +657,7 @@
 
 
 
-    async function calculate() {
-
+    async function sendEmail(){
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
         const phoneNumber = document.getElementById('phone').value;
@@ -689,6 +688,8 @@
             successContent.innerHTML = `Thank you for considering Alliance Insurance`;
             successAlert.style.display = 'flex';
 
+            calculate()
+
         } catch (error) {
             console.log("Error", error);
             loader.style.display = 'none';
@@ -696,6 +697,11 @@
             errorAlert.style.display = 'flex';
         }
 
+    }
+
+
+
+    function calculate() {
         const startDate = new Date(document.getElementById("startDate").value);
         const investmentPeriod = parseInt(document.getElementById("investmentPeriod").value);
         const annualRateLow = 0.06; // 6% annual growth rate
@@ -864,6 +870,8 @@
 
 
     function displayFutureValueResults(lowInflationData, highInflationData, startDate) {
+        const resultsContainer = document.getElementById('resultsContainer');
+        resultsContainer.classList.remove('hidden');
         const resultsDiv = document.getElementById("results1");
         const monthlyContribution = document.getElementById('monthlyContribution').value;
         const investmentPeriod = document.getElementById("investmentPeriod").value;
@@ -1000,6 +1008,8 @@
 
 
     function displayMonthlyPremiumResults(lowPremium, highPremium) {
+        const resultsContainer = document.getElementById('resultsContainer');
+        resultsContainer.classList.remove('hidden');
         const resultsDiv = document.getElementById("results");
         resultsDiv.innerHTML = `
     	<h3 class="text-xl font-semibold text-red-600 mb-4">Monthly Premium Results</h3>
@@ -1198,9 +1208,9 @@
             updateValue("highTotalSavingsResult", highFutureValue);
 
             // Update secondary display
+            
 
             document.getElementById("childDetails").textContent = childName;
-
             document.getElementById("lowMonthlyContribution2").textContent = formatCurrency(lowMonthlyContribution);
             document.getElementById("lowTotalSavings2").textContent = formatCurrency(lowFutureValue);
             document.getElementById("highMonthlyContribution2").textContent = formatCurrency(highMonthlyContribution);
@@ -1347,16 +1357,15 @@
         }
 
 
-        if (contacts.email && contacts.name && contacts.phone) {
-            calculate()
-        } else {
-
+        if (!contacts.email && !contacts.name && !contacts.phone) {
             const modal = document.getElementById('contactModal');
             const modalContent = modal.querySelector('.modal-content');
             modal.classList.remove('hidden');
             setTimeout(() => {
                 modalContent.classList.add('show');
             }, 10);
+        }else{
+            calculate();
         }
 
     }
