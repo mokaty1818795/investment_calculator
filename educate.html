@@ -48,16 +48,14 @@
         }
 
         .loader-container {
-            display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        z-index: 1000;
         }
 
         .loader-container.show {
@@ -65,9 +63,13 @@
         }
 
         .loader-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 64px;
             height: 64px;
-            position: relative;
+            z-index: 10000;
         }
 
         .loader-spinner .circle {
@@ -75,11 +77,13 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
+            pointer-events: none;
         }
 
         .loader-spinner .background {
-            border: 8px solid #f3f3f3;
+            border: 8px solid rgba(255, 255, 255, 0.2); 
         }
+
 
         .loader-spinner .foreground {
             border: 8px solid transparent;
@@ -91,11 +95,24 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        @media screen and (max-width: 768px) {
+            .loader-spinner {
+                width: 48px;
+                height: 48px;
+            }
+        }
+
+        @media screen and (max-height: 500px) {
+            .loader-spinner {
+                width: 40px;
+                height: 40px;
+            }
+        }
     </style>
 </head>
 
 <body class="bg-gray-100 font-sans">
-    <!-- Header -->
     <header class="bg-white shadow-sm relative z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex justify-between items-center">
