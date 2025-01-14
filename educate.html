@@ -10,6 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="./css/educate.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- <link rel="stylesheet" href="./css/styles.css"> -->
 
     <style>
@@ -361,6 +362,187 @@
                 hideLoader();
             }
         },
+
+        downloadPDF() {
+            try {
+                const doc = new jsPDF();
+                const pageWidth = doc.internal.pageSize.width;
+                const margin = 20;
+                let yPos = 20;
+                const contentWidth = pageWidth - (2 * margin);
+        
+                // Header
+                doc.setFillColor(249, 250, 251);
+                doc.rect(0, 0, pageWidth, 45, 'F');
+        
+                // Add logo
+                const logoWidth = 35;  // Width of the logo in mm
+                const logoHeight = 30; // Height of the logo in mm
+                const logoX = margin;  // Position from left margin
+                const logoY = 8;      // Position from top
+                doc.addImage('../images/logo.png', 'PNG', logoX, logoY, logoWidth, logoHeight);
+        
+                // Title - Adjusted position to account for logo
+                doc.setTextColor(224, 32, 32);
+                doc.setFontSize(24);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Education Savings Calculator', pageWidth / 2 + 15, 30, { align: 'center' });
+        
+                // Date - Reduced spacing after header
+                yPos = 55;
+                doc.setTextColor(107, 114, 128);
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Generated on: ${new Date().toLocaleDateString()}`, pageWidth / 2, yPos, { align: 'center' });
+        
+                // Summary Section
+                yPos += 15;
+                
+                // Summary box
+                doc.setFillColor(249, 250, 251);
+                doc.rect(margin, yPos, contentWidth, 70, 'F');
+                doc.setDrawColor(229, 231, 235);
+                doc.rect(margin, yPos, contentWidth, 70, 'S');
+        
+                // Summary heading
+                yPos += 15;
+                doc.setTextColor(31, 41, 55);
+                doc.setFontSize(20);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Summary', margin + 10, yPos);
+        
+                // Summary details
+                const summaryStartY = yPos + 15;
+                doc.setFontSize(12);
+                
+                // Labels column
+                doc.setFont('helvetica', 'normal');
+                doc.text('Total Education Cost:', margin + 15, summaryStartY);
+                doc.text('Monthly Contribution (6%):', margin + 15, summaryStartY + 15);
+                doc.text('Monthly Contribution (10%):', margin + 15, summaryStartY + 30);
+        
+                // Values column - right aligned
+                doc.setFont('helvetica', 'bold');
+                const valueX = pageWidth - margin - 15;
+                doc.text(this.formatCurrency(this.totalEducationCost), valueX, summaryStartY, { align: 'right' });
+                doc.text(this.formatCurrency(this.lowRateContribution), valueX, summaryStartY + 15, { align: 'right' });
+                doc.text(this.formatCurrency(this.highRateContribution), valueX, summaryStartY + 30, { align: 'right' });
+        
+                // Children Details Section
+                if (this.children && this.children.length > 0) {
+                    yPos += 70;
+                    
+                    // Section heading
+                    doc.setTextColor(224, 32, 32);
+                    doc.setFontSize(20);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Children Details', margin, yPos);
+        
+                    // Table setup
+                    yPos += 12;
+                    const colWidths = {
+                        name: contentWidth * 0.3,
+                        cost: contentWidth * 0.3,
+                        duration: contentWidth * 0.2,
+                        leadUp: contentWidth * 0.2
+                    };
+        
+                    // Header background
+                    doc.setFillColor(224, 32, 32);
+                    doc.rect(margin, yPos - 5, contentWidth, 12, 'F');
+        
+                    // Header text
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'bold');
+                    
+                    let xPos = margin + 5;
+                    doc.text('Name', xPos, yPos + 3);
+                    xPos += colWidths.name;
+                    doc.text('Annual Cost', xPos, yPos + 3);
+                    xPos += colWidths.cost;
+                    doc.text('Duration', xPos, yPos + 3);
+                    xPos += colWidths.duration;
+                    doc.text('Lead-Up Years', xPos, yPos + 3);
+        
+                    // Table rows
+                    doc.setTextColor(31, 41, 55);
+                    doc.setFontSize(11);
+                    this.children.forEach((child, index) => {
+                        yPos += 12;
+        
+                        // New page check
+                        if (yPos > 250) {
+                            doc.addPage();
+                            doc.setFillColor(224, 32, 32);
+                            doc.rect(0, 0, pageWidth, 45, 'F');
+                            doc.addImage('../images/logo.png', 'PNG', logoX, logoY, logoWidth, logoHeight);
+                            yPos = 60;
+                        }
+        
+                        // Alternate row background
+                        if (index % 2 === 0) {
+                            doc.setFillColor(249, 250, 251);
+                            doc.rect(margin, yPos - 5, contentWidth, 12, 'F');
+                        }
+        
+                        // Row data
+                        xPos = margin + 5;
+                        doc.setFont('helvetica', 'normal');
+                        
+                        doc.text(child.name, xPos, yPos + 3);
+                        xPos += colWidths.name;
+                        doc.text(this.formatCurrency(child.annualCost), xPos, yPos + 3);
+                        xPos += colWidths.cost;
+                        doc.text(`${child.duration} Years`, xPos, yPos + 3);
+                        xPos += colWidths.duration;
+                        doc.text(`${child.yearsBeforeStart} Years`, xPos, yPos + 3);
+                    });
+                }
+        
+                // Disclaimer
+                yPos = Math.min(yPos + 30, 260);
+                doc.setFillColor(254, 242, 242);
+                doc.rect(margin, yPos, contentWidth, 25, 'F');
+                doc.setDrawColor(252, 165, 165);
+                doc.rect(margin, yPos, contentWidth, 25, 'S');
+        
+                doc.setTextColor(224, 32, 32);
+                doc.setFontSize(9);
+                doc.setFont('helvetica', 'italic');
+                const disclaimer = 'Disclaimer: The values presented in this report are estimates only and do not represent final or guaranteed outcomes. Actual results may vary based on market conditions, individual contributions, and other factors.';
+                const splitDisclaimer = doc.splitTextToSize(disclaimer, contentWidth - 10);
+                doc.text(splitDisclaimer, margin + 5, yPos + 10);
+        
+                // Page numbers and logo for all pages
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    
+                    // Add header and logo if not first page (first page already has them)
+                    if (i > 1) {
+                        doc.setFillColor(224, 32, 32);
+                        doc.rect(0, 0, pageWidth, 45, 'F');
+                        doc.addImage('../images/logo.png', 'PNG', logoX, logoY, logoWidth, logoHeight);
+                    }
+                    
+                    // Add page numbers
+                    doc.setTextColor(156, 163, 175);
+                    doc.setFontSize(10);
+                    doc.text(`Page ${i} of ${pageCount}`, pageWidth - margin - 5, 285, { align: 'right' });
+                }
+        
+                // Save the PDF
+                doc.save('education-savings-report.pdf');
+        
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('There was an error generating the PDF. Please try again.');
+            }
+        }
+
+
+        
     }">
 
 
@@ -538,14 +720,26 @@
 
 
                     <div class="h-full flex flex-col" x-show="expanded" x-cloak x-transition>
-                        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path
-                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                            Children List
-                        </h2>
+                        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+                            <!-- Title section -->
+                            <h2 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                <span class="whitespace-nowrap">Children List</span>
+                            </h2>
+                        
+                            <!-- Download button -->
+                            <button @click="downloadPDF()" 
+                                    class="w-full sm:w-auto px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 
+                                           transition-all duration-300 flex items-center justify-center gap-2 
+                                           hover:shadow-md active:transform active:scale-95">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                                <span>Download PDF</span>
+                            </button>
+                        </div>
 
                         <div :class="{'flex-1 space-y-4 overflow-y-auto pr-2 scroll-smooth scrollbar-thin scrollbar-thumb-red-600 scrollbar-track-red-100 custom-scrollbar max-h-96 pb-10 p-6': children.length > 0}"
                             class="flex-1 space-y-4 max-h-96 pb-10 p-6">
@@ -681,7 +875,9 @@
         }
 
     </script>
-
+    <script>
+        window.jsPDF = window.jspdf.jsPDF;    
+    </script>
 </body>
 
 </html>
